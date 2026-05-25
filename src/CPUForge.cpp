@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 
     //create ui
 	UI ui = UI();
-	ui.init();
+	ui.Init();
 
     bool running = true;
     while (running)
@@ -42,10 +42,10 @@ int main(int argc, char** argv)
         //event loop - like in game engines
         
 		//todo - update simulation here when running
-        running = ui.render(appContext);
+        running = ui.Render(appContext);
         //handle events from ui
     }
 
-	ui.close();
+	ui.Close();
     return 0;
 }

@@ -13,6 +13,7 @@ public:
 	template <typename T, typename... Args>
 	T& AddWindow(Args&&... args);
 
+	bool RenderMainMenuBar(AppContext& context);
 	void DrawAll(AppContext& context);
 	void DrawModals(AppContext& context);
 	void DrawWindows(AppContext& context);

@@ -13,7 +13,7 @@ ImGuiWindowFlags DOCKING_SPACE_FLAGS =
 ImGuiWindowFlags TOOLBAR_FLAGS =
     ImGuiWindowFlags_NoCollapse;
 
-int UI::init()
+int UI::Init()
 {
     //init sdl
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -85,7 +85,7 @@ int UI::init()
 }
 
 /* Main render function called from main */
-bool UI::render(AppContext& context)
+bool UI::Render(AppContext& context)
 {
 	bool running = true;
     SDL_Event event;
@@ -106,7 +106,7 @@ bool UI::render(AppContext& context)
 	// add all imgui rendering calls after this line
 
 	//add main menu bar before docking space
-    running &= UI::renderMainMenuBar(context);
+    running &= windowManager.RenderMainMenuBar(context);
 
 	//set params for docking space root window
     ImGui::SetNextWindowPos(viewport->WorkPos);
@@ -173,7 +173,7 @@ bool UI::render(AppContext& context)
 	return running;
 }
 
-int UI::close()
+int UI::Close()
 {
     NFD_Quit();
 
@@ -187,70 +187,4 @@ int UI::close()
 
     SDL_Quit();
 	return 0;
-}
-
-bool UI::renderMainMenuBar(AppContext& context) {
-	bool running = true;
-    if (!ImGui::BeginMainMenuBar()) { return running; }
-
-    if (ImGui::BeginMenu("File")) {
-        if (ImGui::MenuItem("New Project")) {
-			//context.projectManager.NewProject("New Project");
-            //open modal somehow??
-            windowManager.OpenModal("modal.new_project");
-        }
-        if (ImGui::MenuItem("Open Project", "Ctrl+O")) {
-            windowManager.OpenModal("modal.open_project");
-        }
-        ImGui::Separator();
-        //disable save options if no project loaded
-        if (!context.projectManager.HasActiveProject()) 
-        { ImGui::BeginDisabled(); }
-
-        if (ImGui::MenuItem("Save Project")) {
-        }
-        ImGui::Separator();
-        if (ImGui::MenuItem("Save", "Ctrl+S")) {
-        }
-        if (ImGui::MenuItem("Save as..")) {
-        }
-        if (ImGui::MenuItem("Save All", "Ctrl+Shift+S")) {
-        }
-        if (ImGui::MenuItem("Close Project")) {
-        }
-
-        if (!context.projectManager.HasActiveProject()) 
-        { ImGui::EndDisabled(); }
-
-        ImGui::Separator();
-        if (ImGui::MenuItem("Quit", "Alt+F4")) {
-            running = false;
-        }
-        ImGui::EndMenu();
-    }
-
-    if (ImGui::BeginMenu("Edit")) {
-        //todo check workspace manager for active cuttable/copyable item
-        if (!context.projectManager.HasActiveProject()) { ImGui::BeginDisabled(); }
-        if (ImGui::MenuItem("Cut", "Ctrl+X")) {
-        }
-        if (ImGui::MenuItem("Copy", "Ctrl+C")) {
-        }
-        if (ImGui::MenuItem("Paste", "Ctrl+V")) {
-        }
-        if (!context.projectManager.HasActiveProject()) { ImGui::EndDisabled(); }
-        ImGui::EndMenu();
-    }
-
-    if (ImGui::BeginMenu("Window")) {
-        //todo add items from windowmanager
-        //if (ImGui::MenuItem("ISA Design")) {
-        //}
-		windowManager.DrawWindowMenuItems();
-        ImGui::EndMenu();
-    }
-    //if (ImGui::Button("Test Button")) {}
-    ImGui::EndMainMenuBar();
-    
-    return running;
 }

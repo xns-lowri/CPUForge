@@ -21,9 +21,9 @@
 class UI
 {
 public:
-	int init();
-	bool render(AppContext& context);
-	int close();
+	int Init();
+	bool Render(AppContext& context);
+	int Close();
 private:
 	SDL_Window* window = nullptr;
 	ImGuiViewport* viewport = nullptr;
