@@ -8,6 +8,7 @@ using json = nlohmann::json;
 
 //#include "ProjectTypes.h"
 
+const std::string PROJECT_FILENAME = "project.cpuforge.json";
 using UUID = uint64_t;
 
 enum class ProjectItemType

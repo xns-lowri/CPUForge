@@ -1,6 +1,7 @@
 #pragma once
 #include <imgui.h>
 #include <string>
+#include <fmt/core.h>
 #include "../_UxInterface.h"
 
 class ModalNewFolder : public ModalBase

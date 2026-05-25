@@ -69,7 +69,9 @@ bool ProjectManager::NewProject(const std::string& name, const std::filesystem::
 		return false; //early return
 	}
 
-	fmt::println("Creating new project '{}' at path '{}'", name, path.string());
+	std::filesystem::path projectPath = path / name;
+
+	fmt::println("Creating new project '{}' at path '{}'", name, projectPath.string());
 
 	//fmt::println("Stem: '{}'", fsPath.stem().string());
 
@@ -80,7 +82,7 @@ bool ProjectManager::NewProject(const std::string& name, const std::filesystem::
 	projectData->id = GetNextUUID();
 	projectData->name = name;
 
-	projectData->path = path;
+	projectData->path = projectPath;
 	//return false if path is invalid or read-only
 
 	//todo default folder structure
@@ -105,7 +107,7 @@ bool ProjectManager::SaveProject() {
 	SaveProjectContext(); //update project context
 
 	json fileData = SerialiseProject();
-	std::filesystem::path filePath = projectData->path / "project.json";
+	std::filesystem::path filePath = projectData->path / PROJECT_FILENAME;
 	ProjectResult result = FileHandler::Save(filePath, fileData);
 	return result.ok;
 }
@@ -225,12 +227,17 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 
 bool ProjectManager::OpenProject(const std::filesystem::path& rootPath) {
 	//load project data
-	std::filesystem::path filePath = rootPath / "project.json";
+	std::filesystem::path filePath = rootPath;
+	if (rootPath.has_extension()) {
+		//strip filename if given
+		filePath = rootPath.parent_path();
+	}
+
 	fmt::println("Loading project at {}", filePath.string());
-	auto result = FileHandler::Load<json>(filePath);
+	auto result = FileHandler::Load<json>(filePath / PROJECT_FILENAME);
 	if (!result.ok) {
 		//error loading file, todo handle
-		fmt::println("Error loading project");
+		fmt::println("Error loading project file");
 		return false;
 	}
 	fmt::println("Start deserialising project");
@@ -292,6 +299,7 @@ UUID ProjectManager::NewFolder(const std::string& name, UUID parentId)
 
 	//todo make new folder
 	FileHandler::CreateFolder(folderPath);
+	SaveProject();
 
 	fmt::println("Created folder '{}' with id {} at path '{}'",
 		name, newFolder.id, folderPath.string());

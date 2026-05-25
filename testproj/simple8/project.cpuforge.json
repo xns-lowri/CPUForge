@@ -1,0 +1,69 @@
+{
+    "description": "",
+    "files": null,
+    "folders": [
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724958,
+            "name": "isa",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724959,
+            "name": "hardware",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [
+                1779724961,
+                1779724962
+            ],
+            "id": 1779724960,
+            "name": "sources",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724961,
+            "name": "host",
+            "parentId": 1779724960
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724962,
+            "name": "target",
+            "parentId": 1779724960
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724963,
+            "name": "debug",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724964,
+            "name": "build",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779724965,
+            "name": "notes",
+            "parentId": 0
+        }
+    ],
+    "id": 1779724957,
+    "name": "simple8",
+    "nextId": 1779724966,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple8"
+}

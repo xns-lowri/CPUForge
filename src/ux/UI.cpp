@@ -200,6 +200,7 @@ bool UI::renderMainMenuBar(AppContext& context) {
             windowManager.OpenModal("modal.new_project");
         }
         if (ImGui::MenuItem("Open Project", "Ctrl+O")) {
+            windowManager.OpenModal("modal.open_project");
         }
         ImGui::Separator();
         //disable save options if no project loaded

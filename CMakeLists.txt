@@ -42,7 +42,7 @@ add_executable (CPUForge
     "src/ux/WindowManager.h" 
     "src/ux/WindowManager.cpp" 
     "src/AppContext.h" 
-    "src/ux/core/ModalNewProject.h" "src/project/WorkspaceManager.h"  "src/ux/core/ModalNewFolder.h" "src/project/WorkspaceManager.cpp"  "src/project/FileHandler.h")
+    "src/ux/core/ModalNewProject.h" "src/project/WorkspaceManager.h"  "src/ux/core/ModalNewFolder.h" "src/project/WorkspaceManager.cpp"  "src/project/FileHandler.h" "src/ux/core/ModalOpenProject.h")
 
 #add_executable (CPUForge "CPUForge.cpp" "CPUForge.h")
 

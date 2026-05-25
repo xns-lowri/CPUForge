@@ -4,6 +4,7 @@
 #include "WindowManager.h"
 #include "modules/ViewProjectTree.h"
 #include "core/ModalNewProject.h"
+#include "core/ModalOpenProject.h"
 #include "core/ModalNewFolder.h"
 
 WindowManager::WindowManager()
@@ -15,6 +16,8 @@ WindowManager::WindowManager()
 	//add modals
 	ModalNewProject modalNewProject = ModalNewProject();
 	AddModal<ModalNewProject>(modalNewProject.GetId(), modalNewProject);
+	ModalOpenProject modalOpenProject = ModalOpenProject();
+	AddModal<ModalOpenProject>(modalOpenProject.GetId(), modalOpenProject);
 
 	ModalNewFolder modalNewFolder = ModalNewFolder();
 	AddModal<ModalNewFolder>(modalNewFolder.GetId(), modalNewFolder);

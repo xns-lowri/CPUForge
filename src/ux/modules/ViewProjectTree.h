@@ -92,7 +92,9 @@ public:
 			//start tree node for current folder
 			bool treeOpen = ImGui::TreeNodeEx(
 				folder.second.name.c_str(),
-				ImGuiTreeNodeFlags_DefaultOpen);
+				ImGuiTreeNodeFlags_DefaultOpen |
+				ImGuiTreeNodeFlags_SpanAvailWidth
+			);
 
 			//context menu for folder
 			if (ImGui::BeginPopupContextItem()) {
