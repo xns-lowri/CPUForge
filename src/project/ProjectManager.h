@@ -3,7 +3,12 @@
 #include <optional>
 #include <vector>
 #include <cstdint>
+#include <filesystem>
 #include <unordered_map>
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+#include "FileHandler.h"
 
 #include "Project.h" //includes architecture, instruction
 

@@ -1,4 +1,3 @@
-#include "../AppContext.h"
 #include "WorkspaceManager.h"
 
 const UUID WorkspaceManager::GetSelectedFolder() const {

@@ -1,7 +1,5 @@
-#include <fmt/core.h>
-#include <nfd.h>
-
 #include "WindowManager.h"
+
 #include "modules/ViewProjectTree.h"
 #include "core/ModalNewProject.h"
 #include "core/ModalOpenProject.h"

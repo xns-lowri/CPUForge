@@ -1,9 +1,4 @@
-#include <fmt/core.h>
-#include <filesystem>
 #include "ProjectManager.h"
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
-#include "FileHandler.h"
 
 
 /* Constructors */

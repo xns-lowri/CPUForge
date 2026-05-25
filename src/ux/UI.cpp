@@ -209,12 +209,12 @@ bool UI::renderMainMenuBar(AppContext& context) {
 
         if (ImGui::MenuItem("Save Project")) {
         }
-        if (ImGui::MenuItem("Save Project as..")) {
-        }
         ImGui::Separator();
         if (ImGui::MenuItem("Save", "Ctrl+S")) {
         }
         if (ImGui::MenuItem("Save as..")) {
+        }
+        if (ImGui::MenuItem("Save All", "Ctrl+Shift+S")) {
         }
         if (ImGui::MenuItem("Close Project")) {
         }
@@ -230,12 +230,15 @@ bool UI::renderMainMenuBar(AppContext& context) {
     }
 
     if (ImGui::BeginMenu("Edit")) {
+        //todo check workspace manager for active cuttable/copyable item
+        if (!context.projectManager.HasActiveProject()) { ImGui::BeginDisabled(); }
         if (ImGui::MenuItem("Cut", "Ctrl+X")) {
         }
         if (ImGui::MenuItem("Copy", "Ctrl+C")) {
         }
         if (ImGui::MenuItem("Paste", "Ctrl+V")) {
         }
+        if (!context.projectManager.HasActiveProject()) { ImGui::EndDisabled(); }
         ImGui::EndMenu();
     }
 
