@@ -1,0 +1,69 @@
+{
+    "description": "",
+    "files": null,
+    "folders": [
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661533,
+            "name": "isa",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661534,
+            "name": "hardware",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [
+                1779661536,
+                1779661537
+            ],
+            "id": 1779661535,
+            "name": "sources",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661536,
+            "name": "host",
+            "parentId": 1779661535
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661537,
+            "name": "target",
+            "parentId": 1779661535
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661538,
+            "name": "debug",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661539,
+            "name": "build",
+            "parentId": 0
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1779661540,
+            "name": "notes",
+            "parentId": 0
+        }
+    ],
+    "id": 1779661532,
+    "name": "simple16",
+    "nextId": 1779661541,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj"
+}

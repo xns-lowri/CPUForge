@@ -1,15 +1,113 @@
-CMakeLists.txt.user
+# ==========================
+# Visual Studio
+# ==========================
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio generated project files
+*.vcxproj*
+*.vcproj*
+*.filters
+
+# Keep solution files if you commit them
+# !*.sln
+
+# ==========================
+# CMake
+# ==========================
+build/
+build*/
+out/
+cmake-build-*/
+CMakeFiles/
 CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
-_deps
-CMakeUserPresets.json
+Testing/
+
+# Generated project files
+Makefile
+CMakeScripts/
+*.cmake.user
+
+# Ninja
+.ninja_deps
+.ninja_log
+build.ninja
+
+# ==========================
+# vcpkg
+# ==========================
+# Manifest mode installed packages
+vcpkg_installed/
+
+# Binary caching
+.vcpkg-root/
+vcpkg/buildtrees/
+vcpkg/packages/
+vcpkg/downloads/
+
+# Optional local clone
+vcpkg/
+
+# Uncomment ONLY if vendoring vcpkg:
+# !vcpkg/
+# vcpkg/buildtrees/
+# vcpkg/packages/
+# vcpkg/downloads/
+
+# ==========================
+# Compiler / linker outputs
+# ==========================
+*.obj
+*.o
+*.lo
+*.slo
+*.pch
+*.pdb
+*.ilk
+*.idb
+*.ipdb
+*.iobj
+*.lib
+*.a
+*.dll
+*.so
+*.dylib
+*.exp
+*.exe
+*.out
+*.app
+
+# ==========================
+# Logs / temp
+# ==========================
+*.log
+*.tmp
+*.temp
+*.cache
+
+# ==========================
+# Test / coverage
+# ==========================
+coverage/
+*.gcda
+*.gcno
+*.gcov
+
+# ==========================
+# OS files
+# ==========================
+.DS_Store
+Thumbs.db
+desktop.ini
 
 # CLion
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

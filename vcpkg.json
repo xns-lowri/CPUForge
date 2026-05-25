@@ -1,0 +1,14 @@
+{
+  "dependencies": [
+    "fmt",
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental"
+      ]
+    },
+    "nativefiledialog-extended",
+    "sdl2",
+    "nlohmann-json"
+  ]
+}

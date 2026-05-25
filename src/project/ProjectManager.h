@@ -1,0 +1,54 @@
+#pragma once
+#include <string>
+#include <optional>
+#include <vector>
+#include <cstdint>
+#include <unordered_map>
+
+#include "Project.h" //includes architecture, instruction
+
+class ProjectManager
+{
+private:
+	std::optional<ProjectData> projectData;
+	//std::string currentWorkingDirectory;
+
+public:
+	//constructors
+	ProjectManager();
+	//ProjectManager(const ProjectData& data, const std::string& dir);
+	ProjectManager(const ProjectData& data); // : projectData(data) {}
+
+	//project data getters/setters
+	std::optional<ProjectData> GetCurrentProject();	//write access for other workflow components
+	const std::optional<ProjectData> GetCurrentProject() const;	//read only access e.g. UI
+	bool HasActiveProject() const;
+	bool IsDirty() const;
+
+	void MarkProjectDirty();
+	const UUID GetNextUUID();
+
+	//project state management
+	bool NewProject(const std::string& name, const std::filesystem::path& path);
+
+	json SerialiseProject();
+	bool DeserialiseProject(json fileData);
+
+	bool SaveProjectContext();
+	std::optional<std::filesystem::path> LoadProjectContext();
+	std::filesystem::path GetProjectContextPath();
+
+	bool OpenProject(const std::filesystem::path& filePath);
+	bool SaveProject();
+	bool SaveProjectAs(const std::filesystem::path& filePath);
+	void CloseProject();
+
+	//project tree management functions
+	UUID NewFolder(const std::string& name, UUID parentId);
+	bool AddFile(const std::string& name, ProjectFileType type, UUID parentId);
+	//bool deleteItem(UUID itemId);
+	//bool renameItem(UUID itemId, const std::string& newName);
+
+	//document management functions
+	//bool createISADefinitionDocument(const std::string& name, const std::string& description);
+};
