@@ -67,14 +67,15 @@ bool WindowManager::RenderMainMenuBar(AppContext& context) {
 		}
 		ImGui::Separator();
 		//disable save options if no project loaded
-		if (!context.projectManager.HasActiveProject())
+		bool hadProject = context.projectManager.HasActiveProject();
+		if (!hadProject)
 		{
 			ImGui::BeginDisabled();
 		}
 
-		if (ImGui::MenuItem("Save Project")) {
-		}
-		ImGui::Separator();
+		//if (ImGui::MenuItem("Save Project")) {}
+		//ImGui::Separator();
+
 		if (ImGui::MenuItem("Save", "Ctrl+S")) {
 		}
 		if (ImGui::MenuItem("Save as..")) {
@@ -82,10 +83,12 @@ bool WindowManager::RenderMainMenuBar(AppContext& context) {
 		if (ImGui::MenuItem("Save All", "Ctrl+Shift+S")) {
 		}
 		if (ImGui::MenuItem("Close Project")) {
+			context.projectManager.CloseProject();
 		}
 
-		if (!context.projectManager.HasActiveProject())
+		if (!hadProject)
 		{
+			//must not call EndDisabled if project is closed from menu
 			ImGui::EndDisabled();
 		}
 

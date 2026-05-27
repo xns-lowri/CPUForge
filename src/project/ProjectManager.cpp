@@ -33,6 +33,11 @@ const std::optional<ProjectData> ProjectManager::GetCurrentProject() const
 	return projectData;
 }
 
+void ProjectManager::CloseProject() {
+	projectData = std::nullopt;
+	SaveProjectContext(); //update project context
+}
+
 /* Dirty getters/setters */
 bool ProjectManager::IsDirty() const
 {
@@ -131,7 +136,11 @@ std::optional<std::filesystem::path> ProjectManager::LoadProjectContext() {
 	if (!result.ok) {
 		return std::nullopt;
 	}
-	std::optional<std::filesystem::path> retval = result.value.at("lastOpenProject");
+	
+	std::optional<std::filesystem::path> retval = std::nullopt;
+	if (result.value.at("lastOpenProject") != 0) {
+		retval = result.value.at("lastOpenProject");
+	}
 	return retval;
 }
 
@@ -239,6 +248,7 @@ bool ProjectManager::OpenProject(const std::filesystem::path& rootPath) {
 	bool deserial = DeserialiseProject(result.value);
 	//update path if necessary
 	//update last project opened metadata
+	SaveProjectContext(); //update project context
 	return true;
 }
 
