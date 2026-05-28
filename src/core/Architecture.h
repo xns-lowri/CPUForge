@@ -4,45 +4,18 @@
 #include <cstdint>
 #include <unordered_map>
 
-enum class Endianness
-{
-	Little,
-	Big
-};
-
-//isa register types
-enum class RegisterType
-{
-	Data,
-	Address,
-	Control,
-	Flag,
-	Custom,
-	Other
-};
-
-//instruction field types
-enum class FieldType
-{
-	Opcode,
-	Register,
-	Immediate,
-	Address,
-	Flag,
-	Label,
-	Custom,
-	Other
-};
-
-//#include "../project/Project.h"
+#include "../project/Project.h"
+#include "enumIsaDef.h"
 #include "Instruction.h"
 
 /* Structs defining individual data types in ISA */
 struct ISADataType
 {
-	ItemHeader header;
+	UUID id = 0;
+	std::string name;
+	std::string description;
 
-	uint32_t bitWidth = 8;
+	uint16_t bitWidth = 8;
 	bool isSigned = false;
 
 	std::vector<std::string> tags;
@@ -51,9 +24,11 @@ struct ISADataType
 /* Structs defining registers available in ISA*/
 struct ISARegister
 {
-	ItemHeader header;
+	UUID id = 0;
+	std::string name;
+	std::string description;
 
-	uint32_t bitWidth = 8;
+	uint16_t bitWidth = 8;
 	RegisterType type = RegisterType::Other;
 
 	std::vector<std::string> aliases;
@@ -66,11 +41,11 @@ struct ISADefinitionDocument
 
 	Endianness endianness = Endianness::Little;
 
-	uint32_t defaultDataWordSize = 8;	//in bits
-	uint32_t defaultAddressWordSize = 8;	//in bits
+	uint16_t defaultDataWordSize = 8;	//in bits
+	uint16_t defaultAddressWordSize = 8;	//in bits
 
-	uint32_t maxInstructionWidth = 8;	//in bits - sets total number of instructions available
-	uint32_t defaultOpcodeLength = 8;	//in bits
+	uint16_t maxInstructionWidth = 8;	//in bits - sets total number of instructions available
+	uint16_t defaultOpcodeLength = 8;	//in bits
 
 	//todo data types
 	std::unordered_map<UUID, ISADataType> dataTypes;

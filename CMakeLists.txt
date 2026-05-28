@@ -33,8 +33,6 @@ add_executable (CPUForge
     "src/ux/ui.cpp" 
     "src/ux/UI.h" 
     "src/project/Project.h" 
-    "src/ISA/Architecture.h" 
-    "src/ISA/Instruction.h" 
     "src/project/ProjectManager.h" 
     "src/project/ProjectManager.cpp"    
     "src/ux/modules/ViewProjectTree.h" 
@@ -42,7 +40,13 @@ add_executable (CPUForge
     "src/ux/WindowManager.h" 
     "src/ux/WindowManager.cpp" 
     "src/AppContext.h" 
-    "src/ux/core/ModalNewProject.h" "src/project/WorkspaceManager.h"  "src/ux/core/ModalNewFolder.h" "src/project/WorkspaceManager.cpp"  "src/project/FileHandler.h" "src/ux/core/ModalOpenProject.h")
+    "src/ux/core/ModalNewProject.h" 
+    "src/project/WorkspaceManager.h"  
+    "src/ux/core/ModalNewFolder.h" 
+    "src/project/WorkspaceManager.cpp"  
+    "src/project/FileHandler.h" 
+    "src/ux/core/ModalOpenProject.h" 
+    "src/core/Instruction.h" "src/core/Architecture.h")
 
 #add_executable (CPUForge "CPUForge.cpp" "CPUForge.h")
 

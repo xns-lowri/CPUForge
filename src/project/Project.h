@@ -80,11 +80,11 @@ struct DocumentHeader {
 };
 
 /* Reusable header for all 'item' type objects in project */
-struct ItemHeader {
+/*struct ItemHeader {
 	UUID id = 0;
 	std::string name;
 	std::string description;
-};
+};*/
 
 /* Definitions for file objects (pointers) in project tree */
 struct FileObject {
@@ -114,7 +114,7 @@ struct FolderObject
 	std::vector<UUID> childFiles;
 };
 
-#include "../ISA/Architecture.h"
+#include "../core/Architecture.h"
 
 /* Main project struct */
 struct ProjectData

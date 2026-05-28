@@ -7,7 +7,7 @@
 
 WindowManager::WindowManager()
 {
-	//add available windows here, can also be added elsewhere
+	//add available windows here, can also be added during render/runtime
 	//ViewProjectTree* viewProjectTree = new ViewProjectTree();
 	AddWindow<ViewProjectTree>(ViewProjectTree(*this));
 
@@ -16,7 +16,6 @@ WindowManager::WindowManager()
 	AddModal<ModalNewProject>(modalNewProject.GetId(), modalNewProject);
 	ModalOpenProject modalOpenProject = ModalOpenProject();
 	AddModal<ModalOpenProject>(modalOpenProject.GetId(), modalOpenProject);
-
 	ModalNewFolder modalNewFolder = ModalNewFolder();
 	AddModal<ModalNewFolder>(modalNewFolder.GetId(), modalNewFolder);
 
@@ -127,9 +126,9 @@ bool WindowManager::RenderMainMenuBar(AppContext& context) {
 
 /* Main entrypoint during rendering, draw all windows, modals, etc */
 void WindowManager::DrawAll(AppContext& context) {
+	//note: do not call RenderMainMenuBar here!! handled by UI.cpp
 	DrawWindows(context);
 	DrawModals(context);
-	//todo draw modals
 }
 
 void WindowManager::DrawModals(AppContext& context)
@@ -156,11 +155,11 @@ void WindowManager::DrawWindows(AppContext& context)
 
 void WindowManager::OpenModal(const std::string& id)
 {
-	auto it = modals.find(id);
-	if (it != modals.end()) {
-		it->second->Show();
+	auto modal = modals.find(id);
+	if (modal != modals.end()) {
+		modal->second->Show();
 		fmt::println("Open modal '{:s}'", id);
-		fmt::println("showing: {}", it->second->IsShowing());
+		fmt::println("showing: {}", modal->second->IsShowing());
 	}
 	else {
 		fmt::println("Modal with id '{:s}' not found!", id);
