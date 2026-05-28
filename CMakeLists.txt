@@ -46,7 +46,7 @@ add_executable (CPUForge
     "src/project/WorkspaceManager.cpp"  
     "src/project/FileHandler.h" 
     "src/ux/core/ModalOpenProject.h" 
-    "src/core/Instruction.h" "src/core/Architecture.h")
+    "src/core/Instruction.h" "src/core/Architecture.h" "src/_types.h")
 
 #add_executable (CPUForge "CPUForge.cpp" "CPUForge.h")
 

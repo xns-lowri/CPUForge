@@ -9,7 +9,7 @@
 //#include "../project/ProjectManager.h"
 #include "../AppContext.h"
 
-using UUID = uint64_t;
+#include "../_types.h"
 
 /* Modal Interface and Base Class */
 class IModal {

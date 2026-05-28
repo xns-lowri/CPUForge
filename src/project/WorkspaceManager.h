@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-using UUID = uint64_t;
+#include "../_types.h"
 
 //todo add separate file with struct for all saveable state in workspace, 
 //e.g. open documents, selected items, etc. and serialize to disk on close and load on open

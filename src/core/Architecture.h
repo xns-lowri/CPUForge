@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <unordered_map>
 
-#include "../project/Project.h"
+#include "../_types.h"
 #include "enumIsaDef.h"
 #include "Instruction.h"
 

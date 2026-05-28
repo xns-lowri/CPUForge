@@ -4,13 +4,14 @@
 #ifndef CPUFORGE_
 #define CPUFORGE_
 
-using UUID = uint64_t;
 
 #include <string>
 #include <optional>
 #include <vector>
 #include <cstdint>
 #include <unordered_map>
+
+#include "_types.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
