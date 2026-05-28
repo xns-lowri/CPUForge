@@ -27,11 +27,9 @@ public:
 private:
 	SDL_Window* window = nullptr;
 	ImGuiViewport* viewport = nullptr;
-	SDL_GLContext gl_context;
+	SDL_GLContext glContext;
 
-	ImGuiID last_selected = NULL;
+	ImGuiID lastSelected = NULL;
 
 	WindowManager windowManager;
-
-	bool renderMainMenuBar(AppContext& context);
 };

@@ -49,15 +49,15 @@ int UI::Init()
         return -1;
     }
 
-    gl_context = SDL_GL_CreateContext(window);
+    glContext = SDL_GL_CreateContext(window);
 
-    if (!gl_context)
+    if (!glContext)
     {
         fmt::print("OpenGL context failed\n");
         return -1;
     }
 
-    SDL_GL_MakeCurrent(window, gl_context);
+    SDL_GL_MakeCurrent(window, glContext);
     SDL_GL_SetSwapInterval(1);
 
     // ImGui setup
@@ -77,7 +77,7 @@ int UI::Init()
     
     ImGui::StyleColorsDark();
 
-    ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
     ImGui_ImplOpenGL3_Init("#version 330");
 
 	fmt::println("UI initialized");
@@ -182,7 +182,7 @@ int UI::Close()
 
     ImGui::DestroyContext();
 
-    SDL_GL_DeleteContext(gl_context);
+    SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
 
     SDL_Quit();
