@@ -4,75 +4,66 @@
     "folders": [
         {
             "childFiles": [],
-            "childFolders": [
-                1779724982
-            ],
-            "id": 1779724974,
+            "childFolders": [],
+            "id": 1780178076,
             "name": "isa",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724975,
+            "id": 1780178077,
             "name": "hardware",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [
-                1779724977,
-                1779724978
+                1780178079,
+                1780178080
             ],
-            "id": 1779724976,
+            "id": 1780178078,
             "name": "sources",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724977,
+            "id": 1780178079,
             "name": "host",
-            "parentId": 1779724976
+            "parentId": 1780178078
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724978,
+            "id": 1780178080,
             "name": "target",
-            "parentId": 1779724976
+            "parentId": 1780178078
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724979,
+            "id": 1780178081,
             "name": "debug",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724980,
+            "id": 1780178082,
             "name": "build",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724981,
+            "id": 1780178083,
             "name": "notes",
             "parentId": 0
-        },
-        {
-            "childFiles": [],
-            "childFolders": [],
-            "id": 1779724982,
-            "name": "new folder",
-            "parentId": 1779724974
         }
     ],
-    "id": 1779724973,
-    "name": "simple16",
-    "nextId": 1779724983,
-    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple16"
+    "id": 1780178075,
+    "name": "simple12",
+    "nextId": 1780178084,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple12"
 }
