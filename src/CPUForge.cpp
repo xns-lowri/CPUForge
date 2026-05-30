@@ -5,7 +5,6 @@
 
 //include header
 #include "CPUForge.h"
-#include "AppContext.h"
 
 using namespace std;
 
@@ -19,9 +18,12 @@ int main(int argc, char** argv)
 	//create project manager
     //todo load last project if able
     AppContext appContext = AppContext(
+        AppCommandQueue(),
         ProjectManager(), 
         WorkspaceManager()
     );
+
+    AppCommandDispatcher dispatcher = AppCommandDispatcher();
 
     std::optional<std::filesystem::path> lastProjectPath = appContext.projectManager.LoadProjectContext();
     if (lastProjectPath.has_value()) {
@@ -33,8 +35,9 @@ int main(int argc, char** argv)
 	//projectManager.NewProject("default");
 
     //create ui
-	UI ui = UI();
-	ui.Init();
+    WindowManager windowManager = WindowManager(appContext);
+	UI ui = UI(windowManager);
+	ui.Init(appContext);
 
     bool running = true;
     while (running)
@@ -43,7 +46,22 @@ int main(int argc, char** argv)
         
 		//todo - update simulation here when running
         running = ui.Render(appContext);
+
+        if(appContext.requestQuit) {
+            break;
+        }
         //handle events from ui
+        while(!appContext.commandQueue.Empty()) {
+            std::optional<AppCommandRequest> request = appContext.commandQueue.TryPop();
+            fmt::println("Got request");
+            if(!request.has_value()) { break; }
+            if(!dispatcher.CanDispatch(request->command, appContext)) { continue; }
+            dispatcher.Dispatch(
+                request.value(), 
+                ui.GetWindowManager(), 
+                appContext
+            );
+        }
     }
 
 	ui.Close();

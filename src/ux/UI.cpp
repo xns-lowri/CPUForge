@@ -1,4 +1,4 @@
-#include "ui.h"
+#include "UI.h"
 
 ImGuiWindowFlags DOCKING_SPACE_FLAGS =
     ImGuiWindowFlags_NoDocking |
@@ -13,7 +13,7 @@ ImGuiWindowFlags DOCKING_SPACE_FLAGS =
 ImGuiWindowFlags TOOLBAR_FLAGS =
     ImGuiWindowFlags_NoCollapse;
 
-int UI::Init()
+int UI::Init(AppContext& context)
 {
     //init sdl
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -59,6 +59,16 @@ int UI::Init()
 
     SDL_GL_MakeCurrent(window, glContext);
     SDL_GL_SetSwapInterval(1);
+
+    //
+    //TODO macos native integration - menu bar work
+#ifdef __APPLE__
+    fmt::println("Using MacOS native menu bar");
+    //CPUForge_InstallMacMenu();
+#else
+    fmt::print("Using menu bar rendered in-app");
+#endif
+    // */
 
     // ImGui setup
     IMGUI_CHECKVERSION();
@@ -106,7 +116,22 @@ bool UI::Render(AppContext& context)
 	// add all imgui rendering calls after this line
 
 	//add main menu bar before docking space
-    running &= windowManager.RenderMainMenuBar(context);
+    //#ifndef __APPLE__
+    //TODO remove commented ifndef once menu bars are both working
+    //perhaps include option to choose native or in-app menu bar?
+    //running &= windowManager.RenderMainMenuBar(context);
+
+    const MenuBarModel menu = BuildMainMenuModel(windowManager.GetWindows());
+
+    DrawMainMenuBar(menu, context);
+    //#endif    
+
+#ifdef __APPLE__
+    //fmt::println("Using MacOS native menu bar");
+    MacMenu_Update(menu);
+#else
+    //fmt::print("Using menu bar rendered in-app");
+#endif
 
 	//set params for docking space root window
     ImGui::SetNextWindowPos(viewport->WorkPos);
@@ -187,4 +212,8 @@ int UI::Close()
 
     SDL_Quit();
 	return 0;
+}
+
+WindowManager& UI::GetWindowManager() {
+    return windowManager;
 }

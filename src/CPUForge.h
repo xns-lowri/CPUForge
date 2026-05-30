@@ -20,6 +20,8 @@
 #include "AppContext.h"
 
 /* Load modules */
+#include "queue/AppCommandQueue.h"
+#include "queue/AppCommandDispatcher.h"
 //include project manager first
 //#include "project/Project.h" //includes architecture, instruction
 #include "project/ProjectManager.h"

@@ -129,11 +129,11 @@ struct ProjectData
 	UUID nextId = 0;	//next unique id to use in project
 
 	//project tree
-	std::unordered_map<UUID, FolderObject> folders;
-	std::unordered_map<UUID, FileObject> files;
+	std::map<UUID, FolderObject> folders;
+	std::map<UUID, FileObject> files;
 
 	//typed document storage containers
-	std::unordered_map<UUID, ISADefinitionDocument> isaDefinitions;
+	std::map<UUID, ISADefinitionDocument> isaDefinitions;
 	//todo other document types 
 	// e.g. hardware sheets, source files, build manifests,
 	// simulation states, tool scripts, etc

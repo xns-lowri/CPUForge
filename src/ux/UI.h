@@ -15,15 +15,22 @@
 //include simulation headers
 #include "../project/Project.h"
 #include "WindowManager.h"
+#include "menubar/ImGuiMenuHandler.h"
 
 #include "../AppContext.h"
+
+#ifdef __APPLE__
+#include "menubar/MacOsNative.h"
+#endif
 
 class UI
 {
 public:
-	int Init();
+	UI(WindowManager& mgr) : windowManager(mgr) {};
+	int Init(AppContext& context);
 	bool Render(AppContext& context);
 	int Close();
+	WindowManager& GetWindowManager();
 private:
 	SDL_Window* window = nullptr;
 	ImGuiViewport* viewport = nullptr;
@@ -31,5 +38,5 @@ private:
 
 	ImGuiID lastSelected = NULL;
 
-	WindowManager windowManager;
+	WindowManager& windowManager;
 };

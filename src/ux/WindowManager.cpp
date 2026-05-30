@@ -5,32 +5,38 @@
 #include "core/ModalOpenProject.h"
 #include "core/ModalNewFolder.h"
 
-WindowManager::WindowManager()
+WindowManager::WindowManager(AppContext& context)
 {
 	//add available windows here, can also be added during render/runtime
 	//ViewProjectTree* viewProjectTree = new ViewProjectTree();
-	AddWindow<ViewProjectTree>(ViewProjectTree(*this));
+	ViewProjectTree viewProjectTree = ViewProjectTree(*this);
+	AddWindow<ViewProjectTree>(context, viewProjectTree.GetId(), viewProjectTree);
 
 	//add modals
 	ModalNewProject modalNewProject = ModalNewProject();
-	AddModal<ModalNewProject>(modalNewProject.GetId(), modalNewProject);
+	AddModal<ModalNewProject>(context, modalNewProject.GetId(), modalNewProject);
 	ModalOpenProject modalOpenProject = ModalOpenProject();
-	AddModal<ModalOpenProject>(modalOpenProject.GetId(), modalOpenProject);
+	AddModal<ModalOpenProject>(context, modalOpenProject.GetId(), modalOpenProject);
 	ModalNewFolder modalNewFolder = ModalNewFolder();
-	AddModal<ModalNewFolder>(modalNewFolder.GetId(), modalNewFolder);
+	AddModal<ModalNewFolder>(context, modalNewFolder.GetId(), modalNewFolder);
 
 	//print all added windows for debugging before leaving
 	for (auto& window : windows) {
-		fmt::println("Added window: {:s}", window->GetTitle());
+		fmt::println("Added window: {:s}", window.second->GetTitle());
 	}
 	for (auto& modal : modals) {
 		fmt::println("Added modal: {:s}", modal.second->GetTitle());
 	}
+
+#ifdef __APPLE__
+	NativeCommandBridge::SetCommandQueue(&context.commandQueue);
+#endif
+
 	fmt::println("WindowManager initialized");
 }
 
 template <typename T, typename... Args>
-T& WindowManager::AddModal(std::string id, Args&&... args)
+T& WindowManager::AddModal(AppContext& context, std::string id, Args&&... args)
 {
 	// Create a new window of type T with the provided arguments
 	auto modal = std::make_unique<T>(std::forward<Args>(args)...);
@@ -41,16 +47,17 @@ T& WindowManager::AddModal(std::string id, Args&&... args)
 }
 
 template <typename T, typename... Args>
-T& WindowManager::AddWindow(Args&&... args)
+T& WindowManager::AddWindow(AppContext& context, std::string id, Args&&... args)
 {
 	// Create a new window of type T with the provided arguments
 	auto window = std::make_unique<T>(std::forward<Args>(args)...);
 	T& ref = *window; // Get a reference to the newly created window
-	windows.push_back(std::move(window)); // Store the window in the vector
+	windows.emplace(std::move(id), std::move(window)); // Store the window in the vector
 	return ref; // Return the reference to the caller
 }
 
-
+//todo remove
+/*
 bool WindowManager::RenderMainMenuBar(AppContext& context) {
 	bool running = true;
 	if (!ImGui::BeginMainMenuBar()) { return running; }
@@ -59,10 +66,10 @@ bool WindowManager::RenderMainMenuBar(AppContext& context) {
 		if (ImGui::MenuItem("New Project")) {
 			//context.projectManager.NewProject("New Project");
 			//open modal somehow??
-			OpenModal("modal.new_project");
+			OpenModal(context, "modal.new_project");
 		}
 		if (ImGui::MenuItem("Open Project", "Ctrl+O")) {
-			OpenModal("modal.open_project");
+			OpenModal(context, "modal.open_project");
 		}
 		ImGui::Separator();
 		//disable save options if no project loaded
@@ -122,7 +129,7 @@ bool WindowManager::RenderMainMenuBar(AppContext& context) {
 	ImGui::EndMainMenuBar();
 
 	return running;
-}
+}*/
 
 /* Main entrypoint during rendering, draw all windows, modals, etc */
 void WindowManager::DrawAll(AppContext& context) {
@@ -147,13 +154,13 @@ void WindowManager::DrawWindows(AppContext& context)
 	// For example:
 	// viewProjectTree.Draw();
 	for (auto& window : windows) {
-		if (window->IsOpen()) {
-			window->Render(context);
+		if (window.second->IsOpen()) {
+			window.second->Render(context);
 		}
 	}
 }
 
-void WindowManager::OpenModal(const std::string& id)
+void WindowManager::OpenModal(AppContext& context, const std::string& id)
 {
 	auto modal = modals.find(id);
 	if (modal != modals.end()) {
@@ -166,6 +173,15 @@ void WindowManager::OpenModal(const std::string& id)
 	}
 }
 
+void WindowManager::ToggleWindowVisibility(std::string windowId) {
+	auto window = windows.find(windowId);
+	if(window != windows.end()) {
+		window->second->SetOpen(!window->second->IsOpen());
+		fmt::println("Open window '{:s}'", windowId);
+	}
+}
+
+/*
 void WindowManager::DrawMenuBarItems()
 {
 	for (auto& window : windows) {
@@ -178,4 +194,8 @@ void WindowManager::DrawWindowMenuItems()
 	for (auto& window : windows) {
 		window->DrawWindowMenuItem();
 	}
+}*/
+
+std::unordered_map<std::string, std::unique_ptr<IWindow>>& WindowManager::GetWindows() {
+	return windows;
 }

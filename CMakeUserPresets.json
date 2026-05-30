@@ -5,6 +5,13 @@
       "name": "default",
       "inherits": "vcpkg",
       "environment": {
+        "VCPKG_ROOT": "$VCPKG_ROOT"
+      }
+    },
+    {
+      "name": "macos",
+      "inherits": "vcpkg",
+      "environment": {
         "VCPKG_ROOT": "~/vcpkg"
       }
     }

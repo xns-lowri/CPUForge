@@ -22,7 +22,9 @@ find_package(nlohmann_json CONFIG REQUIRED)
 add_subdirectory("external/nativefiledialog-extended")
 
 # Add source to this project's executable.
-add_executable (CPUForge 
+add_executable (CPUForge)
+
+target_sources(CPUForge PRIVATE 
     "src/CPUForge.cpp" 
     "src/CPUForge.h"
     "external/imgui_impl_sdl2.cpp" 
@@ -46,7 +48,30 @@ add_executable (CPUForge
     "src/project/WorkspaceManager.cpp"  
     "src/project/FileHandler.h" 
     "src/ux/core/ModalOpenProject.h" 
-    "src/core/Instruction.h" "src/core/Architecture.h" "src/_types.h")
+    "src/core/Instruction.h" 
+    "src/core/Architecture.h" 
+    "src/_types.h"
+    "src/ux/menubar/MenuData.h"
+    "src/ux/menubar/ImGuiMenuHandler.h"
+    "src/ux/menubar/ImGuiMenuHandler.cpp"
+    "src/enumAppCommands.h"
+    "src/queue/AppCommandQueue.h"
+    "src/queue/AppCommandDispatcher.h"
+    "src/queue/AppCommandDispatcher.cpp"
+    "src/ux/menubar/WindowMenuData.h"
+    )
+
+if(APPLE)
+    target_sources(CPUForge PRIVATE
+        "src/ux/menubar/MacOsNative.h"
+        "src/ux/menubar/MacOsNative.cpp"
+        "src/ux/menubar/MacMenu.mm"
+    )
+
+    target_link_libraries(CPUForge PRIVATE
+        "-framework Cocoa"
+    )
+endif()
 
 #add_executable (CPUForge "CPUForge.cpp" "CPUForge.h")
 

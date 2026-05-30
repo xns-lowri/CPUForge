@@ -64,7 +64,7 @@ public:
 	}
 	void RenderTreeFolders(
 		AppContext& context,
-		std::unordered_map<UUID, FolderObject>& folders, 
+		std::map<UUID, FolderObject>& folders, 
 		bool draw_children)
 	{
 		for (auto& folder : folders) {
@@ -107,7 +107,7 @@ public:
 				if (ImGui::MenuItem("New Folder")) {
 					fmt::println("New folder in folder: {:s}", folder.second.name);
 					context.workspaceManager.SetSelectedFolder(folder.second.id);
-					manager.OpenModal("modal.new_folder");
+					manager.OpenModal(context, "modal.new_folder");
 					//context.projectManager.NewFolder("New Folder", folder.second.id);
 					//todo handle new folder
 				}
@@ -126,7 +126,7 @@ public:
 				//fmt::println("Draw {} child folders in {}: ", 
 				//	folder.second.childFolders.size(), 
 				//	folder.second.name);
-				std::unordered_map<UUID, FolderObject> childFolders;
+				std::map<UUID, FolderObject> childFolders;
 
 				for (auto& childId : folder.second.childFolders) {
 					childFolders.insert({ childId, 

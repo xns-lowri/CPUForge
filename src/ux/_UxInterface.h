@@ -105,6 +105,7 @@ public:
         open = value;
     }
 
+    //todo remove
 	void DrawWindowMenuItem() override
 	{
 		if (ImGui::MenuItem(title.c_str(), nullptr, open))
