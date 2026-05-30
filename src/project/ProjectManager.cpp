@@ -186,18 +186,39 @@ json ProjectManager::SerialiseProject() {
 	}
 	fileOut.emplace("files", fileList);
 
+	//todo project file data
+
 	return fileOut;
 }
 
 bool ProjectManager::DeserialiseProject(json fileData) {
 	projectData = ProjectData(); //clear
 
+	//get project metadata
 	projectData->id = fileData.at("id");
 	projectData->name = fileData.at("name");
 	projectData->description = fileData.at("description");
 	std::filesystem::path projPath = fileData.at("path");
 	projectData->path = projPath;
 	projectData->nextId = fileData.at("nextId");
+
+	//get project folder tree and file directory
+	if (!fileData.at("folders").is_null()) {
+		auto folderList = fileData.at("folders").get<std::vector<json>>();
+		for (auto& folder : folderList) {
+			//fmt::println("Got folder: {}", folder.at("name").get<std::string>());
+			FolderObject nextFolder = FolderObject();
+			nextFolder.id = folder.at("id");
+			nextFolder.parentId = folder.at("parentId");
+			nextFolder.name = folder.at("name");
+
+			nextFolder.childFolders = folder.at("childFolders").get<std::vector<UUID>>();
+			nextFolder.childFiles = folder.at("childFiles").get<std::vector<UUID>>();
+			//if (folder.at("childFolders").is_array()) {}
+			//if (folder.at("childFiles").is_array()) {}
+			projectData->folders.emplace(nextFolder.id, nextFolder);
+		}
+	}
 
 	//auto fileList = fileData.at("files").get<std::vector<json>>();
 	if (!fileData.at("files").is_null()) {
@@ -216,22 +237,7 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 		}
 	}
 
-	if (!fileData.at("folders").is_null()) {
-		auto folderList = fileData.at("folders").get<std::vector<json>>();
-		for (auto& folder : folderList) {
-			//fmt::println("Got folder: {}", folder.at("name").get<std::string>());
-			FolderObject nextFolder = FolderObject();
-			nextFolder.id = folder.at("id");
-			nextFolder.parentId = folder.at("parentId");
-			nextFolder.name = folder.at("name");
-
-			nextFolder.childFolders = folder.at("childFolders").get<std::vector<UUID>>();
-			nextFolder.childFiles = folder.at("childFiles").get<std::vector<UUID>>();
-			//if (folder.at("childFolders").is_array()) {}
-			//if (folder.at("childFiles").is_array()) {}
-			projectData->folders.emplace(nextFolder.id, nextFolder);
-		}
-	}
+	//todo project file data
 
 	return true;
 }

@@ -39,21 +39,22 @@ target_sources(CPUForge PRIVATE
 
     "src/core/Instruction.h" 
     "src/core/Architecture.h" 
+    "src/core/Register.h"
 
-    "src/project/Project.h" 
+    "src/project/FileHandler.h" 
+    "src/project/ProjectData.h" 
     "src/project/ProjectManager.h" 
     "src/project/ProjectManager.cpp"    
     "src/project/WorkspaceManager.h"  
     "src/project/WorkspaceManager.cpp"  
-    "src/project/FileHandler.h" 
     
     "src/queue/AppCommandQueue.h"
     "src/queue/AppCommandQueue.cpp"
     "src/queue/AppCommandDispatcher.h"
     "src/queue/AppCommandDispatcher.cpp"
 
-    "src/ux/ui.cpp" 
     "src/ux/UI.h" 
+    "src/ux/ui.cpp" 
     "src/ux/modules/ViewProjectTree.h" 
     "src/ux/_UxInterface.h" 
     "src/ux/WindowManager.h" 
@@ -67,7 +68,7 @@ target_sources(CPUForge PRIVATE
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
     "src/ux/menubar/WindowMenuData.h"
-      "src/core/Register.h")
+ "src/core/IsaContext.h" "src/project/enumProjectDef.h")
 
 if(APPLE)
     target_sources(CPUForge PRIVATE
