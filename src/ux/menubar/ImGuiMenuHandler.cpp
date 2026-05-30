@@ -5,30 +5,30 @@ static const std::string ShortcutToImguiText(const std::optional<MenuShortcut>& 
         return "";
     }
 
-    // Simple version. For production, use a small string builder.
+    std::string shortcutString = "";
+    if (shortcut->commandOrCtrl) {
 #ifdef __APPLE__
-    if (shortcut->commandOrCtrl && shortcut->shift && shortcut->key == 's') return "Cmd+Shift+S";
-    if (shortcut->commandOrCtrl && shortcut->key == 's') return "Cmd+S";
-    if (shortcut->commandOrCtrl && shortcut->key == 'o') return "Cmd+O";
-    if (shortcut->commandOrCtrl && shortcut->key == 'n') return "Cmd+N";
-    if (shortcut->commandOrCtrl && shortcut->key == 'z') return "Cmd+Z";
-    if (shortcut->commandOrCtrl && shortcut->key == 'x') return "Cmd+X";
-    if (shortcut->commandOrCtrl && shortcut->key == 'c') return "Cmd+C";
-    if (shortcut->commandOrCtrl && shortcut->key == 'v') return "Cmd+V";
-    if (shortcut->commandOrCtrl && shortcut->key == 'a') return "Cmd+A";
+        shortcutString += "Cmd+";
 #else
-    if (shortcut->commandOrCtrl && shortcut->shift && shortcut->key == 's') return "Ctrl+Shift+S";
-    if (shortcut->commandOrCtrl && shortcut->key == 's') return "Ctrl+S";
-    if (shortcut->commandOrCtrl && shortcut->key == 'o') return "Ctrl+O";
-    if (shortcut->commandOrCtrl && shortcut->key == 'n') return "Ctrl+N";
-    if (shortcut->commandOrCtrl && shortcut->key == 'z') return "Ctrl+Z";
-    if (shortcut->commandOrCtrl && shortcut->key == 'x') return "Ctrl+X";
-    if (shortcut->commandOrCtrl && shortcut->key == 'c') return "Ctrl+C";
-    if (shortcut->commandOrCtrl && shortcut->key == 'v') return "Ctrl+V";
-    if (shortcut->commandOrCtrl && shortcut->key == 'a') return "Ctrl+A";
+        shortcutString += "Ctrl+";
 #endif
+    }
 
-    return "";
+    if (shortcut->alt) {
+#ifdef __APPLE__
+        shortcutString += "Opt+";
+#else
+        shortcutString += "Alt+";
+#endif
+    }
+
+    if (shortcut->shift) {
+        shortcutString += "Shift+";
+    }
+    
+    shortcutString += std::toupper(shortcut->key);
+
+    return shortcutString;
 }
 
 static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
