@@ -14,7 +14,7 @@ public:
 			//ImGui::OpenPopup(title.c_str());
 
 			nfdu8char_t* inPath;
-			nfdu8filteritem_t filters[2] = { { "Project Files", "cpuforge.json" } };
+			nfdu8filteritem_t filters[2] = { { "Project Files", "json" } };
 			nfdopendialogu8args_t args = { 0 };
 			args.filterList = filters;
 			args.filterCount = 1;
