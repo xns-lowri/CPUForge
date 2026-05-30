@@ -3,7 +3,9 @@
 enum class Endianness
 {
 	Little,
-	Big
+	Big,
+	Custom,
+	Other
 };
 
 //isa register types

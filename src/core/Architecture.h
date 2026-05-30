@@ -7,9 +7,10 @@
 #include "../_types.h"
 #include "enumIsaDef.h"
 #include "Instruction.h"
+#include "Register.h"
 
 /* Structs defining individual data types in ISA */
-struct ISADataType
+struct IsaDataType
 {
 	UUID id = 0;
 	std::string name;
@@ -21,21 +22,7 @@ struct ISADataType
 	std::vector<std::string> tags;
 };
 
-/* Structs defining registers available in ISA*/
-struct ISARegister
-{
-	UUID id = 0;
-	std::string name;
-	std::string description;
-
-	uint16_t bitWidth = 8;
-	RegisterType type = RegisterType::Other;
-
-	std::vector<std::string> aliases;
-	std::vector<std::string> tags;
-};
-
-struct ISADefinitionDocument
+struct IsaDefinitionDocument
 {
 	DocumentHeader header;
 
@@ -48,9 +35,9 @@ struct ISADefinitionDocument
 	uint16_t defaultOpcodeLength = 8;	//in bits
 
 	//todo data types
-	std::unordered_map<UUID, ISADataType> dataTypes;
+	std::unordered_map<UUID, IsaDataType> dataTypes;
 	//todo registers
-	std::unordered_map<UUID, ISARegister> registers;
+	//std::unordered_map<UUID, ISARegister> registers;
 	//instruction encodings allowed in isa
 	std::unordered_map<UUID, InstructionEncoding> encodings;
 	//instructions provided by isa
