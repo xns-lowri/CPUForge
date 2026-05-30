@@ -6,7 +6,7 @@
 
 bool AppCommandDispatcher::CanDispatch(
     AppCommand command,
-    const AppContext& ctx
+    const AppContext& context
 ) {
     switch (command) {
         case AppCommand::NewProject:
@@ -16,14 +16,14 @@ bool AppCommandDispatcher::CanDispatch(
             return true;
 
         case AppCommand::Save:
-            return ctx.projectManager.HasActiveProject()
-                && ctx.projectManager.IsDirty();
+            return context.projectManager.HasActiveProject()
+                && context.projectManager.IsDirty();
 
         case AppCommand::SaveAs:
-            return ctx.projectManager.HasActiveProject();
+            return context.projectManager.HasActiveProject();
 
         case AppCommand::CloseProject:
-            return ctx.projectManager.HasActiveProject();
+            return context.projectManager.HasActiveProject();
 
         case AppCommand::Undo:
             //return ctx.projectManager.CanUndo();
@@ -64,7 +64,7 @@ void AppCommandDispatcher::Dispatch(
         return;
     }
 
-    fmt::println("Dispatching command {:s}", command.command);
+    fmt::println("Dispatching command {:s}", ToString(command.command));
 
     switch (command.command) {
         case AppCommand::NewProject:

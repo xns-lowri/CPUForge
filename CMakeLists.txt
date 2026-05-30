@@ -48,6 +48,7 @@ target_sources(CPUForge PRIVATE
     "src/project/FileHandler.h" 
     
     "src/queue/AppCommandQueue.h"
+    "src/queue/AppCommandQueue.cpp"
     "src/queue/AppCommandDispatcher.h"
     "src/queue/AppCommandDispatcher.cpp"
 
@@ -66,7 +67,7 @@ target_sources(CPUForge PRIVATE
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
     "src/ux/menubar/WindowMenuData.h"
-    )
+     )
 
 if(APPLE)
     target_sources(CPUForge PRIVATE

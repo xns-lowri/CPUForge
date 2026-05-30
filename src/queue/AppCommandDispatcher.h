@@ -2,7 +2,8 @@
 #include "../enumAppCommands.h"
 #include "../ux/WindowManager.h"
 
-struct AppContext;
+#include "../AppContext.h"
+//struct AppContext;
 
 class AppCommandDispatcher {
 public:
