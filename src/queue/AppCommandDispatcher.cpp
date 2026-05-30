@@ -1,4 +1,5 @@
 // AppCommandDispatcher.cpp
+#include <fmt/core.h>
 #include "AppCommandDispatcher.h"
 #include "../AppContext.h"
 #include "../ux/WindowManager.h"
@@ -57,19 +58,21 @@ bool AppCommandDispatcher::CanDispatch(
 void AppCommandDispatcher::Dispatch(
     AppCommandRequest command,
     WindowManager& window,
-    AppContext& ctx
+    AppContext& context
 ) {
-    if (!CanDispatch(command.command, ctx)) {
+    if (!CanDispatch(command.command, context)) {
         return;
     }
 
+    fmt::println("Dispatching command {:s}", command.command);
+
     switch (command.command) {
         case AppCommand::NewProject:
-            window.OpenModal(ctx, "modal.new_project");
+            window.OpenModal(context, "modal.new_project");
             break;
 
         case AppCommand::OpenProject:
-            window.OpenModal(ctx, "modal.open_project");
+            window.OpenModal(context, "modal.open_project");
             break;
 
         case AppCommand::Save:
@@ -85,7 +88,7 @@ void AppCommandDispatcher::Dispatch(
             break;
 
         case AppCommand::CloseProject:
-            ctx.projectManager.CloseProject();
+            context.projectManager.CloseProject();
             break;
 
         case AppCommand::Undo:
@@ -126,7 +129,7 @@ void AppCommandDispatcher::Dispatch(
             break;
 
         case AppCommand::Quit:
-            ctx.requestQuit = true;
+            context.requestQuit = true;
             break;
     }
 }
