@@ -66,7 +66,7 @@ int UI::Init(AppContext& context)
     fmt::println("Using MacOS native menu bar");
     //CPUForge_InstallMacMenu();
 #else
-    fmt::print("Using menu bar rendered in-app");
+    fmt::println("Using menu bar rendered in-app");
 #endif
     // */
 
