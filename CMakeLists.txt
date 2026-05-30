@@ -32,32 +32,39 @@ target_sources(CPUForge PRIVATE
     "external/imgui_impl_opengl3.cpp" 
     "external/imgui_impl_opengl3.h" 
     "external/imgui_impl_opengl3_loader.h"
-    "src/ux/ui.cpp" 
-    "src/ux/UI.h" 
+
+    "src/AppContext.h" 
+    "src/_types.h"
+    "src/enumAppCommands.h"
+
+    "src/core/Instruction.h" 
+    "src/core/Architecture.h" 
+
     "src/project/Project.h" 
     "src/project/ProjectManager.h" 
     "src/project/ProjectManager.cpp"    
+    "src/project/WorkspaceManager.h"  
+    "src/project/WorkspaceManager.cpp"  
+    "src/project/FileHandler.h" 
+    
+    "src/queue/AppCommandQueue.h"
+    "src/queue/AppCommandDispatcher.h"
+    "src/queue/AppCommandDispatcher.cpp"
+
+    "src/ux/ui.cpp" 
+    "src/ux/UI.h" 
     "src/ux/modules/ViewProjectTree.h" 
     "src/ux/_UxInterface.h" 
     "src/ux/WindowManager.h" 
     "src/ux/WindowManager.cpp" 
-    "src/AppContext.h" 
-    "src/ux/core/ModalNewProject.h" 
-    "src/project/WorkspaceManager.h"  
+
     "src/ux/core/ModalNewFolder.h" 
-    "src/project/WorkspaceManager.cpp"  
-    "src/project/FileHandler.h" 
+    "src/ux/core/ModalNewProject.h" 
     "src/ux/core/ModalOpenProject.h" 
-    "src/core/Instruction.h" 
-    "src/core/Architecture.h" 
-    "src/_types.h"
+
     "src/ux/menubar/MenuData.h"
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
-    "src/enumAppCommands.h"
-    "src/queue/AppCommandQueue.h"
-    "src/queue/AppCommandDispatcher.h"
-    "src/queue/AppCommandDispatcher.cpp"
     "src/ux/menubar/WindowMenuData.h"
     )
 
