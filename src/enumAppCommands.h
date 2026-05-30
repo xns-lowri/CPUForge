@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <string_view>
 #include "_types.h"
 
 enum class AppCommand {
@@ -24,7 +25,7 @@ enum class AppCommand {
     About,
 };
 
-static std::string ToString(AppCommand command) {
+static std::string_view ToString(AppCommand command) {
     switch (command) {
         case AppCommand::NewProject:   return "NewProject";
         case AppCommand::OpenProject:  return "OpenProject";
@@ -51,6 +52,6 @@ static std::string ToString(AppCommand command) {
 }
 
 struct AppCommandRequest {
-    AppCommand command;
+    AppCommand command = AppCommand::About;
     std::string id;
 };

@@ -13,7 +13,7 @@ public:
 
 	void Render(AppContext& context) {
 		ImGui::Begin(title.c_str(), nullptr);
-		if (!context.projectManager.HasActiveProject()) {
+		if (!context.projectManager->HasActiveProject()) {
 			ImGui::Text("Open or start a new project to begin!");
 			ImGui::End();
 			return;	//exit early if no project data
@@ -24,7 +24,7 @@ public:
 		//	context.projectManager.GetCurrentProject()->name);
 
 		ImGui::Text(fmt::format("Project '{:s}'",
-			context.projectManager.GetCurrentProject()->name).c_str());
+			context.projectManager->GetCurrentProject()->name).c_str());
 
 		//std::filesystem::path path = context.projectManager.GetCurrentProject()->path;
 		//ImGui::Text(fmt::format("Root: {:s}", path.stem().string()).c_str());
@@ -36,13 +36,13 @@ public:
 
 		if (ImGui::TreeNodeEx(
 			fmt::format("root: {:s}", 
-				context.projectManager.GetCurrentProject()->path.stem().string()
+				context.projectManager->GetCurrentProject()->path.stem().string()
 			).c_str(),
 			ImGuiTreeNodeFlags_DefaultOpen)) 
 		{
 			//todo draw project tree here
 			RenderTreeFolders(context, 
-				context.projectManager.GetCurrentProject()->folders, 
+				context.projectManager->GetCurrentProject()->folders, 
 				false);
 			//render folders recursively
 			//RenderTreeFolder(folder.second.childFolders, draw_children)
@@ -106,7 +106,7 @@ public:
 				ImGui::Separator();
 				if (ImGui::MenuItem("New Folder")) {
 					fmt::println("New folder in folder: {:s}", folder.second.name);
-					context.workspaceManager.SetSelectedFolder(folder.second.id);
+					context.workspaceManager->SetSelectedFolder(folder.second.id);
 					manager.OpenModal(context, "modal.new_folder");
 					//context.projectManager.NewFolder("New Folder", folder.second.id);
 					//todo handle new folder
@@ -130,7 +130,7 @@ public:
 
 				for (auto& childId : folder.second.childFolders) {
 					childFolders.insert({ childId, 
-						context.projectManager.GetCurrentProject()->folders.find(childId)->second });
+						context.projectManager->GetCurrentProject()->folders.find(childId)->second });
 				}
 
 				RenderTreeFolders(context, childFolders, true);

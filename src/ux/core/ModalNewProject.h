@@ -104,7 +104,7 @@ public:
 			ImGui::SetCursorPosX(rightGroupStartX);
 
 			if (ImGui::Button(createLabel, ImVec2(createButtonWidth, 0))) {
-				if (context.projectManager.NewProject(
+				if (context.projectManager->NewProject(
 					std::string(projectName), std::filesystem::path(projectPath)))
 				{
 					//project created, close modal

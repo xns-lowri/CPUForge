@@ -108,6 +108,14 @@ bool UI::Render(AppContext& context)
             running = false;
     }
 
+    std::string title = "CPUForge";
+    if (context.projectManager->HasActiveProject()) {
+        title += " - " 
+            + context.projectManager->GetProjectName()
+            + (context.projectManager->IsDirty() ? "*" : "");
+    }
+    SDL_SetWindowTitle(window, title.c_str());
+
     // Start frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();

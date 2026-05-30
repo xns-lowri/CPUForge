@@ -1,8 +1,8 @@
 #include "ImGuiMenuHandler.h"
 
-static const char* ShortcutToImguiText(const std::optional<MenuShortcut>& shortcut) {
+static const std::string ShortcutToImguiText(const std::optional<MenuShortcut>& shortcut) {
     if (!shortcut.has_value()) {
-        return nullptr;
+        return "";
     }
 
     // Simple version. For production, use a small string builder.
@@ -28,7 +28,7 @@ static const char* ShortcutToImguiText(const std::optional<MenuShortcut>& shortc
     if (shortcut->commandOrCtrl && shortcut->key == 'a') return "Ctrl+A";
 #endif
 
-    return nullptr;
+    return "";
 }
 
 static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
@@ -38,18 +38,20 @@ static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
             break;
 
         case MenuItemKind::Command: {
-            const char* shortcutText = ShortcutToImguiText(item.shortcut);
+            const std::string shortcutText = ShortcutToImguiText(item.shortcut);
 
             if (ImGui::MenuItem(
                     item.label.c_str(),
-                    shortcutText,
+                    shortcutText.c_str(),
                     item.checked,
                     item.enabled
                 )) {
                 if (item.command.has_value()) {
                     //DispatchCommand(*item.command);
                     //todo queue command
-                    context.commandQueue.Push( { item.command.value() } );
+                    context.commandQueue->Push(
+                        item.command.value() 
+                    );
                 }
             }
 
@@ -59,7 +61,7 @@ static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
         case MenuItemKind::Window: {
             if (ImGui::MenuItem(
                     item.label.c_str(),
-                    NULL,
+                    "",
                     item.checked,
                     item.enabled
                 )) {
@@ -68,7 +70,10 @@ static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
                     //todo queue command
 
 		            fmt::println("Push event '{:s}'", item.id);
-                    context.commandQueue.Push( {item.command.value(), item.id} );
+                    context.commandQueue->Push(AppCommandRequest{
+                        item.command.value(), 
+                        item.id
+                    });
                 }
             }
 

@@ -9,13 +9,20 @@
 
 struct AppContext {
 	//constructor
-	AppContext(AppCommandQueue queue, ProjectManager proj, WorkspaceManager ws) 
-		: commandQueue(queue), projectManager(proj), workspaceManager(ws) {}
-	//member variables
-	AppCommandQueue& commandQueue;	//command queue in context
+	//AppContext(AppCommandQueue queue, ProjectManager proj, WorkspaceManager ws)
+	//	: commandQueue(queue), projectManager(proj), workspaceManager(ws) {}
+	////member variables
+	//AppCommandQueue& commandQueue;	//command queue in context
+	//
+    //ProjectManager& projectManager; //blank proj
+	//WorkspaceManager& workspaceManager; //blank workspace
 
-    ProjectManager& projectManager; //blank proj
-	WorkspaceManager& workspaceManager; //blank workspace
+	std::unique_ptr<AppCommandQueue> commandQueue =
+		std::make_unique<AppCommandQueue>();
+	std::unique_ptr<ProjectManager> projectManager =
+		std::make_unique<ProjectManager>();
+	std::unique_ptr<WorkspaceManager> workspaceManager =
+		std::make_unique<WorkspaceManager>();
 
 	bool requestQuit = false;
 };

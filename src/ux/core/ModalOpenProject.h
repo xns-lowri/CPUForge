@@ -24,7 +24,7 @@ public:
 				/* Path entered */
 				fmt::println("NFD got path: {:s}", inPath);
 				std::filesystem::path projectFilePath(inPath);
-				context.projectManager.OpenProject(projectFilePath);
+				context.projectManager->OpenProject(projectFilePath);
 				// Remember to free the allocated path buffer when finished!
 				NFD_FreePathU8(inPath);
 			}

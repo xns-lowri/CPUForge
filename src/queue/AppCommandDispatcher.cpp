@@ -16,14 +16,14 @@ bool AppCommandDispatcher::CanDispatch(
             return true;
 
         case AppCommand::Save:
-            return context.projectManager.HasActiveProject()
-                && context.projectManager.IsDirty();
+            return context.projectManager->HasActiveProject()
+                && context.projectManager->IsDirty();
 
         case AppCommand::SaveAs:
-            return context.projectManager.HasActiveProject();
+            return context.projectManager->HasActiveProject();
 
         case AppCommand::CloseProject:
-            return context.projectManager.HasActiveProject();
+            return context.projectManager->HasActiveProject();
 
         case AppCommand::Undo:
             //return ctx.projectManager.CanUndo();
@@ -88,7 +88,7 @@ void AppCommandDispatcher::Dispatch(
             break;
 
         case AppCommand::CloseProject:
-            context.projectManager.CloseProject();
+            context.projectManager->CloseProject();
             break;
 
         case AppCommand::Undo:

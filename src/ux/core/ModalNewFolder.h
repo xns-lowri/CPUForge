@@ -69,8 +69,9 @@ public:
 
 			if (ImGui::Button(createLabel, ImVec2(createButtonWidth, 0))) {
 				//todo not this
-				if (context.projectManager.NewFolder(
-					std::string(folderName), context.workspaceManager.GetSelectedFolder()
+				if (context.projectManager->NewFolder(
+					std::string(folderName), 
+					context.workspaceManager->GetSelectedFolder()
 				) != 0)
 				{
 					//project created, close modal

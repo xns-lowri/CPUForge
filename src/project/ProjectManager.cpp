@@ -53,6 +53,13 @@ void ProjectManager::MarkProjectDirty()
 		projectData->isDirty = true;
 }
 
+const std::string ProjectManager::GetProjectName() const {
+	if (projectData.has_value())
+		return projectData->name;
+	else
+		return "null";
+}
+
 const UUID ProjectManager::GetNextUUID()
 {
 	return projectData->nextId++;

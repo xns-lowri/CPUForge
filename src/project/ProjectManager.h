@@ -29,8 +29,10 @@ public:
 	const std::optional<ProjectData> GetCurrentProject() const;	//read only access e.g. UI
 	bool HasActiveProject() const;
 	bool IsDirty() const;
-
 	void MarkProjectDirty();
+
+	const std::string GetProjectName() const;
+
 	const UUID GetNextUUID();
 
 	//project state management

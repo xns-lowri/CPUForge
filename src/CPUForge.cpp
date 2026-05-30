@@ -17,20 +17,22 @@ int main(int argc, char** argv)
 	fmt::print("CPUForge is starting...\n");
 	//create project manager
     //todo load last project if able
-    AppContext appContext = AppContext(
-        AppCommandQueue(),
-        ProjectManager(), 
-        WorkspaceManager()
-    );
+    //AppContext appContext = AppContext(
+    //    AppCommandQueue(),
+    //    ProjectManager(), 
+    //    WorkspaceManager()
+    //);
+
+    AppContext appContext = AppContext();
 
     AppCommandDispatcher dispatcher = AppCommandDispatcher();
 
-    std::optional<std::filesystem::path> lastProjectPath = appContext.projectManager.LoadProjectContext();
+    std::optional<std::filesystem::path> lastProjectPath = appContext.projectManager->LoadProjectContext();
     if (lastProjectPath.has_value()) {
-        appContext.projectManager.OpenProject(lastProjectPath.value());
+        appContext.projectManager->OpenProject(lastProjectPath.value());
     }
 
-    fmt::println("Loaded project: {}", appContext.projectManager.HasActiveProject());
+    fmt::println("Loaded project: {}", appContext.projectManager->HasActiveProject());
 
 	//projectManager.NewProject("default");
 
@@ -38,6 +40,11 @@ int main(int argc, char** argv)
     WindowManager windowManager = WindowManager(appContext);
 	UI ui = UI(windowManager);
 	ui.Init(appContext);
+
+    fmt::println(
+        "* main commandQueue address: {}",
+        static_cast<void*>(&appContext.commandQueue)
+    );
 
     bool running = true;
     while (running)
@@ -51,8 +58,8 @@ int main(int argc, char** argv)
             break;
         }
         //handle events from ui
-        while(!appContext.commandQueue.Empty()) {
-            std::optional<AppCommandRequest> request = appContext.commandQueue.TryPop();
+        while(auto request = appContext.commandQueue->TryPop()) {
+            //std::optional<AppCommandRequest> request = appContext.commandQueue.TryPop();
             fmt::println("Got request");
             if(!request.has_value()) { break; }
             if(!dispatcher.CanDispatch(request->command, appContext)) { continue; }
