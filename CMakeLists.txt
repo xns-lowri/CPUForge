@@ -66,6 +66,10 @@ target_sources(CPUForge PRIVATE
     "src/ux/modules/ViewProjectTree.h" 
         # todo console window
 
+    # app component registry modules
+    "src/core/AppComponentRegistry.h" 
+    "src/components/_IAppComponent.h"
+
     # core isa def
     "src/core/isa/enumIsaDef.h"
     "src/core/isa/IsaInstruction.h" 

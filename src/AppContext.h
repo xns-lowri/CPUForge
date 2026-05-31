@@ -2,6 +2,7 @@
 #include "queue/AppCommandQueue.h"
 #include "project/ProjectManager.h"
 #include "project/WorkspaceManager.h"
+#include "core/AppComponentRegistry.h"
 
 //class AppCommandQueue;
 //class ProjectManager;
@@ -25,6 +26,9 @@ struct AppContext {
 
 	std::unique_ptr<WorkspaceManager> workspaceManager =
 		std::make_unique<WorkspaceManager>();
+
+	std::unique_ptr<AppComponentRegistry> appComponentRegistry =
+		std::make_unique<AppComponentRegistry>();
 
 	bool requestQuit = false;
 };
