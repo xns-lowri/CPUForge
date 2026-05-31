@@ -19,8 +19,10 @@ struct AppContext {
 
 	std::unique_ptr<AppCommandQueue> commandQueue =
 		std::make_unique<AppCommandQueue>();
+
 	std::unique_ptr<ProjectManager> projectManager =
 		std::make_unique<ProjectManager>();
+
 	std::unique_ptr<WorkspaceManager> workspaceManager =
 		std::make_unique<WorkspaceManager>();
 

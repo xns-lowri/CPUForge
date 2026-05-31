@@ -24,7 +24,6 @@ int main(int argc, char** argv)
     //);
 
     AppContext appContext = AppContext();
-
     AppCommandDispatcher dispatcher = AppCommandDispatcher();
 
     std::optional<std::filesystem::path> lastProjectPath = appContext.projectManager->LoadProjectContext();
