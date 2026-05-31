@@ -37,6 +37,7 @@ target_sources(CPUForge PRIVATE
     "src/_types.h"
     "src/enumAppCommands.h"
 
+    "src/core/isa/enumIsaDef.h"
     "src/core/isa/Instruction.h" 
     "src/core/isa/Architecture.h" 
     "src/core/isa/Register.h"

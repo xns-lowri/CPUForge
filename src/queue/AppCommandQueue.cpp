@@ -1,20 +1,20 @@
 #include "AppCommandQueue.h"
 
 void AppCommandQueue::Push(AppCommand command) {
-    fmt::println("Pushing app command - no id");
+    //fmt::println("Pushing app command - no id");
     Push({ command, "" });
 }
 
 void AppCommandQueue::Push(AppCommandRequest request) {
-    fmt::println(
-        "- Push commandQueue address: {}",
-        static_cast<void*>(this)
-    );
-    fmt::println("Pushing app request");
+    //fmt::println(
+    //    "- Push commandQueue address: {}",
+    //    static_cast<void*>(this)
+    //);
+    //fmt::println("Pushing app request");
     std::lock_guard<std::mutex> lock(mutex_);
     //queue_.push(request);
     queue_.push(request);
-    fmt::println("Pushed app request");
+    //fmt::println("Pushed app request");
 }
 
 std::optional<AppCommandRequest> AppCommandQueue::TryPop() {
@@ -48,7 +48,7 @@ std::optional<AppCommandRequest> AppCommandQueue::TryPop() {
     //);
     queue_.pop();
     //queue_.erase(queue_.begin());
-    fmt::println("Popped request queue");
+    //fmt::println("Popped request queue");
 
     return command;
 }

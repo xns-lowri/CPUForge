@@ -41,10 +41,10 @@ int main(int argc, char** argv)
 	UI ui = UI(windowManager);
 	ui.Init(appContext);
 
-    fmt::println(
-        "* main commandQueue address: {}",
-        static_cast<void*>(&appContext.commandQueue)
-    );
+    //fmt::println(
+    //    "* main commandQueue address: {}",
+    //    static_cast<void*>(&appContext.commandQueue)
+    //);
 
     bool running = true;
     while (running)
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
         //handle events from ui
         while(auto request = appContext.commandQueue->TryPop()) {
             //std::optional<AppCommandRequest> request = appContext.commandQueue.TryPop();
-            fmt::println("Got request");
+            //fmt::println("Got request");
             if(!request.has_value()) { break; }
             if(!dispatcher.CanDispatch(request->command, appContext)) { continue; }
             dispatcher.Dispatch(
