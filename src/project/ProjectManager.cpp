@@ -93,14 +93,14 @@ bool ProjectManager::NewProject(const std::string& name, const std::filesystem::
 	//return false if path is invalid or read-only
 
 	//todo default folder structure
-	NewFolder("isa", 0);
-	NewFolder("hardware", 0);
-	UUID sources = NewFolder("sources", 0);
-	NewFolder("host", sources);
-	NewFolder("target", sources);
-	NewFolder("debug", 0);
-	NewFolder("build", 0);
-	NewFolder("notes", 0);
+	NewFolder("isa", 0, { false, true, false });
+	NewFolder("hardware", 0, { false, true, false });
+	UUID sources = NewFolder("sources", 0, { false, false, false });
+	NewFolder("host", sources, { true, true, false });
+	NewFolder("target", sources, { true, true, false });
+	NewFolder("debug", 0, { false, true, false });
+	NewFolder("build", 0, { false, true, false });
+	NewFolder("notes", 0, { false, true, false });
 
 	//save project file
 	SaveProject();
@@ -266,7 +266,10 @@ bool ProjectManager::OpenProject(const std::filesystem::path& rootPath) {
 }
 
 /* Project tree management functions */
-UUID ProjectManager::NewFolder(const std::string& name, UUID parentId)
+UUID ProjectManager::NewFolder(
+	const std::string& name, 
+	UUID parentId, 
+	FolderProperties props)
 {
 	if (!projectData.has_value()) {
 		fmt::println("No active project to add folder to.");
@@ -284,6 +287,7 @@ UUID ProjectManager::NewFolder(const std::string& name, UUID parentId)
 	newFolder.parentId = parentId;
 	newFolder.name = name;
 
+	newFolder.properties = props;
 
 	//push new folder to parent if not in root
 	if (parentId != 0) {

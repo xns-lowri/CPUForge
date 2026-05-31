@@ -97,40 +97,45 @@ public:
 			);
 
 			//context menu for folder
-			if (ImGui::BeginPopupContextItem()) {
-				if (folder.second.properties.canRename) {
-					if (ImGui::MenuItem("Rename")) {
-						fmt::println("Rename folder: {:s}", folder.second.name);
+			if (folder.second.properties.canRename ||
+				folder.second.properties.canAddFolders ||
+				folder.second.properties.canAddFiles)
+			{
+				if (ImGui::BeginPopupContextItem()) {
+					if (folder.second.properties.canRename) {
+						if (ImGui::MenuItem("Rename")) {
+							fmt::println("Rename folder: {:s}", folder.second.name);
 
-						//todo handle new folder
+							//todo handle new folder
+						}
 					}
-				}
 
-				if (folder.second.properties.canRename && (
+					if (folder.second.properties.canRename && (
 						folder.second.properties.canAddFolders ||
 						folder.second.properties.canAddFiles))
-				{
-					ImGui::Separator();
-				}
-
-				if (folder.second.properties.canAddFolders) {
-					if (ImGui::MenuItem("New Folder")) {
-						fmt::println("New folder in folder: {:s}", folder.second.name);
-						context.workspaceManager->SetSelectedFolder(folder.second.id);
-						manager.OpenModal(context, "modal.new_folder");
-						//context.projectManager.NewFolder("New Folder", folder.second.id);
-						//todo handle new folder
+					{
+						ImGui::Separator();
 					}
-				}
 
-				if (folder.second.properties.canAddFiles) {
-					if (ImGui::MenuItem("New File")) {
-						fmt::println("New file in folder: {:s}", folder.second.name);
-						//todo handle new file
+					if (folder.second.properties.canAddFolders) {
+						if (ImGui::MenuItem("New Folder")) {
+							fmt::println("New folder in folder: {:s}", folder.second.name);
+							context.workspaceManager->SetSelectedFolder(folder.second.id);
+							manager.OpenModal(context, "modal.new_folder");
+							//context.projectManager.NewFolder("New Folder", folder.second.id);
+							//todo handle new folder
+						}
 					}
-				}
 
-				ImGui::EndPopup();
+					if (folder.second.properties.canAddFiles) {
+						if (ImGui::MenuItem("New File")) {
+							fmt::println("New file in folder: {:s}", folder.second.name);
+							//todo handle new file
+						}
+					}
+
+					ImGui::EndPopup();
+				}
 			}
 
 			//render tree if open
