@@ -102,11 +102,15 @@ public:
 				folder.second.properties.canAddFiles)
 			{
 				if (ImGui::BeginPopupContextItem()) {
+					/* TODO BIG REFACTOR NEEDED */
+					//add context menu from module??
+
 					if (folder.second.properties.canRename) {
 						if (ImGui::MenuItem("Rename")) {
 							fmt::println("Rename folder: {:s}", folder.second.name);
 
 							//todo handle new folder
+							//command queue
 						}
 					}
 
