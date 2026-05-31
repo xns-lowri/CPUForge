@@ -32,6 +32,14 @@ struct DocumentHeader {
 	std::string description;
 };*/
 
+struct FileTypeDescriptor {
+	std::string id;	//path-style id
+	std::string displayName;
+	std::vector<std::string> extensions;
+	//todo icon
+	std::string defaultOpenCommand;
+};
+
 /* Definitions for file objects (pointers) in project tree */
 struct FileObject {
 	UUID id = 0;			//unique id

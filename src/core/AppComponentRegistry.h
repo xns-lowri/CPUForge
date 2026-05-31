@@ -5,7 +5,8 @@ public:
 	AppComponentRegistry() = default;
 	~AppComponentRegistry() = default;
 
-	void RegisterComponent();
+	//connect to handlers for file explorer tree
+	void RegisterFileType(FileTypeDescriptor descriptor);	
 private:
 	//
 };

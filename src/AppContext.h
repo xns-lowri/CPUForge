@@ -18,7 +18,10 @@ struct AppContext {
     //ProjectManager& projectManager; //blank proj
 	//WorkspaceManager& workspaceManager; //blank workspace
 
-	std::unique_ptr<AppCommandQueue> commandQueue =
+	std::unique_ptr<AppComponentRegistry> appComponentRegistry =
+		std::make_unique<AppComponentRegistry>();
+
+	std::unique_ptr<AppCommandQueue> appCommandQueue =
 		std::make_unique<AppCommandQueue>();
 
 	std::unique_ptr<ProjectManager> projectManager =
@@ -26,9 +29,6 @@ struct AppContext {
 
 	std::unique_ptr<WorkspaceManager> workspaceManager =
 		std::make_unique<WorkspaceManager>();
-
-	std::unique_ptr<AppComponentRegistry> appComponentRegistry =
-		std::make_unique<AppComponentRegistry>();
 
 	bool requestQuit = false;
 };
