@@ -71,7 +71,8 @@ public:
 				//todo not this
 				if (context.projectManager->NewFolder(
 					std::string(folderName), 
-					context.workspaceManager->GetSelectedFolder()
+					context.workspaceManager->GetSelectedFolder(),
+					{ true, true, true }
 				) != 0)
 				{
 					//project created, close modal

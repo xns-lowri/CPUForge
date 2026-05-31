@@ -47,6 +47,12 @@ struct FileObject {
 };
 
 //folder tree struct definitions
+struct FolderProperties {
+	bool canAddFolders = true;
+	bool canAddFiles = true;
+	bool canRename = true;
+};
+
 /* Definitions for folder tree mgmt */
 struct FolderObject
 {
@@ -54,6 +60,8 @@ struct FolderObject
 	UUID parentId = 0;	//parent folder id, 0 if root
 
 	std::string name;	//folder name in os
+
+	FolderProperties properties;
 
 	//objects in folder
 	std::vector<UUID> childFolders;

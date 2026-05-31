@@ -51,7 +51,11 @@ public:
 	void CloseProject();
 
 	//project tree management functions
-	UUID NewFolder(const std::string& name, UUID parentId);
+	UUID NewFolder(
+		const std::string& name, 
+		UUID parentId,
+		FolderProperties props);
+
 	bool AddFile(const std::string& name, ProjectFileType type, UUID parentId);
 	//bool deleteItem(UUID itemId);
 	//bool renameItem(UUID itemId, const std::string& newName);

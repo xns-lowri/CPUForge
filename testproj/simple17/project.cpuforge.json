@@ -5,65 +5,65 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724958,
+            "id": 1780234874,
             "name": "isa",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724959,
+            "id": 1780234875,
             "name": "hardware",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [
-                1779724961,
-                1779724962
+                1780234877,
+                1780234878
             ],
-            "id": 1779724960,
+            "id": 1780234876,
             "name": "sources",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724961,
+            "id": 1780234877,
             "name": "host",
-            "parentId": 1779724960
+            "parentId": 1780234876
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724962,
+            "id": 1780234878,
             "name": "target",
-            "parentId": 1779724960
+            "parentId": 1780234876
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724963,
+            "id": 1780234879,
             "name": "debug",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724964,
+            "id": 1780234880,
             "name": "build",
             "parentId": 0
         },
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1779724965,
+            "id": 1780234881,
             "name": "notes",
             "parentId": 0
         }
     ],
-    "id": 1779724957,
-    "name": "simple8",
-    "nextId": 1779724966,
-    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple8"
+    "id": 1780234873,
+    "name": "simple17",
+    "nextId": 1780234882,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple17"
 }

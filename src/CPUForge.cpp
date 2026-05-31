@@ -54,6 +54,7 @@ int main(int argc, char** argv)
 		//todo - update simulation here when running
         running = ui.Render(appContext);
 
+        //todo handle more gracefully
         if(appContext.requestQuit) {
             break;
         }
