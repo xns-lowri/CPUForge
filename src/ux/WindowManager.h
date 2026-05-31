@@ -22,7 +22,13 @@ public:
 	void DrawModals(AppContext& context);
 	void DrawWindows(AppContext& context);
 
-	void OpenModal(AppContext& context, const std::string& id);
+	void OpenModal(
+		AppContext& context, 
+		const std::string& id);
+
+	void OpenWindow(
+		AppContext& context, 
+		const std::string& id);
 
 	void ToggleWindowVisibility(std::string windowId);
 
