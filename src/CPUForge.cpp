@@ -58,7 +58,7 @@ int main(int argc, char** argv)
             break;
         }
         //handle events from ui
-        while(auto request = appContext.commandQueue->TryPop()) {
+        while(auto request = appContext.appCommandQueue->TryPop()) {
             //std::optional<AppCommandRequest> request = appContext.commandQueue.TryPop();
             //fmt::println("Got request");
             if(!request.has_value()) { break; }

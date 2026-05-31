@@ -49,7 +49,7 @@ static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
                 if (item.command.has_value()) {
                     //DispatchCommand(*item.command);
                     //todo queue command
-                    context.commandQueue->Push(
+                    context.appCommandQueue->Push(
                         item.command.value() 
                     );
                 }
@@ -70,7 +70,7 @@ static void DrawMenuItemTree(const AppContext& context, const MenuItem& item) {
                     //todo queue command
 
 		            fmt::println("Push event '{:s}'", item.id);
-                    context.commandQueue->Push(AppCommandRequest{
+                    context.appCommandQueue->Push(AppCommandRequest{
                         item.command.value(), 
                         item.id
                     });

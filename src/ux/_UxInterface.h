@@ -52,8 +52,8 @@ public:
         showModal = true;
     }
 protected:
-    std::string id;
-    std::string title;
+    const std::string id;
+    const std::string title;
     bool showModal = false;
     bool open = false;
 };
