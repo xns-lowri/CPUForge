@@ -64,16 +64,18 @@ target_sources(CPUForge PRIVATE
 
     # main ux window modules
     "src/ux/modules/ViewProjectTree.h" 
+        # todo console window
 
     # core isa def
     "src/core/isa/enumIsaDef.h"
-    "src/core/isa/Instruction.h" 
-    "src/core/isa/Architecture.h" 
-    "src/core/isa/Register.h"
-    "src/core/isa/Context.h"
+    "src/core/isa/IsaInstruction.h" 
+    "src/core/isa/IsaArchitecture.h" 
+    "src/core/isa/IsaRegister.h"
+    "src/core/isa/IsaContext.h"
 
     # sources relating to isa editor
     "src/ux/modules/ViewIsaEditor.h" 
+    "src/components/isa/IsaEditor.h"
     "src/components/isa/IsaEditorState.h"
 
     # main ux modal modules
