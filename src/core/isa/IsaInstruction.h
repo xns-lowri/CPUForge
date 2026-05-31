@@ -8,7 +8,7 @@
 
 #include "enumIsaDef.h"
 
-#include "Context.h"
+#include "IsaContext.h"
 
 //instruction field description within encoding def - metadata
 struct InstructionEncodingField {

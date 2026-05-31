@@ -9,8 +9,9 @@
 
 #include "enumIsaDef.h"
 
-#include "Instruction.h"
-#include "Register.h"
+#include "IsaContext.h"
+#include "IsaInstruction.h"
+#include "IsaRegister.h"
 
 //TODO remove UUID fields from all isa objects
 //and generally from project data objects going forward??
@@ -71,8 +72,8 @@ struct IsaDefinitionDocument
 
 	//isa components
 	std::vector<IsaFeature> features;	//features comprising ISA family
+
 	std::vector<IsaContextDimension> contextDimensions;	//context dimensions inmplemented in ISA
-	
 	std::vector<IsaFault> faults;
 
 	std::unordered_map<std::string, IsaRegisterFile> registerFiles;
