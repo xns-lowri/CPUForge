@@ -7,7 +7,7 @@
 #include "enumProjectDef.h"
 #include "Project.h"
 
-#include "../core/Architecture.h"
+#include "../core/isa/Architecture.h"
 
 /* Main project struct */
 struct ProjectData
