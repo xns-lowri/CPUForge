@@ -9,25 +9,84 @@ enum class Endianness
 };
 
 //isa register types
-enum class RegisterType
+enum class IsaRegisterType
 {
 	Data,
 	Address,
+	Status,
 	Control,
-	Flag,
+	//Flag,
 	Custom,
 	Other
 };
 
+//Register roles - todo revise?
+enum class IsaRegisterRole
+{
+	General,
+
+	ProgramCounter,
+	StackPointer,
+	FramePointer,
+
+	InterruptVector,
+	MemoryMapping,
+
+	Status,
+	Control,
+
+	Special,
+	Custom,
+	Internal,
+	Debug,
+	Other
+};
+
+//Register file types
+enum class IsaRegisterFileType
+{
+	GeneralPurpose,
+	FloatingPoint,
+	Vector,
+
+	Status,
+	Control,
+
+	Special,
+	Custom,
+	Internal,
+	Debug,
+	Other
+};
+
 //instruction field types
-enum class FieldType
+enum class IsaInstructionFieldType
 {
 	Opcode,
 	Register,
 	Immediate,
-	Address,
+	RegisterAddress,
+	ImmediateAddress,
+
 	Flag,
 	Label,
+
+	Special,
 	Custom,
+	Internal,
+	Debug,
 	Other
+};
+
+enum class IsaStateObjectKind
+{
+	Register,
+	RegisterField,
+	Memory,
+
+	Context,
+	ProgramCounter,
+	Stack,
+
+	Custom
 };

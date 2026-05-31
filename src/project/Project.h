@@ -10,7 +10,7 @@
 //header struct definitions
 /* Reusable header for all 'document' type objects in project */
 struct DocumentHeader {
-	UUID id = 0;		//unique id
+	UUID id = 0;		//unique document id
 	std::string name;
 	std::string description;
 
