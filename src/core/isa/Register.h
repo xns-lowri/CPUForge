@@ -2,8 +2,10 @@
 #include <string>
 #include <vector>
 
+#include "../../_types.h"
+#include "../../project/Project.h"
+
 #include "enumIsaDef.h"
-#include "../project/Project.h"
 
 /* Structs defining registers available in ISA*/
 //struct IsaRegisterType

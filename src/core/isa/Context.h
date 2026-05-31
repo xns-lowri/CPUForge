@@ -2,25 +2,32 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include "../project/Project.h"
+
+#include "../../_types.h"
+#include "../../project/Project.h"
 
 #include "enumIsaDef.h"
 
+/* Represents arbitrary context dimensions in architecture */
 struct IsaContextDimension
 {
     UUID id = 0;
-    std::string tag;          // "privilege", "mode", "extension"
-    std::string name;        // "Privilege Level", "CPU Mode", "ISA Extension"
+    std::string name;           // "privilege", "mode", "extension"
+    std::string friendlyName;   // "Privilege Level", "CPU Mode", "ISA Extension"
+    std::string description;
 
     std::vector<IsaContextValue> values;
+
+    std::optional<std::string> registerFieldPath; // e.g. "status.privilege"
 };
 
+/* Represents possible states within each context dimension */
 struct IsaContextValue
 {
     UUID id = 0;
-    std::string id;          // "user", "kernel", "interrupt", "debug"
-    std::string name;        // "User", "Kernel", "Interrupt", "Debug"
+    std::string name;           // "user", "kernel", "interrupt", "debug"
+    std::string friendlyName;   // "User", "Kernel", "Interrupt", "Debug"
+    std::string description;
 
     std::optional<uint64_t> encodedValue;
-    std::string description;
 };

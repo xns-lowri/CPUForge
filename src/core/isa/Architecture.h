@@ -4,12 +4,17 @@
 #include <cstdint>
 #include <unordered_map>
 
-#include "../_types.h"
+#include "../../_types.h"
+#include "../../project/Project.h"
+
 #include "enumIsaDef.h"
-#include "../project/Project.h"
 
 #include "Instruction.h"
 #include "Register.h"
+
+//TODO remove UUID fields from all isa objects
+//and generally from project data objects going forward??
+//strict enforce unique string ids instead??
 
 /* Structs defining individual data types in ISA */
 struct IsaDataType

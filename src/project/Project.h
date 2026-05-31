@@ -20,6 +20,8 @@ struct DocumentHeader {
 	std::string createdUtc;
 	std::string modifiedUtc;
 
+	//todo uuid pointer to file object? is it needed?
+
 	uint64_t contentRevision = 0;	//incremented on each change, used for version tracking
 };
 

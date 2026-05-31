@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 
+#include "../../_types.h"
+#include "../../project/Project.h"
+
 #include "enumIsaDef.h"
-#include "../project/Project.h"
 
 //instruction field description within encoding def - metadata
 struct InstructionEncodingField {
