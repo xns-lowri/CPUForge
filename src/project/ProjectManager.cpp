@@ -166,6 +166,11 @@ json ProjectManager::SerialiseProject() {
 		folderData.emplace("id", folder.second.id);
 		folderData.emplace("parentId", folder.second.parentId);
 		folderData.emplace("name", folder.second.name);
+		folderData.emplace("properties", json{
+			folder.second.properties.canAddFolders,
+			folder.second.properties.canAddFiles,
+			folder.second.properties.canRename
+		});
 		folderData.emplace("childFolders", folder.second.childFolders);
 		folderData.emplace("childFiles", folder.second.childFiles);
 		folderList.push_back(folderData);
@@ -211,6 +216,14 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 			nextFolder.id = folder.at("id");
 			nextFolder.parentId = folder.at("parentId");
 			nextFolder.name = folder.at("name");
+
+			std::vector<bool> rawProps = folder.at("properties").get<std::vector<bool>>();
+
+			nextFolder.properties = FolderProperties{
+				rawProps[0],
+				rawProps[1],
+				rawProps[2]
+			};
 
 			nextFolder.childFolders = folder.at("childFolders").get<std::vector<UUID>>();
 			nextFolder.childFiles = folder.at("childFiles").get<std::vector<UUID>>();

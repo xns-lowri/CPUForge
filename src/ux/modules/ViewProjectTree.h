@@ -109,8 +109,8 @@ public:
 						if (ImGui::MenuItem("Rename")) {
 							fmt::println("Rename folder: {:s}", folder.second.name);
 
-							//todo handle new folder
-							//command queue
+							//todo handle rename
+							/* command queue */
 						}
 					}
 
