@@ -6,7 +6,8 @@
 
 class ViewIsaEditor : public WindowBase {
 public:
-	ViewIsaEditor() = default;
+	ViewIsaEditor(WindowManager& mgr) : 
+		WindowBase("main.isa_editor", "ISA Editor", true), manager(mgr) {};
 
 	void Render(AppContext& context) {
 		ImGui::Begin(title.c_str(), nullptr);
@@ -15,4 +16,6 @@ public:
 
 		ImGui::End();
 	}
+private:
+	WindowManager& manager;
 };

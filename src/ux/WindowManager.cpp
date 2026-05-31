@@ -1,9 +1,11 @@
 #include "WindowManager.h"
 
-#include "modules/ViewProjectTree.h"
 #include "core/ModalNewProject.h"
 #include "core/ModalOpenProject.h"
 #include "core/ModalNewFolder.h"
+
+#include "modules/ViewProjectTree.h"
+#include "modules/ViewIsaEditor.h"
 
 WindowManager::WindowManager(AppContext& context)
 {
@@ -11,6 +13,11 @@ WindowManager::WindowManager(AppContext& context)
 	//ViewProjectTree* viewProjectTree = new ViewProjectTree();
 	ViewProjectTree viewProjectTree = ViewProjectTree(*this);
 	AddWindow<ViewProjectTree>(context, viewProjectTree.GetId(), viewProjectTree);
+
+	/* DEBUG todo remove */
+	//ViewIsaEditor test1 = ViewIsaEditor(*this);
+	//test1.SetOpen(false);
+	//AddWindow<ViewIsaEditor>(context, test1.GetId(), test1);
 
 	//add modals
 	ModalNewProject modalNewProject = ModalNewProject();

@@ -26,9 +26,9 @@ public:
 		AppContext& context, 
 		const std::string& id);
 
-	void OpenWindow(
-		AppContext& context, 
-		const std::string& id);
+	//void OpenWindow(
+	//	AppContext& context, 
+	//	const std::string& id);
 
 	void ToggleWindowVisibility(std::string windowId);
 

@@ -67,7 +67,10 @@ const UUID ProjectManager::GetNextUUID()
 
 /* Project data/state management */
 /* Create new project with structure */
-bool ProjectManager::NewProject(const std::string& name, const std::filesystem::path& path) {
+bool ProjectManager::NewProject(
+	const std::string name, 
+	const std::filesystem::path path) 
+{
 	//todo properly close last project if open, including save dialog if dirty
 
 	if (path.empty() || !path.is_absolute()) {
@@ -93,14 +96,14 @@ bool ProjectManager::NewProject(const std::string& name, const std::filesystem::
 	//return false if path is invalid or read-only
 
 	//todo default folder structure
-	NewFolder("isa", 0, { false, true, false });
-	NewFolder("hardware", 0, { false, true, false });
-	UUID sources = NewFolder("sources", 0, { false, false, false });
-	NewFolder("host", sources, { true, true, false });
-	NewFolder("target", sources, { true, true, false });
-	NewFolder("debug", 0, { false, true, false });
-	NewFolder("build", 0, { false, true, false });
-	NewFolder("notes", 0, { false, true, false });
+	NewFolder("isa", 0, FolderProperties{ false, true, false }, FolderType::ISA);
+	NewFolder("hardware", 0, FolderProperties{ false, true, false }, FolderType::Hardware);
+	UUID sources = NewFolder("sources", 0, FolderProperties{ false, false, false }, FolderType::Source);
+	NewFolder("host", sources, FolderProperties{ true, true, false }, FolderType::Source);
+	NewFolder("target", sources, FolderProperties{ true, true, false }, FolderType::Source);
+	NewFolder("debug", 0, FolderProperties{ false, true, false }, FolderType::Debug);
+	NewFolder("build", 0, FolderProperties{ false, true, false }, FolderType::Build);
+	NewFolder("notes", 0, FolderProperties{ false, true, false }, FolderType::Notes);
 
 	//save project file
 	SaveProject();
@@ -171,6 +174,7 @@ json ProjectManager::SerialiseProject() {
 			folder.second.properties.canAddFiles,
 			folder.second.properties.canRename
 		});
+		folderData.emplace("type", ToString(folder.second.type));
 		folderData.emplace("childFolders", folder.second.childFolders);
 		folderData.emplace("childFiles", folder.second.childFiles);
 		folderList.push_back(folderData);
@@ -225,6 +229,8 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 				rawProps[2]
 			};
 
+			nextFolder.type = FolderTypeFromString(folder.at("type"));
+
 			nextFolder.childFolders = folder.at("childFolders").get<std::vector<UUID>>();
 			nextFolder.childFiles = folder.at("childFiles").get<std::vector<UUID>>();
 			//if (folder.at("childFolders").is_array()) {}
@@ -242,7 +248,7 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 			nextFile.id = file.at("id");
 			nextFile.parentId = file.at("parentId");
 			nextFile.name = file.at("name");
-			nextFile.type = FromString(file.at("type"));
+			nextFile.type = FileTypeFromString(file.at("type"));
 			nextFile.documentId = file.at("documentId");
 			nextFile.generated = file.at("generated").get<bool>();
 			nextFile.readOnly = file.at("readOnly").get<bool>();
@@ -255,7 +261,7 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 	return true;
 }
 
-bool ProjectManager::OpenProject(const std::filesystem::path& rootPath) {
+bool ProjectManager::OpenProject(const std::filesystem::path rootPath) {
 	//load project data
 	std::filesystem::path filePath = rootPath;
 	if (rootPath.has_extension()) {
@@ -280,9 +286,10 @@ bool ProjectManager::OpenProject(const std::filesystem::path& rootPath) {
 
 /* Project tree management functions */
 UUID ProjectManager::NewFolder(
-	const std::string& name, 
+	const std::string name, 
 	UUID parentId, 
-	FolderProperties props)
+	std::optional<FolderProperties> props,
+	std::optional<FolderType> type)
 {
 	if (!projectData.has_value()) {
 		fmt::println("No active project to add folder to.");
@@ -300,7 +307,15 @@ UUID ProjectManager::NewFolder(
 	newFolder.parentId = parentId;
 	newFolder.name = name;
 
-	newFolder.properties = props;
+	if(props.has_value())
+	{
+		newFolder.properties = props.value();
+	}
+
+	if (type.has_value())
+	{
+		newFolder.type = type.value();
+	}
 
 	//push new folder to parent if not in root
 	if (parentId != 0) {

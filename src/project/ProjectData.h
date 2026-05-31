@@ -7,7 +7,7 @@
 #include "enumProjectDef.h"
 #include "Project.h"
 
-#include "../core/isa/Architecture.h"
+#include "../core/isa/IsaArchitecture.h"
 
 /* Main project struct */
 struct ProjectData
@@ -27,7 +27,7 @@ struct ProjectData
 	std::map<UUID, FileObject> files;
 
 	//typed document storage containers
-	std::map<UUID, IsaDefinitionDocument> isaDefinitions;
+	std::map<UUID, IsaDefinition> isaDefinitions;
 	//todo other document types 
 	// e.g. hardware sheets, source files, build manifests,
 	// simulation states, tool scripts, etc

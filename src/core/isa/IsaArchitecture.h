@@ -8,7 +8,6 @@
 #include "../../project/Project.h"
 
 #include "enumIsaDef.h"
-
 #include "IsaContext.h"
 #include "IsaInstruction.h"
 #include "IsaRegister.h"
@@ -52,7 +51,7 @@ struct IsaFault
 	std::optional<uint64_t> vectorAddress;
 };
 
-struct IsaDefinitionDocument
+struct IsaDefinition
 {
 	//generic header metadata, UUID id + string name
 	DocumentHeader header;

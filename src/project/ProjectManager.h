@@ -36,7 +36,9 @@ public:
 	const UUID GetNextUUID();
 
 	//project state management
-	bool NewProject(const std::string& name, const std::filesystem::path& path);
+	bool NewProject(
+		const std::string name, 
+		const std::filesystem::path path);
 
 	json SerialiseProject();
 	bool DeserialiseProject(json fileData);
@@ -45,18 +47,22 @@ public:
 	std::optional<std::filesystem::path> LoadProjectContext();
 	std::filesystem::path GetProjectContextPath();
 
-	bool OpenProject(const std::filesystem::path& filePath);
+	bool OpenProject(const std::filesystem::path filePath);
 	bool SaveProject();
-	bool SaveProjectAs(const std::filesystem::path& filePath);
+	bool SaveProjectAs(const std::filesystem::path filePath);
 	void CloseProject();
 
 	//project tree management functions
 	UUID NewFolder(
-		const std::string& name, 
+		const std::string name, 
 		UUID parentId,
-		FolderProperties props);
+		std::optional<FolderProperties> props,
+		std::optional<FolderType> type);
 
-	bool AddFile(const std::string& name, ProjectFileType type, UUID parentId);
+	UUID NewFile(
+		const std::string name, 
+		FileType type, 
+		UUID parentId);
 	//bool deleteItem(UUID itemId);
 	//bool renameItem(UUID itemId, const std::string& newName);
 

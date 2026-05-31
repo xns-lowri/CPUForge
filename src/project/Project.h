@@ -11,7 +11,7 @@
 /* Reusable header for all 'document' type objects in project */
 struct DocumentHeader {
 	UUID id = 0;		//unique document id
-	std::string name;
+	std::string title;
 	std::string description;
 
 	uint32_t schemaVersion = 1;	//for future compatibility
@@ -38,7 +38,7 @@ struct FileObject {
 	UUID parentId = 0;
 
 	std::string name;
-	ProjectFileType type = ProjectFileType::Unknown;
+	FileType type = FileType::Unknown;
 
 	UUID documentId = 0;	//pointer to doc represented by file
 
@@ -62,6 +62,7 @@ struct FolderObject
 	std::string name;	//folder name in os
 
 	FolderProperties properties;
+	FolderType type = FolderType::General;
 
 	//objects in folder
 	std::vector<UUID> childFolders;
