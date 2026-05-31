@@ -1,4 +1,4 @@
-
+#pragma once
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
@@ -6,11 +6,11 @@ using json = nlohmann::json;
 
 const std::string PROJECT_FILENAME = "project.cpuforge.json";
 
-enum class ProjectItemType
-{
-	Folder,
-	File
-};
+//enum class ProjectItemType
+//{
+//	Folder,
+//	File
+//};
 
 enum class ProjectFileType
 {

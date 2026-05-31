@@ -13,7 +13,7 @@
 #include "../../external/imgui_impl_opengl3.h"
 
 //include simulation headers
-#include "../project/Project.h"
+#include "../project/ProjectData.h"
 #include "WindowManager.h"
 #include "menubar/ImGuiMenuHandler.h"
 

@@ -10,7 +10,7 @@
 using json = nlohmann::json;
 #include "FileHandler.h"
 
-#include "Project.h" //includes architecture, instruction
+#include "ProjectData.h" //includes architecture, instruction
 
 class ProjectManager
 {

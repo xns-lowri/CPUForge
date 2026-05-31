@@ -6,6 +6,8 @@
 
 #include "../_types.h"
 #include "enumIsaDef.h"
+#include "../project/Project.h"
+
 #include "Instruction.h"
 #include "Register.h"
 

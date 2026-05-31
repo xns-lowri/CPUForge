@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "enumIsaDef.h"
+#include "../project/Project.h"
 
 /* Structs defining registers available in ISA*/
 //struct IsaRegisterType
