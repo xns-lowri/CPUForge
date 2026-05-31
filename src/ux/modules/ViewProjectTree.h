@@ -4,8 +4,7 @@
 #include "../../AppContext.h"
 #include "../WindowManager.h"
 
-class ViewProjectTree : public WindowBase
-{
+class ViewProjectTree : public WindowBase {
 public:
 	//constructor
 	ViewProjectTree(WindowManager& manager) :

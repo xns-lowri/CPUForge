@@ -6,7 +6,7 @@ static const std::string ShortcutToImguiText(const std::optional<MenuShortcut>& 
     }
 
     std::string shortcutString = "";
-    if (shortcut->commandOrCtrl) {
+    if (shortcut->ctrl) {
 #ifdef __APPLE__
         shortcutString += "Cmd+";
 #else

@@ -16,7 +16,7 @@ enum class MenuItemKind {
 struct MenuShortcut {
     char key = 0;
 
-    bool commandOrCtrl = false;
+    bool ctrl = false;
     bool shift = false;
     bool alt = false;
 };
@@ -81,17 +81,26 @@ struct MenuItem {
 
 using MenuBarModel = std::vector<MenuItem>;
 
-inline MenuShortcut Cmd(char key) {
+inline MenuShortcut Ctrl(char key) {
     return MenuShortcut{ key, true, false, false };
+}
+inline MenuShortcut Shift(char key) {
+    return MenuShortcut{ key, false, true, false };
 }
 inline MenuShortcut Alt(char key) {
     return MenuShortcut{ key, false, false, true };
 }
-inline MenuShortcut CmdShift(char key) {
+inline MenuShortcut CtrlShift(char key) {
     return MenuShortcut{ key, true, true, false };
 }
-inline MenuShortcut CmdAlt(char key) {
+inline MenuShortcut CtrlAlt(char key) {
     return MenuShortcut{ key, true, false, true };
+}
+inline MenuShortcut AltShift(char key) {
+    return MenuShortcut{ key, false, true, true };
+}
+inline MenuShortcut CtrlAltShift(char key) {
+    return MenuShortcut{ key, true, true, true };
 }
 
 inline MenuItem BuildWindowMenuModel(std::unordered_map<std::string, std::unique_ptr<IWindow>>& windows) {
@@ -111,36 +120,36 @@ inline MenuItem BuildWindowMenuModel(std::unordered_map<std::string, std::unique
 inline MenuBarModel BuildMainMenuModel(std::unordered_map<std::string, std::unique_ptr<IWindow>>& windows) {   
     return {
         MenuItem::Submenu("File", {
-            MenuItem::Command("New Project", AppCommand::NewProject, Cmd('n')),
-            MenuItem::Command("Open Project...", AppCommand::OpenProject, Cmd('o')),
+            MenuItem::Command("New Project", AppCommand::NewProject, Ctrl('n')),
+            MenuItem::Command("Open Project...", AppCommand::OpenProject, Ctrl('o')),
 
             MenuItem::Separator(),
 
-            MenuItem::Command("Save", AppCommand::Save, Cmd('s')),
-            MenuItem::Command("Save As...", AppCommand::SaveAs, CmdShift('s')),
-            MenuItem::Command("Save All", AppCommand::SaveAll, CmdAlt('s')),
+            MenuItem::Command("Save", AppCommand::Save, Ctrl('s')),
+            MenuItem::Command("Save As...", AppCommand::SaveAs, CtrlShift('s')),
+            MenuItem::Command("Save All", AppCommand::SaveAll, CtrlAlt('s')),
 
             MenuItem::Separator(),
 
-            MenuItem::Command("Close Project", AppCommand::CloseProject, Cmd('w')),
+            MenuItem::Command("Close Project", AppCommand::CloseProject, Ctrl('w')),
 
 #ifndef __APPLE__
             MenuItem::Separator(),
-            MenuItem::Command("Preferences…", AppCommand::Preferences),
-            MenuItem::Command("Quit", AppCommand::Quit, Cmd('q')),
+            MenuItem::Command("Preferences...", AppCommand::Preferences),
+            MenuItem::Command("Quit", AppCommand::Quit, Ctrl('q')),
 #endif
         }),
 
         MenuItem::Submenu("Edit", {
-            MenuItem::Command("Undo", AppCommand::Undo, Cmd('z')),
-            MenuItem::Command("Redo", AppCommand::Redo, CmdShift('z')),
+            MenuItem::Command("Undo", AppCommand::Undo, Ctrl('z')),
+            MenuItem::Command("Redo", AppCommand::Redo, CtrlShift('z')),
 
             MenuItem::Separator(),
 
-            MenuItem::Command("Cut", AppCommand::Cut, Cmd('x')),
-            MenuItem::Command("Copy", AppCommand::Copy, Cmd('c')),
-            MenuItem::Command("Paste", AppCommand::Paste, Cmd('v')),
-            MenuItem::Command("Select All", AppCommand::SelectAll, Cmd('a')),
+            MenuItem::Command("Cut", AppCommand::Cut, Ctrl('x')),
+            MenuItem::Command("Copy", AppCommand::Copy, Ctrl('c')),
+            MenuItem::Command("Paste", AppCommand::Paste, Ctrl('v')),
+            MenuItem::Command("Select All", AppCommand::SelectAll, Ctrl('a')),
         }),
 
         BuildWindowMenuModel(windows),

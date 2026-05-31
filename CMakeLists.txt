@@ -25,6 +25,7 @@ add_subdirectory("external/nativefiledialog-extended")
 add_executable (CPUForge)
 
 target_sources(CPUForge PRIVATE 
+    # main
     "src/CPUForge.cpp" 
     "src/CPUForge.h"
     "external/imgui_impl_sdl2.cpp" 
@@ -33,16 +34,12 @@ target_sources(CPUForge PRIVATE
     "external/imgui_impl_opengl3.h" 
     "external/imgui_impl_opengl3_loader.h"
 
+    # types
     "src/AppContext.h" 
     "src/_types.h"
     "src/enumAppCommands.h"
 
-    "src/core/isa/enumIsaDef.h"
-    "src/core/isa/Instruction.h" 
-    "src/core/isa/Architecture.h" 
-    "src/core/isa/Register.h"
-    "src/core/isa/Context.h"
-
+    # project
     "src/project/FileHandler.h" 
     "src/project/enumProjectDef.h"
     "src/project/Project.h"
@@ -52,22 +49,39 @@ target_sources(CPUForge PRIVATE
     "src/project/WorkspaceManager.h"  
     "src/project/WorkspaceManager.cpp"  
     
+    # command queue
     "src/queue/AppCommandQueue.h"
     "src/queue/AppCommandQueue.cpp"
     "src/queue/AppCommandDispatcher.h"
     "src/queue/AppCommandDispatcher.cpp"
 
+    # main ux
     "src/ux/UI.h" 
     "src/ux/ui.cpp" 
-    "src/ux/modules/ViewProjectTree.h" 
     "src/ux/_UxInterface.h" 
     "src/ux/WindowManager.h" 
     "src/ux/WindowManager.cpp" 
 
+    # main ux window modules
+    "src/ux/modules/ViewProjectTree.h" 
+
+    # core isa def
+    "src/core/isa/enumIsaDef.h"
+    "src/core/isa/Instruction.h" 
+    "src/core/isa/Architecture.h" 
+    "src/core/isa/Register.h"
+    "src/core/isa/Context.h"
+
+    # sources relating to isa editor
+    "src/ux/modules/ViewIsaEditor.h" 
+    "src/components/isa/IsaEditorState.h"
+
+    # main ux modal modules
     "src/ux/core/ModalNewFolder.h" 
     "src/ux/core/ModalNewProject.h" 
     "src/ux/core/ModalOpenProject.h" 
 
+    # main menu bar
     "src/ux/menubar/MenuData.h"
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
