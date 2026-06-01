@@ -58,7 +58,7 @@ target_sources(CPUForge PRIVATE
     # main ux
     "src/ux/UI.h" 
     "src/ux/ui.cpp" 
-    "src/ux/_UxInterface.h" 
+    "src/ux/_UxComponent.h" 
     "src/ux/WindowManager.h" 
     "src/ux/WindowManager.cpp" 
 

@@ -2,7 +2,7 @@
 #include <imgui.h>
 #include <string>
 #include <fmt/core.h>
-#include "../_UxInterface.h"
+#include "../_UxComponent.h"
 
 class ModalNewFolder : public ModalBase
 {

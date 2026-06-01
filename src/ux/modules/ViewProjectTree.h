@@ -1,6 +1,6 @@
 #pragma once
 #include <fmt/core.h>
-#include "../_UxInterface.h"
+#include "../_UxComponent.h"
 #include "../../AppContext.h"
 #include "../WindowManager.h"
 

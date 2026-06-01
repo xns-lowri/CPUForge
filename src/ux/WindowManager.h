@@ -1,7 +1,7 @@
 #pragma once
 #include <fmt/core.h>
 #include <nfd.h>
-#include "_UxInterface.h"
+#include "_UxComponent.h"
 #include "../AppContext.h"
 
 #ifdef __APPLE__

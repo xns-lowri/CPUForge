@@ -3,7 +3,7 @@
 #include <string>
 #include <nfd.h>
 #include <fmt/core.h>
-#include "../_UxInterface.h"
+#include "../_UxComponent.h"
 
 class ModalNewProject : public ModalBase
 {

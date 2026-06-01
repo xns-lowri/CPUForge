@@ -4,7 +4,7 @@
 #include <vector>
 #include <optional>
 #include "../../enumAppCommands.h"
-#include "../_UxInterface.h"
+#include "../_UxComponent.h"
 
 enum class MenuItemKind {
     Command,

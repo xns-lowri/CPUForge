@@ -28,7 +28,7 @@
 #include "project/WorkspaceManager.h"
 
 //include system logic modules
-#include "ux/_UxInterface.h"
+#include "ux/_UxComponent.h"
 
 #include "ux/modules/ViewProjectTree.h"
 
