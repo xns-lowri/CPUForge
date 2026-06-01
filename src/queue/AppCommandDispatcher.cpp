@@ -128,6 +128,8 @@ void AppCommandDispatcher::Dispatch(
             window.ToggleWindowVisibility(command.id);
             break;
 
+            //todo open project file (in editor)
+
         case AppCommand::Quit:
             context.requestQuit = true;
             break;

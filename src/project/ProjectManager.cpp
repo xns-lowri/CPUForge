@@ -169,6 +169,7 @@ json ProjectManager::SerialiseProject() {
 		folderData.emplace("id", folder.second.id);
 		folderData.emplace("parentId", folder.second.parentId);
 		folderData.emplace("name", folder.second.name);
+		folderData.emplace("path", folder.second.path);
 		folderData.emplace("properties", json{
 			folder.second.properties.canAddFolders,
 			folder.second.properties.canAddFiles,
@@ -187,6 +188,7 @@ json ProjectManager::SerialiseProject() {
 		fileData.emplace("id", file.second.id);
 		fileData.emplace("parentId", file.second.parentId);
 		fileData.emplace("name", file.second.name);
+		fileData.emplace("path", file.second.path);
 		fileData.emplace("type", ToString(file.second.type));
 		fileData.emplace("documentId", file.second.documentId);
 		fileData.emplace("generated", ToString(file.second.generated));
@@ -220,6 +222,7 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 			nextFolder.id = folder.at("id");
 			nextFolder.parentId = folder.at("parentId");
 			nextFolder.name = folder.at("name");
+			nextFolder.path = folder.at("path");
 
 			std::vector<bool> rawProps = folder.at("properties").get<std::vector<bool>>();
 
@@ -248,6 +251,7 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 			nextFile.id = file.at("id");
 			nextFile.parentId = file.at("parentId");
 			nextFile.name = file.at("name");
+			nextFile.path = file.at("path");
 			nextFile.type = FileTypeFromString(file.at("type"));
 			nextFile.documentId = file.at("documentId");
 			nextFile.generated = file.at("generated").get<bool>();
@@ -306,6 +310,7 @@ UUID ProjectManager::NewFolder(
 	newFolder.id = GetNextUUID();
 	newFolder.parentId = parentId;
 	newFolder.name = name;
+	newFolder.path = ""; //build later from parent folders
 
 	if(props.has_value())
 	{
@@ -323,6 +328,8 @@ UUID ProjectManager::NewFolder(
 		FolderObject* parentFolder = &projectData->folders.find(parentId)->second;
 		parentFolder->childFolders.push_back(newFolder.id);
 
+		newFolder.path = parentFolder->path;
+
 		fmt::println("Added folder '{}' with id {} to parent {} in project '{}'",
 			name, newFolder.id, parentFolder->name, projectData->name);
 
@@ -332,6 +339,8 @@ UUID ProjectManager::NewFolder(
 	//	//push new folder to project tree
 	//	projectData->folders.emplace(newFolder.id, newFolder);
 	//}
+
+	newFolder.path += "/" + newFolder.name;
 
 	//always push new folder to project tree
 	projectData->folders.emplace(newFolder.id, newFolder);

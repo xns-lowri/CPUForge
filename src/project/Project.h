@@ -46,6 +46,7 @@ struct FileObject {
 	UUID parentId = 0;
 
 	std::string name;
+	std::string path;	//path within project
 	FileType type = FileType::Unknown;
 
 	UUID documentId = 0;	//pointer to doc represented by file
@@ -68,6 +69,7 @@ struct FolderObject
 	UUID parentId = 0;	//parent folder id, 0 if root
 
 	std::string name;	//folder name in os
+	std::string path;	//path within project
 
 	FolderProperties properties;
 	FolderType type = FolderType::General;
