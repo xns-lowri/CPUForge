@@ -42,6 +42,9 @@ bool AppCommandDispatcher::CanDispatch(
         case AppCommand::ToggleWindow:
             return true;
 
+        case AppCommand::OpenFile:
+            return true;
+
         case AppCommand::Preferences:
             return true;
 
@@ -129,6 +132,9 @@ void AppCommandDispatcher::Dispatch(
             break;
 
             //todo open project file (in editor)
+		case AppCommand::OpenFile:
+            fmt::println("Open file '{:s}'", command.id);
+			break;
 
         case AppCommand::Quit:
             context.requestQuit = true;
