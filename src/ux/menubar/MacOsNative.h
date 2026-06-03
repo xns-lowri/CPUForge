@@ -1,5 +1,7 @@
 #pragma once
 #include "MenuData.h"
+#include "../../queue/AppCommandQueue.h"
+#include "../../enumAppCommands.h"
 
 #ifdef __APPLE__
 extern "C" void MacMenu_Update(const MenuBarModel& menu);

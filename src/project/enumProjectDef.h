@@ -12,7 +12,7 @@ const std::string PROJECT_FILENAME = "project.cpuforge.json";
 //	File
 //};
 
-enum class FolderType {
+enum class FolderKind {
 	ISA,
 	Hardware,
 	Source,
@@ -40,25 +40,25 @@ enum class FileType
 	Unknown			//unknown file type - error catching
 };
 
-inline FolderType FolderTypeFromString(std::string value) {
-	if (value == "ISA")			return FolderType::ISA;
-	if (value == "Hardware")	return FolderType::Hardware;
-	if (value == "Source")      return FolderType::Source;
-	if (value == "Debug")		return FolderType::Debug;
-	if (value == "Build")		return FolderType::Build;
-	if (value == "Notes")		return FolderType::Notes;
+inline FolderKind FolderTypeFromString(std::string value) {
+	if (value == "ISA")			return FolderKind::ISA;
+	if (value == "Hardware")	return FolderKind::Hardware;
+	if (value == "Source")      return FolderKind::Source;
+	if (value == "Debug")		return FolderKind::Debug;
+	if (value == "Build")		return FolderKind::Build;
+	if (value == "Notes")		return FolderKind::Notes;
 
-	return FolderType::General;
+	return FolderKind::General;
 }
-inline std::string ToString(FolderType type) {
+inline std::string ToString(FolderKind type) {
 	switch (type)
 	{
-	case FolderType::ISA:		return "ISA";
-	case FolderType::Hardware:  return "Hardware";
-	case FolderType::Source:    return "Source";
-	case FolderType::Debug:     return "Debug";
-	case FolderType::Build:		return "Build";
-	case FolderType::Notes:		return "Notes";
+	case FolderKind::ISA:		return "ISA";
+	case FolderKind::Hardware:  return "Hardware";
+	case FolderKind::Source:    return "Source";
+	case FolderKind::Debug:     return "Debug";
+	case FolderKind::Build:		return "Build";
+	case FolderKind::Notes:		return "Notes";
 
 	default:                    return "General";
 	}

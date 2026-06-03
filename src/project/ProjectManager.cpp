@@ -96,14 +96,14 @@ bool ProjectManager::NewProject(
 	//return false if path is invalid or read-only
 
 	//todo default folder structure
-	NewFolder("isa", 0, FolderProperties{ false, true, false }, FolderType::ISA);
-	NewFolder("hardware", 0, FolderProperties{ false, true, false }, FolderType::Hardware);
-	UUID sources = NewFolder("sources", 0, FolderProperties{ false, false, false }, FolderType::Source);
-	NewFolder("host", sources, FolderProperties{ true, true, false }, FolderType::Source);
-	NewFolder("target", sources, FolderProperties{ true, true, false }, FolderType::Source);
-	NewFolder("debug", 0, FolderProperties{ false, true, false }, FolderType::Debug);
-	NewFolder("build", 0, FolderProperties{ false, true, false }, FolderType::Build);
-	NewFolder("notes", 0, FolderProperties{ false, true, false }, FolderType::Notes);
+	NewFolder("isa", 0, FolderProperties{ false, true, false }, FolderKind::ISA);
+	NewFolder("hardware", 0, FolderProperties{ false, true, false }, FolderKind::Hardware);
+	UUID sources = NewFolder("sources", 0, FolderProperties{ false, false, false }, FolderKind::Source);
+	NewFolder("host", sources, FolderProperties{ true, true, false }, FolderKind::Source);
+	NewFolder("target", sources, FolderProperties{ true, true, false }, FolderKind::Source);
+	NewFolder("debug", 0, FolderProperties{ false, true, false }, FolderKind::Debug);
+	NewFolder("build", 0, FolderProperties{ false, true, false }, FolderKind::Build);
+	NewFolder("notes", 0, FolderProperties{ false, true, false }, FolderKind::Notes);
 
 	//save project file
 	SaveProject();
@@ -293,7 +293,7 @@ UUID ProjectManager::NewFolder(
 	const std::string name, 
 	UUID parentId, 
 	std::optional<FolderProperties> props,
-	std::optional<FolderType> type)
+	std::optional<FolderKind> type)
 {
 	if (!projectData.has_value()) {
 		fmt::println("No active project to add folder to.");

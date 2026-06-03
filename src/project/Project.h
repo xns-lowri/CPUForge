@@ -72,7 +72,7 @@ struct FolderObject
 	std::string path;	//path within project
 
 	FolderProperties properties;
-	FolderType type = FolderType::General;
+	FolderKind type = FolderKind::General;
 
 	//objects in folder
 	std::vector<UUID> childFolders;

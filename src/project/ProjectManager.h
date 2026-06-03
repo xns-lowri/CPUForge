@@ -57,7 +57,7 @@ public:
 		const std::string name, 
 		UUID parentId,
 		std::optional<FolderProperties> props,
-		std::optional<FolderType> type);
+		std::optional<FolderKind> type);
 
 	UUID NewFile(
 		const std::string name, 

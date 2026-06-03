@@ -7,6 +7,10 @@
 #include "modules/ViewProjectTree.h"
 #include "modules/ViewIsaEditor.h"
 
+#ifdef __APPLE__
+#include "menubar/MacOsNative.h"
+#endif
+
 WindowManager::WindowManager(AppContext& context)
 {
 	//add available windows here, can also be added during render/runtime
@@ -36,7 +40,7 @@ WindowManager::WindowManager(AppContext& context)
 	}
 
 #ifdef __APPLE__
-	NativeCommandBridge::SetCommandQueue(&context.commandQueue);
+	NativeCommandBridge::SetCommandQueue(context.appCommandQueue.get());
 #endif
 
 	fmt::println("WindowManager initialized");
