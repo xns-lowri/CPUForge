@@ -37,7 +37,7 @@ struct FileTypeDescriptor {
 	std::string displayName;
 	std::vector<std::string> extensions;
 	//todo icon
-	std::string defaultOpenCommand;
+	//std::string defaultOpenCommand;
 };
 
 /* Definitions for file objects (pointers) in project tree */
