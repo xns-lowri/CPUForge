@@ -1,0 +1,139 @@
+{
+    "description": "",
+    "files": [
+        {
+            "documentId": 0,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780614009,
+            "name": "core3.isa",
+            "parentId": 1780614001,
+            "path": "isa\\core3.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        }
+    ],
+    "folders": [
+        {
+            "childFiles": [
+                1780614009
+            ],
+            "childFolders": [],
+            "id": 1780614001,
+            "name": "isa",
+            "parentId": 0,
+            "path": "isa",
+            "properties": [
+                false,
+                true,
+                false
+            ],
+            "type": "ISA"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1780614002,
+            "name": "hardware",
+            "parentId": 0,
+            "path": "hardware",
+            "properties": [
+                false,
+                true,
+                false
+            ],
+            "type": "Hardware"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [
+                1780614004,
+                1780614005
+            ],
+            "id": 1780614003,
+            "name": "sources",
+            "parentId": 0,
+            "path": "sources",
+            "properties": [
+                false,
+                false,
+                false
+            ],
+            "type": "Source"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1780614004,
+            "name": "host",
+            "parentId": 1780614003,
+            "path": "sources\\host",
+            "properties": [
+                true,
+                true,
+                false
+            ],
+            "type": "Source"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1780614005,
+            "name": "target",
+            "parentId": 1780614003,
+            "path": "sources\\target",
+            "properties": [
+                true,
+                true,
+                false
+            ],
+            "type": "Source"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1780614006,
+            "name": "debug",
+            "parentId": 0,
+            "path": "debug",
+            "properties": [
+                false,
+                true,
+                false
+            ],
+            "type": "Debug"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1780614007,
+            "name": "build",
+            "parentId": 0,
+            "path": "build",
+            "properties": [
+                false,
+                true,
+                false
+            ],
+            "type": "Build"
+        },
+        {
+            "childFiles": [],
+            "childFolders": [],
+            "id": 1780614008,
+            "name": "notes",
+            "parentId": 0,
+            "path": "notes",
+            "properties": [
+                false,
+                true,
+                false
+            ],
+            "type": "Notes"
+        }
+    ],
+    "id": 1780614000,
+    "name": "simple9",
+    "nextId": 1780614010,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple9"
+}

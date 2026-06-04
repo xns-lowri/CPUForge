@@ -188,11 +188,12 @@ json ProjectManager::SerialiseProject() {
 		fileData.emplace("id", file.second.id);
 		fileData.emplace("parentId", file.second.parentId);
 		fileData.emplace("name", file.second.name);
+		fileData.emplace("extension", file.second.extension);
 		fileData.emplace("path", file.second.path);
 		fileData.emplace("type", ToString(file.second.type));
 		fileData.emplace("documentId", file.second.documentId);
-		fileData.emplace("generated", ToString(file.second.generated));
-		fileData.emplace("readOnly", ToString(file.second.readOnly));
+		fileData.emplace("generated", file.second.generated);
+		fileData.emplace("readOnly", file.second.readOnly);
 		fileList.push_back(fileData);
 	}
 	fileOut.emplace("files", fileList);
@@ -251,6 +252,7 @@ bool ProjectManager::DeserialiseProject(json fileData) {
 			nextFile.id = file.at("id");
 			nextFile.parentId = file.at("parentId");
 			nextFile.name = file.at("name");
+			nextFile.extension = file.at("extension");
 			nextFile.path = file.at("path");
 			nextFile.type = FileTypeFromString(file.at("type"));
 			nextFile.documentId = file.at("documentId");
@@ -310,7 +312,9 @@ UUID ProjectManager::NewFolder(
 	newFolder.id = GetNextUUID();
 	newFolder.parentId = parentId;
 	newFolder.name = name;
-	newFolder.path = ""; //build later from parent folders
+	//newFolder.path = ""; //build later from parent folders
+
+	std::filesystem::path localPath = name;
 
 	if(props.has_value())
 	{
@@ -328,7 +332,8 @@ UUID ProjectManager::NewFolder(
 		FolderObject* parentFolder = &projectData->folders.find(parentId)->second;
 		parentFolder->childFolders.push_back(newFolder.id);
 
-		newFolder.path = parentFolder->path;
+		//newFolder.path = parentFolder->path;
+		localPath = parentFolder->path / localPath;
 
 		fmt::println("Added folder '{}' with id {} to parent {} in project '{}'",
 			name, newFolder.id, parentFolder->name, projectData->name);
@@ -340,23 +345,24 @@ UUID ProjectManager::NewFolder(
 	//	projectData->folders.emplace(newFolder.id, newFolder);
 	//}
 
-	newFolder.path += "/" + newFolder.name;
+	//newFolder.path += "/" + newFolder.name;
+	newFolder.path = localPath.string();
 
 	//always push new folder to project tree
 	projectData->folders.emplace(newFolder.id, newFolder);
 
 	//build folder path from parent folders
-	UUID curFolder = newFolder.parentId;
-	std::filesystem::path localPath = newFolder.name;
-	while (curFolder != 0) {
-		//add path and go to next folder
-		FolderObject& curFolderObj = projectData->folders.find(curFolder)->second;
-		localPath = curFolderObj.name / localPath;
-		curFolder = curFolderObj.parentId;
-	}
+	//UUID curFolder = newFolder.parentId;
+	//std::filesystem::path localPath = newFolder.name;
+	//while (curFolder != 0) {
+	//	//add path and go to next folder
+	//	FolderObject& curFolderObj = projectData->folders.find(curFolder)->second;
+	//	localPath = curFolderObj.name / localPath;
+	//	curFolder = curFolderObj.parentId;
+	//}
 	std::filesystem::path folderPath = projectData->path / localPath;
 
-	//todo make new folder
+	//fs make new folder
 	FileHandler::CreateFolder(folderPath);
 	SaveProject();
 
@@ -366,4 +372,53 @@ UUID ProjectManager::NewFolder(
 	//todo filesystem
 
 	return newFolder.id;
+}
+
+UUID ProjectManager::NewFile(
+	const std::string name,
+	const std::string extension,
+	FileType type,
+	UUID parentId) 
+{
+	fmt::println("Create file {} at {}", name, parentId);
+	//todo
+	if (parentId == 0) {
+		fmt::println("Cannot add file '{}' to root of project '{}', must have parent folder.",
+			name, projectData->name);
+		return 0;
+	}
+	//check parentId exists and is folder
+	if (projectData->folders.find(parentId) == projectData->folders.end()) {
+		fmt::println("Parent folder with id {} does not exist.", parentId);
+		return 0;
+	}
+
+	FileObject newFile;
+	newFile.id = GetNextUUID();
+	newFile.parentId = parentId;
+	newFile.name = name;
+	newFile.extension = extension; //todo get from type
+	newFile.type = type;
+
+	//find parent folder
+	FolderObject* parentFolder = &projectData->folders.find(parentId)->second;
+	parentFolder->childFiles.push_back(newFile.id);
+
+	std::filesystem::path localPath = parentFolder->path;
+	localPath = localPath / newFile.name;
+	newFile.path = localPath.string();
+	projectData->files.emplace(newFile.id, newFile);
+
+	//fs make new folder
+	/* TODO Fix create file method */
+	FileHandler::CreateFile(localPath);
+	SaveProject();
+
+	fmt::println("Created file {} at {}", newFile.id, newFile.path);
+
+	//fmt::println("Added folder '{}' with id {} to parent {} in project '{}'",
+	//	name, newFolder.id, parentFolder->name, projectData->name);
+
+	//fmt::println("Child folders in parent '{}': {}", parentFolder->name, parentFolder->childFolders.size());
+	return newFile.id;
 }

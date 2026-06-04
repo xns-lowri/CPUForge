@@ -40,6 +40,7 @@ bool AppCommandDispatcher::CanDispatch(
         case AppCommand::ToggleWindow:
             return true;
 
+        case AppCommand::NewFile:
         case AppCommand::OpenFile:
             return true;
 
@@ -130,10 +131,23 @@ void AppCommandDispatcher::Dispatch(
             window.ToggleWindowVisibility(command.id);
             break;
 
+
+        case AppCommand::NewFile:
+            fmt::println("New file '{:s}'", command.id);
+            //todo create file entry in project
+            //todo create data object in module
+			//todo open file
+            context.appComponentRegistry->HandleCommand(
+                command.id, command.path);
+            break;
+
             //todo open project file (in editor)
 		case AppCommand::OpenFile:
             fmt::println("Open file '{:s}'", command.id);
-			context.appComponentRegistry->HandleOpenProjectFile(); //todo
+
+            //todo get file path
+			context.appComponentRegistry->HandleCommand(
+                command.id, command.path);
             
 			break;
 

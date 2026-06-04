@@ -6,10 +6,11 @@
 
 class ViewIsaEditor : public WindowBase {
 public:
-	ViewIsaEditor(WindowManager& mgr) : 
-		WindowBase("main.isa_editor", "ISA Editor", true), manager(mgr) {};
+	ViewIsaEditor(const std::string& id, WindowManager& mgr) : 
+		WindowBase("main.isa_editor." + id, "ISA Editor", true), manager(mgr) {};
 
 	void Render(AppContext& context) {
+
 		ImGui::Begin(title.c_str(), nullptr);
 
 		//todo render contents

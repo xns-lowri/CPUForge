@@ -32,10 +32,16 @@ struct DocumentHeader {
 	std::string description;
 };*/
 
+struct TreeActionDescriptor {
+	std::string action;	//path-style command id
+	std::string displayName;
+};
+
 struct FileTypeDescriptor {
 	std::string id;	//path-style id
 	std::string displayName;
-	std::vector<std::string> extensions;
+	std::string extension;
+	FileType type;
 	//todo icon
 	//std::string defaultOpenCommand;
 };
@@ -46,7 +52,10 @@ struct FileObject {
 	UUID parentId = 0;
 
 	std::string name;
+	std::string extension;
+
 	std::string path;	//path within project
+
 	FileType type = FileType::Unknown;
 
 	UUID documentId = 0;	//pointer to doc represented by file

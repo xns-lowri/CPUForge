@@ -61,6 +61,7 @@ public:
 
 	UUID NewFile(
 		const std::string name, 
+		const std::string extension, 
 		FileType type, 
 		UUID parentId);
 	//bool deleteItem(UUID itemId);

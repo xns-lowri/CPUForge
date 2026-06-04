@@ -40,6 +40,28 @@ enum class FileType
 	Unknown			//unknown file type - error catching
 };
 
+inline FileType FileTypeFromFolderKind(FolderKind folderKind) {
+	switch (folderKind)
+	{
+	case FolderKind::ISA:		return FileType::ISADefinition;
+	case FolderKind::Hardware:  return FileType::HardwareSheet;
+	case FolderKind::Source:    return FileType::SourceFile;
+	//case FolderKind::Debug:     return FileType::SimulationState; //todo separate debug file type?
+	//case FolderKind::Build:		return FileType::BuildManifest; //todo separate build file type?
+	case FolderKind::Notes:		return FileType::TextDocument;
+	default:                    return FileType::Unknown;
+	}
+}
+
+inline std::string FixedExtensionFromFileType(FileType fileType) {
+	switch (fileType)
+	{
+	case FileType::ISADefinition:   return ".isa";
+	case FileType::HardwareSheet:   return ".shw";
+	default:                               return "";
+	}
+}
+
 inline FolderKind FolderTypeFromString(std::string value) {
 	if (value == "ISA")			return FolderKind::ISA;
 	if (value == "Hardware")	return FolderKind::Hardware;

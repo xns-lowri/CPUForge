@@ -79,7 +79,7 @@ public:
 				if (result == NFD_OKAY) {
 					/* Path entered */
 					fmt::println("NFD got path: {:s}", outPath);
-					std::strncpy(projectPath, outPath, sizeof(projectPath));
+					std::strncpy(projectPath, outPath, sizeof(projectPath)); //todo unsafe??
 					projectPath[sizeof(projectPath) - 1] = '\0';
 					// Remember to free the allocated path buffer when finished!
 					NFD_FreePathU8(outPath);

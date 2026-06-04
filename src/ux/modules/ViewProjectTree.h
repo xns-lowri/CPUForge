@@ -131,10 +131,28 @@ public:
 					}
 
 					if (folder.second.properties.canAddFiles) {
-						if (ImGui::MenuItem("New File")) {
-							fmt::println("New file in folder: {:s}", folder.second.name);
-							//todo handle new file
+						for (auto& action : context.appComponentRegistry->GetTreeActionsFolder(folder.second.type)) {
+							if (ImGui::MenuItem(action.displayName.c_str())) {
+								fmt::println("Action '{:s}' in folder: {:s}",
+									action.action, folder.second.path);
+								//action.action(context, folder.second.id);
+								//context.appCommandQueue->Push(AppCommandRequest{
+								//	.command = AppCommand::NewFile,
+								//	.id = action.action,
+								//	.path = folder.second.path	
+								//});
+								std::string componentId = action.action.substr(0, action.action.find('.'));
+
+								context.workspaceManager->SetSelectedFolder(folder.second.id);
+								context.workspaceManager->SetAction(action.action);
+								context.workspaceManager->SetPath(folder.second.path);
+								manager.OpenModal(context, "modal.new_file");
+							}
 						}
+						//if (ImGui::MenuItem("New File")) {
+							//fmt::println("New file in folder: {:s}", folder.second.name);
+							//todo handle new file
+						//}
 					}
 
 					ImGui::EndPopup();
@@ -159,6 +177,21 @@ public:
 				RenderTreeFolders(context, childFolders, true);
 
 				//todo render files
+				for (auto& fileId : folder.second.childFiles) {
+					FileObject file = 
+						context.projectManager->
+						GetCurrentProject()->
+						files.find(fileId)->second;
+
+					if (ImGui::TreeNodeEx(
+						file.name.c_str(),
+						ImGuiTreeNodeFlags_SpanAvailWidth |
+						ImGuiTreeNodeFlags_Leaf)
+						) 
+					{
+						ImGui::TreePop();
+					}
+				}
 
 				ImGui::TreePop();
 			}

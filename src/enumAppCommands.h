@@ -22,6 +22,7 @@ enum class AppCommand {
 
     ToggleWindow,
 
+    NewFile,
     OpenFile,
 
     About,
@@ -47,6 +48,9 @@ static std::string_view ToString(AppCommand command) {
 
         case AppCommand::ToggleWindow: return "ToggleWindow";
 
+        case AppCommand::NewFile:      return "NewFile";
+        case AppCommand::OpenFile:     return "OpenFile";
+
         case AppCommand::About:        return "About";
     }
 
@@ -55,5 +59,7 @@ static std::string_view ToString(AppCommand command) {
 
 struct AppCommandRequest {
     AppCommand command = AppCommand::About;
-    std::string id; //window id for ToggleWindow
+    std::string id; 
+    std::string path = "";
+	UUID targetId = 0;
 };

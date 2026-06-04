@@ -8,6 +8,14 @@ const UUID WorkspaceManager::GetSelectedFile() const {
 	return lastFileInTree;
 }
 
+const std::string WorkspaceManager::GetAction() const {
+	return lastAction;
+}
+
+const std::string WorkspaceManager::GetPath() const {
+	return lastPath;
+}
+
 void WorkspaceManager::SetSelectedFolder(UUID folderId) {
 	//todo check folder exists
 	lastFolderInTree = folderId;
@@ -16,6 +24,14 @@ void WorkspaceManager::SetSelectedFolder(UUID folderId) {
 void WorkspaceManager::SetSelectedFile(UUID fileId) {
 	//todo check file exists
 	lastFileInTree = fileId;
+}
+
+void WorkspaceManager::SetAction(std::string action) {
+	lastAction = action;
+}
+
+void WorkspaceManager::SetPath(std::string path) {
+	lastPath = path;
 }
 
 /*

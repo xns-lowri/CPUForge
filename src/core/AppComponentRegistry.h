@@ -13,12 +13,25 @@ public:
 	AppComponentRegistry();
 
 	//bool RegisterComponent(ComponentBase& component);
+	bool RegisterFileTypes(
+		std::vector<FileTypeDescriptor> descriptors);
 
-	bool HandleOpenProjectFile();
+	std::vector<TreeActionDescriptor> GetTreeActionsFolder(FolderKind folderKind) const;
+
+	//todo get tree actions for file
+	std::vector<TreeActionDescriptor> GetTreeActionsFile(FileType fileType) const;
+	
+	bool HandleCommand(
+		const std::string& command,
+		const std::string& path);
+	//bool HandleOpenProjectFile(const std::string& path);
 
 	//connect to handlers for file explorer tree
 	//void RegisterFileType(FileTypeDescriptor descriptor);	
 private:
 	//
 	std::unordered_map<std::string, std::unique_ptr<ComponentBase>> componentsById;
+	std::unordered_map<FolderKind, std::string> componentIdsByFolder;
+
+	std::unordered_map<std::string, FileTypeDescriptor> fileTypesByExtension;
 };

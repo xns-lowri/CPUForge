@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include "../_types.h"
+#include "enumProjectDef.h"
 //#include "../ux/_UxInterface.h"
 
 
@@ -16,16 +17,28 @@ class WorkspaceManager
 private:
 	UUID lastFolderInTree = 0;
 	UUID lastFileInTree = 0;
+	//FolderKind lastFolderKind = FolderKind::General;
+	//FileType lastFileType = FileType::Unknown;
+	std::string lastAction = "";
+	std::string lastPath = "";
+	//AppCommand lastCommand = AppCommand::About;
+
 	//todo field for last selected editor window 
 	//todo fields for open documents
 	//std::unordered_map<std::string, std::unique_ptr<IModal>> modals;
 	//std::unordered_map<std::string, std::unique_ptr<IWindow>> windows;
 public:
 	WorkspaceManager() = default;
+
 	const UUID GetSelectedFolder() const;
 	const UUID GetSelectedFile() const;
+	const std::string GetAction() const;
+	const std::string GetPath() const;
+
 	void SetSelectedFolder(UUID folderId);
 	void SetSelectedFile(UUID fileId);
+	void SetAction(std::string action);
+	void SetPath(std::string path);
 	//void ToggleWindowVisibility(std::string windowId);
 	//todo methods for opening documents etc
 	//std::unordered_map<std::string, std::unique_ptr<IModal>>& GetModalMap();

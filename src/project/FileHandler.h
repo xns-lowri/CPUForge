@@ -107,6 +107,20 @@ public:
     }
 
     static bool CreateFolder(const std::filesystem::path& path) {
+        //todo use try catch
         return std::filesystem::create_directories(path);
     }
+
+	static bool CreateFile(const std::filesystem::path& path) {
+		try {
+            //todo doesn't create file???
+			std::filesystem::create_directories(path.parent_path());
+			std::ofstream out(path);
+			return out.good();
+		}
+		catch (const std::exception& e) {
+			// Handle exceptions if necessary
+			return false;
+		}
+	}
 };

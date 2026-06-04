@@ -2,12 +2,13 @@
 #include <imgui.h>
 #include <string>
 #include <fmt/core.h>
+#include "../../project/Project.h"
 #include "../_UxComponent.h"
 
-class ModalNewFolder : public ModalBase
+class ModalNewFile : public ModalBase
 {
 public:
-	ModalNewFolder() : ModalBase("modal.new_folder", "New Folder") {}
+	ModalNewFile() : ModalBase("modal.new_file", "New File") {}
 	void Render(AppContext& context) override {
 		//todo
 		if (showModal) {
@@ -31,12 +32,12 @@ public:
 			ImGuiWindowFlags_NoSavedSettings;
 
 		if (ImGui::BeginPopupModal(title.c_str(), nullptr, flags)) {
-			static char folderName[128] = "new folder";
+			static char fileNameInput[128] = "new file";
 
-			ImGui::TextUnformatted("Folder name:");
+			ImGui::TextUnformatted("Filename:");
 			ImGui::SameLine();
 			ImGui::SetNextItemWidth(-FLT_MIN);
-			ImGui::InputText("##FolderName", folderName, IM_ARRAYSIZE(folderName));
+			ImGui::InputText("##FileName", fileNameInput, IM_ARRAYSIZE(fileNameInput));
 
 			ImGui::Spacing();
 			ImGui::Separator();
@@ -68,20 +69,46 @@ public:
 			ImGui::SetCursorPosX(rightGroupStartX);
 
 			if (ImGui::Button(createLabel, ImVec2(createButtonWidth, 0))) {
-				//todo not this
-				fmt::println("Creating new folder");
-				if (context.projectManager->NewFolder(
-					std::string(folderName), 
-					context.workspaceManager->GetSelectedFolder(),
-					FolderProperties{ true, true, true },
-					std::nullopt) != 0)
+				//get file kind for selected folder
+				UUID currentFolderId = 
+					context.workspaceManager->GetSelectedFolder();
+				FolderKind currentFolderKind = 
+					context.projectManager->
+					GetCurrentProject()->
+					folders.find(currentFolderId)->second.type;
+				FileType fileType = FileTypeFromFolderKind(currentFolderKind);
+				std::string fixedExtention = FixedExtensionFromFileType(fileType);
+
+				std::string fileName = std::string(fileNameInput);
+
+				if (fixedExtention != "" && fileName.substr(fileName.size() - fixedExtention.size()) != fixedExtention) {
+					fileName += fixedExtention;
+				}
+
+				std::string fileExtension = fileName.substr(fileName.find_last_of('.'));
+				
+				//create file in project manager
+				UUID newFileId = context.projectManager->NewFile(
+					fileName,
+					fileExtension,
+					fileType,
+					currentFolderId);
+
+				if (newFileId != 0)
 				{
-					//folder created, close modal
+					//file created, close modal
 					ImGui::CloseCurrentPopup();
 					open = false;
+					//push app request to create editor state for new file
+					context.appCommandQueue->Push(AppCommandRequest{
+						.command = AppCommand::NewFile,
+						.id = context.workspaceManager->GetAction(),
+						.path = context.workspaceManager->GetPath(),
+						.targetId = newFileId
+					});
 				}
 				else {
-					//folder creation failed successfully, show error
+					//project creation failed successfully, show error
 					//todo
 				}
 			}

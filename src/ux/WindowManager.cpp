@@ -3,6 +3,7 @@
 #include "core/ModalNewProject.h"
 #include "core/ModalOpenProject.h"
 #include "core/ModalNewFolder.h"
+#include "core/ModalNewFile.h"
 
 #include "modules/ViewProjectTree.h"
 #include "modules/ViewIsaEditor.h"
@@ -30,6 +31,8 @@ WindowManager::WindowManager(AppContext& context)
 	AddModal<ModalOpenProject>(context, modalOpenProject.GetId(), modalOpenProject);
 	ModalNewFolder modalNewFolder = ModalNewFolder();
 	AddModal<ModalNewFolder>(context, modalNewFolder.GetId(), modalNewFolder);
+	ModalNewFile modalNewFile = ModalNewFile();
+	AddModal<ModalNewFile>(context, modalNewFile.GetId(), modalNewFile);
 
 	//print all added windows for debugging before leaving
 	for (auto& window : windows) {
