@@ -1,8 +1,6 @@
 // AppCommandDispatcher.cpp
 #include <fmt/core.h>
 #include "AppCommandDispatcher.h"
-#include "../AppContext.h"
-#include "../ux/WindowManager.h"
 
 bool AppCommandDispatcher::CanDispatch(
     AppCommand command,
@@ -62,6 +60,7 @@ void AppCommandDispatcher::Dispatch(
     AppCommandRequest command,
     WindowManager& window,
     AppContext& context
+    //todo ref to app components (open file)
 ) {
     if (!CanDispatch(command.command, context)) {
         return;
@@ -134,6 +133,8 @@ void AppCommandDispatcher::Dispatch(
             //todo open project file (in editor)
 		case AppCommand::OpenFile:
             fmt::println("Open file '{:s}'", command.id);
+			context.appComponentRegistry->HandleOpenProjectFile(); //todo
+            
 			break;
 
         case AppCommand::Quit:

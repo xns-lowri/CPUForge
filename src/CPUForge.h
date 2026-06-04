@@ -32,6 +32,9 @@
 
 #include "ux/modules/ViewProjectTree.h"
 
+//app components
+#include "core/AppComponentRegistry.h"
+
 //load ui last
 #include "ux/UI.h"
 

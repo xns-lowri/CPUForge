@@ -62,11 +62,17 @@ int main(int argc, char** argv)
             //std::optional<AppCommandRequest> request = appContext.commandQueue.TryPop();
             //fmt::println("Got request");
             if(!request.has_value()) { break; }
-            if(!dispatcher.CanDispatch(request->command, appContext)) { continue; }
+
+            if(!dispatcher.CanDispatch(
+                request->command, 
+                appContext)) 
+            { continue; }
+
             dispatcher.Dispatch(
                 request.value(), 
                 ui.GetWindowManager(), 
                 appContext
+                //todo pass editor refs
             );
         }
     }

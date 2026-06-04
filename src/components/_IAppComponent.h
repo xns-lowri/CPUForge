@@ -3,21 +3,22 @@
 #include <vector>
 #include "../core/AppComponentRegistry.h"
 
-class IComponent {
+class IAppComponent {
 public:
-	virtual ~IComponent() = default; //default destructor
+	virtual ~IAppComponent() = default; //default destructor
 
 	//interface methods
-	virtual std::string GetID();
-	virtual void Register(AppComponentRegistry& registry);
+	virtual const std::string& GetID() const = 0;
+	//virtual void Register(AppComponentRegistry& registry) = 0;
+	virtual bool OpenFile(std::string filePath) = 0;
 	
 };
 
-class ComponentBase : IComponent
+class ComponentBase : IAppComponent
 {
 public:
 	ComponentBase(std::string id) : id(std::move(id)) {}
-	std::string GetID() { return id; }
+	const std::string& GetID() const { return id; }
 	//todo
 protected:
 	//todo

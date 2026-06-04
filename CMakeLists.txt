@@ -67,8 +67,9 @@ target_sources(CPUForge PRIVATE
         # todo console window
 
     # app component registry modules
-    "src/core/AppComponentRegistry.h" 
     "src/components/_IAppComponent.h"
+    "src/core/AppComponentRegistry.h" 
+    "src/core/AppComponentRegistry.cpp"
 
     # core isa def
     "src/core/isa/enumIsaDef.h"
