@@ -22,6 +22,16 @@ struct InstructionEncodingField {
 	IsaInstructionFieldType fieldType = IsaInstructionFieldType::Other;
 };
 
+inline void to_json(json& j, const InstructionEncodingField& field) {
+	j = json{
+		{ "name", field.name },
+		{ "description", field.description },
+		{ "bitPosition", field.bitPosition },
+		{ "bitWidth", field.bitWidth },
+		{ "fieldType", ToString(field.fieldType) }
+	};
+}
+
 /* Encoding definitions - architecture data */
 struct InstructionEncodingFormat
 {
@@ -32,6 +42,15 @@ struct InstructionEncodingFormat
 	uint16_t instructionWidth; // = 8;
 	std::unordered_map<std::string, InstructionEncodingField> encodingFields;
 };
+
+inline void to_json(json& j, const InstructionEncodingFormat& format) {
+	j = json{
+		{ "name", format.name },
+		{ "description", format.description },
+		{ "instructionWidth", format.instructionWidth },
+		{ "encodingFields", format.encodingFields }
+	};
+}
 /* end metadata */
 
 
@@ -45,6 +64,14 @@ struct InstructionOperand
 	//UUID encodingFieldId; // = 0;	//points to instruction field definition
 	std::string encodingFieldName;
 };
+
+inline void to_json(json& j, const InstructionOperand& operand) {
+	j = json{
+		{ "name", operand.name },
+		{ "description", operand.description },
+		{ "encodingFieldName", operand.encodingFieldName }
+	};
+}
 
 
 /* Defines effects (state changes and context transitions) for instructions */
@@ -64,6 +91,17 @@ struct IsaInstructionEffects {
 	std::optional<std::string> pseudoCode;
 };
 
+inline void to_json(json& j, const IsaInstructionEffects& effects) {
+	j = json{
+		{ "description", effects.description },
+		{ "reads", effects.reads },
+		{ "writes", effects.writes },
+		{ "modifies", effects.modifies },
+		{ "transitions", effects.transitions },
+		{ "pseudoCode", effects.pseudoCode.value_or("none") }
+	};
+}
+
 //context rules structure for instruction
 struct IsaInstructionContextRules
 {
@@ -78,6 +116,15 @@ struct IsaInstructionContextRules
 	//isa fault to throw on illegal/invalid instructions
 	std::optional<std::string> faultIfInvalid;
 };
+
+inline void to_json(json& j, const IsaInstructionContextRules& contextRules) {
+	j = json{
+		{ "allowedContexts", contextRules.allowedContexts },
+		{ "requiredFeatures", contextRules.requiredFeatures },
+		{ "forbiddenFeatures", contextRules.forbiddenFeatures },
+		{ "faultIfInvalid", contextRules.faultIfInvalid.value_or("none") }
+	};
+}
 
 
 /* Struct for individual instructions within ISA */
@@ -101,3 +148,18 @@ struct IsaInstruction {
 	std::vector<std::string> aliases;
 	std::vector<std::string> tags;
 };
+
+inline void to_json(json& j, const IsaInstruction& instruction) {
+	j = json{
+		{ "mnemonic", instruction.mnemonic },
+		{ "name", instruction.name },
+		{ "description", instruction.description },
+		{ "opcode", instruction.opcode },
+		{ "encodingName", instruction.encodingName },
+		{ "operands", instruction.operands },
+		{ "contextRules", instruction.contextRules },
+		{ "effects", instruction.effects },
+		{ "aliases", instruction.aliases },
+		{ "tags", instruction.tags }
+	};
+}

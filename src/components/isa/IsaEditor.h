@@ -4,6 +4,7 @@
 #include "../../core/isa/IsaArchitecture.h"
 
 #include "../project/ProjectManager.h"
+#include "../../project/FileHandler.h"
 //#include "../../AppContext.h"
 
 class IsaEditor : public ComponentBase
@@ -82,9 +83,15 @@ public:
 		std::string fileName = context.projectManager->
 			GetCurrentProject()->files.at(fileId).name;
 
+		std::filesystem::path fileFullPath = context.projectManager->
+			GetCurrentProject()->files.at(fileId).path;
+
+		fileFullPath = context.projectManager->GetCurrentProject()->path / fileFullPath;
 		
 		//fmt::println("[IsaEditor] Creating new ISA definition document for file '{:s}' at ''",
 		//	fileName);
+		fmt::println("[IsaEditor] Got file path: {:s}",
+			fileFullPath.string());
 
 		UUID documentId = context.projectManager->GetNextUUID();
 
@@ -114,23 +121,61 @@ public:
 
 		context.projectManager->SaveProject();
 
+		//TODO save file with document data
+		//json j = document;
+		//context.projectManager->SaveFile();
+		ProjectResult<void> result = FileHandler::Save(fileFullPath, document);
+
 		return true;
 	}
 
-	bool OpenDocument(AppContext& context, UUID documentId, std::string filePath) {
-		fmt::println("[IsaEditor] Opening ISA document {} at path: {:s}",
-			documentId, filePath);
+	bool OpenDocument(AppContext& context, UUID fileId, std::string filePath) {
+		fmt::println("[IsaEditor] Opening file {} at path: {:s}",
+			fileId, filePath);
 		//todo open file in editor
+		if (!context.projectManager->GetCurrentProject()->files.contains(fileId))
+		{
+			fmt::println("[IsaEditor] Error: File with id {} not found in project.", fileId);
+			return false;
+		}
+
+		UUID documentId = context.projectManager->
+			GetCurrentProject()->files.at(fileId).documentId;
+
 		if (context.componentContext->GetIsaEditorState().openDocuments.find(documentId)
 			== context.componentContext->GetIsaEditorState().openDocuments.end()) 
 		{
-			fmt::println("[IsaEditor] Document not found. TODO try open from file");
+			fmt::println("[IsaEditor] Try open from file");
+			//todo
+
+			std::filesystem::path fileFullPath = context.projectManager->
+				GetCurrentProject()->files.at(fileId).path;
+
+			fileFullPath = context.projectManager->GetCurrentProject()->path / fileFullPath;
+
+			fmt::println("[IsaEditor] Opening file {}", fileFullPath.string());
+			auto result = FileHandler::Load<IsaDefinition>(fileFullPath);
+
+			if (result.ok) {
+				//put document in editor state
+				context.componentContext->
+					GetIsaEditorState().openDocuments.emplace(documentId, result.value);
+
+				fmt::println("[IsaEditor] Got file {}", documentId);
+			}
+		}
+
+		//retry load
+		if (context.componentContext->GetIsaEditorState().openDocuments.find(documentId)
+			== context.componentContext->GetIsaEditorState().openDocuments.end())
+		{
+			fmt::println("[IsaEditor] Error: Document not found - cannot open");
 			//todo
 			return false;
 		}
 		
 		//document is open
-		//push app command to open new vieweditor window with selected document
+		//TODO push app command to open new vieweditor window with selected document
 
 		return true;
 	}

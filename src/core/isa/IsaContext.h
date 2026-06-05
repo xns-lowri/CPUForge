@@ -20,6 +20,15 @@ struct IsaContextState
     std::optional<uint16_t> encodedValue;   //hardware register value
 };
 
+inline void to_json(json& j, const IsaContextState& state) {
+	j = json{
+		{ "name", state.name },
+		{ "friendlyName", state.friendlyName },
+		{ "description", state.description },
+		{ "encodedValue", state.encodedValue.value_or(0) }
+	};
+}
+
 /* Context Dimensions - abstract context state handling */
 struct IsaContextDimension
 {
@@ -33,6 +42,16 @@ struct IsaContextDimension
     std::optional<std::string> registerFieldPath; // e.g. "status.privilege"
 };
 
+inline void to_json(json& j, const IsaContextDimension& dimension) {
+	j = json{
+		{ "name", dimension.name },
+		{ "friendlyName", dimension.friendlyName },
+		{ "description", dimension.description },
+		{ "states", dimension.states },
+		{ "registerFieldPath", dimension.registerFieldPath.value_or("none") }
+	};
+}
+
 /* Structs for Instruction context rules definition */
 struct IsaContextRequirement
 {
@@ -42,6 +61,14 @@ struct IsaContextRequirement
     //list of allowed states within context dimension, use OR logic
     std::vector<IsaContextState> allowedStates; // ["kernel", "machine"]
 };
+
+inline void to_json(json& j, const IsaContextRequirement& requirement) {
+	j = json{
+		{ "name", requirement.name },
+		{ "dimensionId", requirement.dimensionId },
+		{ "allowedStates", requirement.allowedStates }
+	};
+}
 
 struct IsaContextRule 
 {
@@ -54,6 +81,13 @@ struct IsaContextRule
     //vector of rules then ORed in instruction
 };
 
+inline void to_json(json& j, const IsaContextRule& rule) {
+	j = json{
+		{ "name", rule.name },
+		{ "requiredStates", rule.requiredStates }
+	};
+}
+
 /* Defines state accesses (read/write/modify) for inst. effects */
 struct IsaStateAccess
 {
@@ -62,12 +96,29 @@ struct IsaStateAccess
     std::optional<std::string> condition;
 };
 
+inline void to_json(json& j, const IsaStateAccess& access) {
+	j = json{
+		{ "kind", ToString(access.kind) },
+		{ "target", access.target },
+		{ "condition", access.condition.value_or("none") }
+	};
+}
+
 /* Possible context transitions for instruction effects */
 struct IsaContextTransition {
     std::string name;
     std::string dimensionId;
 
-    std::vector<IsaContextState> fromStates;
-    IsaContextState toState;
+    std::vector<std::string> fromStates;
+    std::string toState;
     //todo condition?
 };
+
+inline void to_json(json& j, const IsaContextTransition& transition) {
+	j = json{
+		{ "name", transition.name },
+		{ "dimensionId", transition.dimensionId },
+		{ "fromStates", transition.fromStates },
+		{ "toState", transition.toState }
+	};
+}

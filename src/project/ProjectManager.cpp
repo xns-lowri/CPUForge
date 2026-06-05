@@ -417,11 +417,12 @@ UUID ProjectManager::NewFile(
 	projectData->files.emplace(newFile.id, newFile);
 
 	//fs make new folder
+	std::filesystem::path filePath = projectData->path / localPath;
 	/* TODO Fix create file method */
-	FileHandler::CreateFile(localPath);
+	FileHandler::CreateFile(filePath);
 	SaveProject();
 
-	fmt::println("Created file {} at {}", newFile.id, newFile.path);
+	fmt::println("Created file {} at {}", newFile.id, filePath.string());
 
 	//fmt::println("Added folder '{}' with id {} to parent {} in project '{}'",
 	//	name, newFolder.id, parentFolder->name, projectData->name);
@@ -436,4 +437,5 @@ bool ProjectManager::SetDocumentIdInFile(UUID fileId, UUID documentId) {
 		return false;
 	}
 	projectData->files[fileId].documentId = documentId;
+	return true;
 }

@@ -114,8 +114,10 @@ public:
 	static bool CreateFile(const std::filesystem::path& path) {
 		try {
             //todo doesn't create file???
+            json j = { "test", "ing" };
 			std::filesystem::create_directories(path.parent_path());
-			std::ofstream out(path);
+            std::ofstream out(path, std::ios::binary | std::ios::trunc);
+            //out << j.dump(4);
 			return out.good();
 		}
 		catch (const std::exception& e) {

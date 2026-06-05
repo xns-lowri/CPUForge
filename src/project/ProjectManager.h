@@ -52,6 +52,8 @@ public:
 	bool SaveProjectAs(const std::filesystem::path filePath);
 	void CloseProject();
 
+	bool SaveFile(UUID fileId, json data);
+
 	//project tree management functions
 	UUID NewFolder(
 		const std::string name, 
@@ -66,7 +68,7 @@ public:
 		UUID parentId);
 	//bool deleteItem(UUID itemId);
 	//bool renameItem(UUID itemId, const std::string& newName);
-	bool SetDocumentIdInFile(UUID fileId, UUID documentId);
+	bool SetDocumentIdInFile(UUID fileId, UUID documentId); 
 
 	//document management functions
 	//bool createISADefinitionDocument(const std::string& name, const std::string& description);

@@ -25,6 +25,28 @@ struct DocumentHeader {
 	uint64_t contentRevision = 0;	//incremented on each change, used for version tracking
 };
 
+inline void to_json(json& j, const DocumentHeader& header) {
+	j = json{
+		{ "id", header.id },
+		{ "title", header.title },
+		{ "description", header.description },
+		{ "schemaVersion", header.schemaVersion },
+		//{ "dirty", header.dirty },
+		{ "createdUtc", header.createdUtc },
+		{ "modifiedUtc", header.modifiedUtc },
+		{ "contentRevision", header.contentRevision }
+	};
+}
+
+inline void from_json(const json& j, DocumentHeader& header) {
+	j.at("id").get_to(header.id);
+	j.at("title").get_to(header.title);
+	j.at("description").get_to(header.description);
+	j.at("schemaVersion").get_to(header.schemaVersion);
+	j.at("createdUtc").get_to(header.createdUtc);
+	j.at("modifiedUtc").get_to(header.modifiedUtc);
+	j.at("contentRevision").get_to(header.contentRevision);
+}
 /* Reusable header for all 'item' type objects in project */
 /*struct ItemHeader {
 	UUID id = 0;

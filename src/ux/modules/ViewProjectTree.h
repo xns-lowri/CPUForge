@@ -214,7 +214,7 @@ public:
 									.command = AppCommand::OpenFile,
 									.id = context.workspaceManager->GetAction(),
 									.path = context.workspaceManager->GetPath(),
-									.targetId = curFile.documentId
+									.targetId = curFile.id
 								});
 							}
 						}

@@ -25,6 +25,15 @@ struct IsaEnumValue
 	std::string description;
 };
 
+inline void to_json(json& j, const IsaEnumValue& enumVal) {
+	j = json{
+		{ "name", enumVal.name },
+		{ "friendlyName", enumVal.friendlyName },
+		{ "value", enumVal.value },
+		{ "description", enumVal.description }
+	};
+}
+
 /* Defines individual fields within register 
 * - gp registers may have 1 field: r0(16) has data(16)
 * - special registers may have more: FLAGS has PRV(2), Z/N/C/V(1), etc
@@ -48,6 +57,20 @@ struct IsaRegisterField {
 	//todo link from hardware side?
 	//std::optional<std::string> linkedHardware;
 };
+
+inline void to_json(json& j, const IsaRegisterField& field) {
+	j = json{
+		{ "name", field.name },
+		{ "friendlyName", field.friendlyName },
+		{ "description", field.description },
+		{ "startOffset", field.startOffset },
+		{ "bitWidth", field.bitWidth },
+		{ "readable", field.readable },
+		{ "writable", field.writable },
+		{ "resetValue", field.resetValue.value_or(0) },
+		{ "enumValues", field.enumValues }
+	};
+}
 
 /* Define single register within design */
 struct IsaRegister
@@ -74,6 +97,22 @@ struct IsaRegister
 	//todo link to hardware? or link fields to hardware signal/bus?
 };
 
+inline void to_json(json& j, const IsaRegister& reg) {
+	j = json{
+		{ "name", reg.name },
+		{ "friendlyName", reg.friendlyName },
+		{ "description", reg.description },
+		{ "bitWidth", reg.bitWidth },
+		{ "type", ToString(reg.type) },
+		{ "readable", reg.readable },
+		{ "writable", reg.writable },
+		{ "role", ToString(reg.role) },
+		{ "fields", reg.fields },
+		{ "aliases", reg.aliases },
+		{ "tags", reg.tags }
+	};
+}
+
 /* Define register file within design */
 struct IsaRegisterFile
 {
@@ -88,3 +127,14 @@ struct IsaRegisterFile
 
 	std::map<std::string, IsaRegister> registers;
 };
+
+inline void to_json(json& j, const IsaRegisterFile& regFile) {
+	j = json{
+		{ "name", regFile.name },
+		{ "friendlyName", regFile.friendlyName },
+		{ "description", regFile.description },
+		{ "type", ToString(regFile.type) },
+		{ "defaultBitWidth", regFile.defaultBitWidth },
+		{ "registers", regFile.registers }
+	};
+}
