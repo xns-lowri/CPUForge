@@ -61,6 +61,12 @@ void AppComponentRegistry::UpdateComponentContext(AppContext& context) {
 	
 		context.componentContext->SetTreeActionsFolder(
 			componentId.first, component->GetTreeActionsFolder());
+
+		//todo handle multiple file types
+		FileType type = FileTypeFromFolderKind(componentId.first);
+
+		context.componentContext->SetTreeActionsFile(
+			type, component->GetTreeActionsFile());
 	}
 		//todo
 }

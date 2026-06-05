@@ -67,26 +67,12 @@ public:
 		bool draw_children)
 	{
 		for (auto& folder : folders) {
-			//if (draw_children) {
-			//	fmt::println("Got folder: {:s}, id: {}, parent: {}",
-			//		folder.second.name,
-			//		folder.second.id,
-			//		folder.second.parentId
-			//	);
-			//}
-
 			if ((!draw_children && folder.second.parentId != 0) || folder.second.id == 0)
 			{
 				//don't draw child folders on first pass
 				//also don't re-draw root folder
 				continue;
 			}
-
-			//fmt::println("Draw folder: {:s}, id: {}, parent: {}", 
-			//	folder.second.name,
-			//	folder.second.id,
-			//	folder.second.parentId
-			//);
 
 			//start tree node for current folder
 			bool treeOpen = ImGui::TreeNodeEx(
@@ -132,6 +118,7 @@ public:
 
 					if (folder.second.properties.canAddFiles) {
 						for (auto& action : context.componentContext->GetTreeActionsFolder(folder.second.type)) {
+							//todo may need to refactor if tree actions don't all create new file...
 							if (ImGui::MenuItem(action.displayName.c_str())) {
 								fmt::println("Action '{:s}' in folder: {:s}",
 									action.action, folder.second.path);
@@ -142,11 +129,20 @@ public:
 								//	.path = folder.second.path	
 								//});
 								std::string componentId = action.action.substr(0, action.action.find('.'));
-
+								std::string actionId = action.action.substr(action.action.find_last_of('.') + 1);
 								context.workspaceManager->SetSelectedFolder(folder.second.id);
 								context.workspaceManager->SetAction(action.action);
 								context.workspaceManager->SetPath(folder.second.path);
-								manager.OpenModal(context, "modal.new_file");
+
+								//fmt::println(" ***** Action: {:s}", actionId);
+
+								if (actionId == "new_file") {
+									//todo check if action needs modal, else push command
+									manager.OpenModal(context, "modal." + actionId);
+								}
+								else {
+									//todo
+								}
 							}
 						}
 						//if (ImGui::MenuItem("New File")) {
@@ -158,6 +154,7 @@ public:
 					ImGui::EndPopup();
 				}
 			}
+			//end context menu for current folder
 
 			//render tree if open
 			if (treeOpen) 
@@ -178,25 +175,60 @@ public:
 
 				RenderTreeFolders(context, childFolders, true);
 
-				//todo render files
+				//render files
 				for (auto& fileId : folder.second.childFiles) {
 					//FileObject file = 
 					//	context.projectManager->
 					//	GetCurrentProject()->
 					//	files.at(fileId);
-
-					if (ImGui::TreeNodeEx(
-						context.projectManager->
+					FileObject curFile = context.projectManager->
 						GetCurrentProject()->
-						files.at(fileId).name.c_str(),
-						ImGuiTreeNodeFlags_SpanAvailWidth |
-						ImGuiTreeNodeFlags_Leaf)
-						) 
-					{
-						ImGui::TreePop();
-					}
-				}
+						files.at(fileId);
 
+					bool leafOpen = ImGui::TreeNodeEx(
+						curFile.name.c_str(),
+						ImGuiTreeNodeFlags_SpanAvailWidth |
+						ImGuiTreeNodeFlags_Leaf);
+
+					if (ImGui::BeginPopupContextItem()) {
+						//file context menu
+						for (auto& action : context.componentContext->GetTreeActionsFile(curFile.type)) {
+							//todo may need to refactor if tree actions don't all create new file...
+							if (ImGui::MenuItem(action.displayName.c_str())) {
+								fmt::println("Action '{:s}' in folder: {:s}",
+									action.action, folder.second.path);
+								//action.action(context, folder.second.id);
+								//context.appCommandQueue->Push(AppCommandRequest{
+								//	.command = AppCommand::NewFile,
+								//	.id = action.action,
+								//	.path = folder.second.path	
+								//});
+								std::string componentId = action.action.substr(0, action.action.find('.'));
+								std::string actionId = action.action.substr(action.action.find_last_of('.') + 1);
+								context.workspaceManager->SetSelectedFolder(folder.second.id);
+								context.workspaceManager->SetAction(action.action);
+								context.workspaceManager->SetPath(curFile.path);
+
+								//fmt::println(" ***** Action: {:s}", actionId);
+								context.appCommandQueue->Push(AppCommandRequest{
+									.command = AppCommand::OpenFile,
+									.id = context.workspaceManager->GetAction(),
+									.path = context.workspaceManager->GetPath(),
+									.targetId = curFile.documentId
+								});
+							}
+						}
+
+						ImGui::EndPopup();
+					}
+
+					if (leafOpen) 
+					{
+						  ImGui::TreePop();
+					}
+
+				}
+					
 				ImGui::TreePop();
 			}
 		}

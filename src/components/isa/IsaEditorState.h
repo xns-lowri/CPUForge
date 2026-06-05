@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
+#include <unordered_map>
 #include "../../core/isa/IsaArchitecture.h"
 
 struct IsaEditorState {
-	std::vector<IsaDefinition> openDocuments;
+	std::unordered_map<UUID, IsaDefinition> openDocuments;
 };
