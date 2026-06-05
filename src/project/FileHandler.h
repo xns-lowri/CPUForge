@@ -120,6 +120,7 @@ public:
 		}
 		catch (const std::exception& e) {
 			// Handle exceptions if necessary
+			fmt::println("{}", e.what());
 			return false;
 		}
 	}

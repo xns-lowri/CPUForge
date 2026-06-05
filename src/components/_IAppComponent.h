@@ -1,8 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../core/AppComponentRegistry.h"
+//#include "../core/AppComponentRegistry.h"
 #include "../project/Project.h"
+#include "../enumAppCommands.h"
+
+#include "../project/ProjectManager.h"
+#include "../AppContext.h" 
 
 class IAppComponent {
 public:
@@ -17,9 +21,7 @@ public:
 	virtual std::vector<TreeActionDescriptor> GetTreeActionsFolder() const = 0;
 	virtual std::vector<TreeActionDescriptor> GetTreeActionsFile() const = 0;
 
-	virtual bool HandleCommand(
-		const std::string& command,
-		const std::string& path) = 0;
+	virtual bool HandleCommand(AppContext& context, AppCommandRequest command) = 0;
 
 	//virtual bool NewFile(std::string filePath) = 0;
 	//virtual bool OpenFile(std::string filePath) = 0;

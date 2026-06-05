@@ -3,6 +3,9 @@
 #include "../_IAppComponent.h"
 #include "../../core/isa/IsaArchitecture.h"
 
+#include "../project/ProjectManager.h"
+//#include "../../AppContext.h"
+
 class IsaEditor : public ComponentBase
 {
 public:
@@ -43,25 +46,76 @@ public:
 		return returnList;
 	}
 
-	bool HandleCommand(
-		const std::string& command,
-		const std::string& path)
+	bool HandleCommand(AppContext& context, AppCommandRequest command)
 	{
-		if (command == "isa_editor.new_file") {
-			return NewFile(path);
+		std::string commandAction = command.id.substr(command.id.find_last_of(".") + 1);
+		//todo get file id from command
+		if (commandAction == "new_file") {
+			return NewFile(context, command.targetId, command.path);
 		}
-		if (command == "isa_editor.open_file") {
-			return OpenFile(path);
+
+		if (commandAction == "open_file") {
+			return OpenFile(context, command.targetId, command.path);
 		}
 		return false;
 	}
 
-	bool NewFile(std::string filePath) {
-		fmt::println("Creating new ISA file at path: {:s}", filePath);
-		return false;
+	bool NewFile(AppContext& context, UUID fileId, std::string filePath) {
+		fmt::println("[IsaEditor] Creating new ISA file {} at path: {:s}", 
+			fileId, filePath);
+
+		fmt::println("Project: {:s}", context.projectManager->GetProjectName());
+		
+		if (!context.projectManager->GetCurrentProject()->
+			files.contains(fileId))
+		{
+			fmt::println("[IsaEditor] Error: File with id {} not found in project.", fileId);
+			return false;
+		}
+
+		//fmt::println("[IsaEditor] Get file object");
+		//FileObject* file = &context.projectManager->
+		//	GetCurrentProject()->files.at(fileId);
+
+		std::string fileName = context.projectManager->
+			GetCurrentProject()->files.at(fileId).name;
+
+		
+		//fmt::println("[IsaEditor] Creating new ISA definition document for file '{:s}' at ''",
+		//	fileName);
+
+		UUID documentId = context.projectManager->GetNextUUID();
+
+		//fmt::println("[IsaEditor] Got new ID: {}", documentId);
+
+		//context.projectManager->
+		//	GetCurrentProject()->files[fileId].documentId = documentId;
+		context.projectManager->SetDocumentIdInFile(fileId, documentId);
+
+		//fmt::println("[IsaEditor] Set documentId: {}", 
+		//	context.projectManager->
+		//	GetCurrentProject()->files.at(fileId).documentId);
+
+		IsaDefinition document = IsaDefinition();
+		document.header.createdUtc = "now"; //todo get current time
+		document.header.modifiedUtc = document.header.createdUtc;
+		document.header.id = documentId;
+
+		//fmt::println("[IsaEditor] Get file object");
+
+		//put document in editor state
+		context.componentContext->
+			GetIsaEditorState().openDocuments.push_back(document);
+
+		//fmt::println("[IsaEditor] Push open document to state");
+		//todo open isa editor window - command?
+
+		context.projectManager->SaveProject();
+
+		return true;
 	}
 
-	bool OpenFile(std::string filePath) {
+	bool OpenFile(AppContext& context, UUID fileId, std::string filePath) {
 		//todo open file in editor
 		return false;
 	}
@@ -80,4 +134,6 @@ public:
 
 		//register project template provider?
 	//}
+private:
+	//std::vector<IsaDefinition> openDocuments;
 };

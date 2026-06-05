@@ -26,6 +26,10 @@ int main(int argc, char** argv)
     AppContext appContext = AppContext();
     AppCommandDispatcher dispatcher = AppCommandDispatcher();
 
+    //todo registry integration
+	AppComponentRegistry registry = AppComponentRegistry();
+    registry.UpdateComponentContext(appContext);
+
     std::optional<std::filesystem::path> lastProjectPath = appContext.projectManager->LoadProjectContext();
     if (lastProjectPath.has_value()) {
         appContext.projectManager->OpenProject(lastProjectPath.value());
@@ -71,7 +75,8 @@ int main(int argc, char** argv)
             dispatcher.Dispatch(
                 request.value(), 
                 ui.GetWindowManager(), 
-                appContext
+                appContext,
+                registry
                 //todo pass editor refs
             );
         }

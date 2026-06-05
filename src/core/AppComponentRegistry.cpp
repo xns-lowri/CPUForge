@@ -1,6 +1,7 @@
 #include "AppComponentRegistry.h"
-
 #include "../components/isa/IsaEditor.h"
+#include "../AppContext.h"
+#include "../components/ComponentContext.h"
 
 AppComponentRegistry::AppComponentRegistry() {
 	//fmt::println("***** Initializing AppComponentRegistry *****");
@@ -53,6 +54,17 @@ bool AppComponentRegistry::RegisterFileTypes(
 	return true;
 }
 
+void AppComponentRegistry::UpdateComponentContext(AppContext& context) {
+	
+	for (auto& componentId : componentIdsByFolder) {
+		auto& component = componentsById.at(componentId.second);
+	
+		context.componentContext->SetTreeActionsFolder(
+			componentId.first, component->GetTreeActionsFolder());
+	}
+		//todo
+}
+
 std::vector<TreeActionDescriptor> AppComponentRegistry::GetTreeActionsFolder(FolderKind folderKind) const 
 {
 	std::vector<TreeActionDescriptor> returnList
@@ -93,22 +105,23 @@ std::vector<TreeActionDescriptor> AppComponentRegistry::GetTreeActionsFile(FileT
 //	return true;
 //};
 bool AppComponentRegistry::HandleCommand(
-	const std::string& command,
-	const std::string& path) 
+	AppContext& context, AppCommandRequest command)
 {
 	//todo delegation to modules
-	fmt::println("AppComponentRegistry: {:s} at path '{:s}'", command, path);
+	fmt::println("AppComponentRegistry: {:s} at path '{:s}'", 
+		command.id, command.path);
 
-	std::string componentId = command.substr(0, command.find('.'));
-	fmt::println("ComponentId: {:s}", componentId);
+	std::string componentId = command.id.substr(0, command.id.find('.'));
+	std::string commandAction = command.id.substr(command.id.find_last_of('.') + 1);
+	fmt::println("ComponentId: {:s}, command: {:s}", componentId, commandAction);
 
 	if (componentsById.find(componentId) == componentsById.end()) {
 		fmt::println("Error: No component registered with id '{:s}' for command '{:s}'",
-			componentId, command);
+			componentId, commandAction);
 		return false;
 	}
 
-	componentsById[componentId]->HandleCommand(command, path);
+	componentsById[componentId]->HandleCommand(context, command); //todo context????
 
 	return true;
 }

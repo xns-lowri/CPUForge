@@ -2,7 +2,8 @@
 #include "queue/AppCommandQueue.h"
 #include "project/ProjectManager.h"
 #include "project/WorkspaceManager.h"
-#include "core/AppComponentRegistry.h"
+#include "components/ComponentContext.h"
+//#include "core/AppComponentRegistry.h"
 
 //class AppCommandQueue;
 //class ProjectManager;
@@ -18,8 +19,13 @@ struct AppContext {
     //ProjectManager& projectManager; //blank proj
 	//WorkspaceManager& workspaceManager; //blank workspace
 
-	std::unique_ptr<AppComponentRegistry> appComponentRegistry =
-		std::make_unique<AppComponentRegistry>();
+	//std::unique_ptr<AppComponentRegistry> appComponentRegistry =
+	//	std::make_unique<AppComponentRegistry>();
+
+	std::unique_ptr<ComponentContext> componentContext =
+		std::make_unique<ComponentContext>();
+
+
 
 	std::unique_ptr<AppCommandQueue> appCommandQueue =
 		std::make_unique<AppCommandQueue>();

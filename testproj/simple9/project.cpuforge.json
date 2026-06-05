@@ -2,13 +2,211 @@
     "description": "",
     "files": [
         {
-            "documentId": 0,
+            "documentId": 1780672956,
             "extension": ".isa",
             "generated": false,
-            "id": 1780614009,
-            "name": "core3.isa",
-            "parentId": 1780614001,
-            "path": "isa\\core3.isa",
+            "id": 1780672955,
+            "name": "core1.isa",
+            "parentId": 1780672947,
+            "path": "isa\\core1.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672958,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672957,
+            "name": "new file2.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file2.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672960,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672959,
+            "name": "new file24.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file24.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672962,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672961,
+            "name": "new file3.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file3.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672964,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672963,
+            "name": "new file32.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file32.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672966,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672965,
+            "name": "new file321.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file321.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672968,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672967,
+            "name": "new file32133.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file32133.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672970,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672969,
+            "name": "new file4.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file4.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672972,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672971,
+            "name": "new file41.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file41.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672974,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672973,
+            "name": "new file42.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file42.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672976,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672975,
+            "name": "new file43.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file43.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672978,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672977,
+            "name": "new file44.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file44.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672980,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672979,
+            "name": "new file45.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file45.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672982,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672981,
+            "name": "new file46.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file46.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672984,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672983,
+            "name": "new file47.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file47.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672986,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672985,
+            "name": "new file48.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file48.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672988,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672987,
+            "name": "new file49.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file49.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672990,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672989,
+            "name": "new file5.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file5.isa",
+            "readOnly": false,
+            "type": "ISADefinition"
+        },
+        {
+            "documentId": 1780672992,
+            "extension": ".isa",
+            "generated": false,
+            "id": 1780672991,
+            "name": "new file.isa",
+            "parentId": 1780672947,
+            "path": "isa\\new file.isa",
             "readOnly": false,
             "type": "ISADefinition"
         }
@@ -16,10 +214,28 @@
     "folders": [
         {
             "childFiles": [
-                1780614009
+                1780672955,
+                1780672957,
+                1780672959,
+                1780672961,
+                1780672963,
+                1780672965,
+                1780672967,
+                1780672969,
+                1780672971,
+                1780672973,
+                1780672975,
+                1780672977,
+                1780672979,
+                1780672981,
+                1780672983,
+                1780672985,
+                1780672987,
+                1780672989,
+                1780672991
             ],
             "childFolders": [],
-            "id": 1780614001,
+            "id": 1780672947,
             "name": "isa",
             "parentId": 0,
             "path": "isa",
@@ -33,7 +249,7 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1780614002,
+            "id": 1780672948,
             "name": "hardware",
             "parentId": 0,
             "path": "hardware",
@@ -47,10 +263,10 @@
         {
             "childFiles": [],
             "childFolders": [
-                1780614004,
-                1780614005
+                1780672950,
+                1780672951
             ],
-            "id": 1780614003,
+            "id": 1780672949,
             "name": "sources",
             "parentId": 0,
             "path": "sources",
@@ -64,9 +280,9 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1780614004,
+            "id": 1780672950,
             "name": "host",
-            "parentId": 1780614003,
+            "parentId": 1780672949,
             "path": "sources\\host",
             "properties": [
                 true,
@@ -78,9 +294,9 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1780614005,
+            "id": 1780672951,
             "name": "target",
-            "parentId": 1780614003,
+            "parentId": 1780672949,
             "path": "sources\\target",
             "properties": [
                 true,
@@ -92,7 +308,7 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1780614006,
+            "id": 1780672952,
             "name": "debug",
             "parentId": 0,
             "path": "debug",
@@ -106,7 +322,7 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1780614007,
+            "id": 1780672953,
             "name": "build",
             "parentId": 0,
             "path": "build",
@@ -120,7 +336,7 @@
         {
             "childFiles": [],
             "childFolders": [],
-            "id": 1780614008,
+            "id": 1780672954,
             "name": "notes",
             "parentId": 0,
             "path": "notes",
@@ -132,8 +348,8 @@
             "type": "Notes"
         }
     ],
-    "id": 1780614000,
+    "id": 1780672946,
     "name": "simple9",
-    "nextId": 1780614010,
+    "nextId": 1780672993,
     "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple9"
 }

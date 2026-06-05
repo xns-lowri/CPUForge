@@ -393,6 +393,13 @@ UUID ProjectManager::NewFile(
 		return 0;
 	}
 
+	for (auto& file : projectData->files) {
+		if (file.second.name == name && file.second.parentId == parentId) {
+			fmt::println("File with name '{}' already exists in parent folder.", name);
+			return 0;
+		}
+	}
+
 	FileObject newFile;
 	newFile.id = GetNextUUID();
 	newFile.parentId = parentId;
@@ -421,4 +428,12 @@ UUID ProjectManager::NewFile(
 
 	//fmt::println("Child folders in parent '{}': {}", parentFolder->name, parentFolder->childFolders.size());
 	return newFile.id;
+}
+
+bool ProjectManager::SetDocumentIdInFile(UUID fileId, UUID documentId) {
+	if (projectData->files.find(fileId) == projectData->files.end()) {
+		fmt::println("File with id {} does not exist.", fileId);
+		return false;
+	}
+	projectData->files[fileId].documentId = documentId;
 }

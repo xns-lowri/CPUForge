@@ -3,7 +3,7 @@
 #include "../ux/WindowManager.h"
 
 #include "../AppContext.h"
-//#include "../core/AppComponentRegistry.h"
+#include "../core/AppComponentRegistry.h"
 //struct AppContext;
 
 class AppCommandDispatcher {
@@ -11,7 +11,8 @@ public:
     void Dispatch(
         AppCommandRequest command, 
         WindowManager& window, 
-        AppContext& context);
+        AppContext& context,
+        AppComponentRegistry& registry);
 
     static bool CanDispatch(
         AppCommand command, 

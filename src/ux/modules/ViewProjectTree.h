@@ -131,7 +131,7 @@ public:
 					}
 
 					if (folder.second.properties.canAddFiles) {
-						for (auto& action : context.appComponentRegistry->GetTreeActionsFolder(folder.second.type)) {
+						for (auto& action : context.componentContext->GetTreeActionsFolder(folder.second.type)) {
 							if (ImGui::MenuItem(action.displayName.c_str())) {
 								fmt::println("Action '{:s}' in folder: {:s}",
 									action.action, folder.second.path);
@@ -171,20 +171,24 @@ public:
 
 				for (auto& childId : folder.second.childFolders) {
 					childFolders.insert({ childId, 
-						context.projectManager->GetCurrentProject()->folders.find(childId)->second });
+						context.projectManager->GetCurrentProject()->
+						folders.find(childId)->second 
+					});
 				}
 
 				RenderTreeFolders(context, childFolders, true);
 
 				//todo render files
 				for (auto& fileId : folder.second.childFiles) {
-					FileObject file = 
-						context.projectManager->
-						GetCurrentProject()->
-						files.find(fileId)->second;
+					//FileObject file = 
+					//	context.projectManager->
+					//	GetCurrentProject()->
+					//	files.at(fileId);
 
 					if (ImGui::TreeNodeEx(
-						file.name.c_str(),
+						context.projectManager->
+						GetCurrentProject()->
+						files.at(fileId).name.c_str(),
 						ImGuiTreeNodeFlags_SpanAvailWidth |
 						ImGuiTreeNodeFlags_Leaf)
 						) 

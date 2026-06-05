@@ -68,6 +68,8 @@ target_sources(CPUForge PRIVATE
 
     # app component registry modules
     "src/components/_IAppComponent.h"
+    "src/components/ComponentContext.h" 
+    "src/components/ComponentContext.cpp"
     "src/core/AppComponentRegistry.h" 
     "src/core/AppComponentRegistry.cpp"
 
@@ -85,6 +87,7 @@ target_sources(CPUForge PRIVATE
 
     # main ux modal modules
     "src/ux/core/ModalNewFolder.h" 
+    "src/ux/core/ModalNewFile.h" 
     "src/ux/core/ModalNewProject.h" 
     "src/ux/core/ModalOpenProject.h" 
 
@@ -93,7 +96,7 @@ target_sources(CPUForge PRIVATE
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
     "src/ux/menubar/WindowMenuData.h"
- "src/ux/core/ModalNewFile.h")
+)
 
 if(APPLE)
     target_sources(CPUForge PRIVATE

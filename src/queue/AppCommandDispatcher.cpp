@@ -60,7 +60,8 @@ bool AppCommandDispatcher::CanDispatch(
 void AppCommandDispatcher::Dispatch(
     AppCommandRequest command,
     WindowManager& window,
-    AppContext& context
+    AppContext& context,
+    AppComponentRegistry& components
     //todo ref to app components (open file)
 ) {
     if (!CanDispatch(command.command, context)) {
@@ -137,8 +138,11 @@ void AppCommandDispatcher::Dispatch(
             //todo create file entry in project
             //todo create data object in module
 			//todo open file
-            context.appComponentRegistry->HandleCommand(
-                command.id, command.path);
+            
+            components.HandleCommand(
+                context, command);
+			//easy fix: split get component (registry)
+            //directly handle command
             break;
 
             //todo open project file (in editor)
@@ -146,8 +150,8 @@ void AppCommandDispatcher::Dispatch(
             fmt::println("Open file '{:s}'", command.id);
 
             //todo get file path
-			context.appComponentRegistry->HandleCommand(
-                command.id, command.path);
+			components.HandleCommand(
+                context, command);
             
 			break;
 

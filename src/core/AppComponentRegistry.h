@@ -4,6 +4,10 @@
 #include <unordered_map>
 #include <memory>
 #include "../components/_IAppComponent.h"
+#include "../enumAppCommands.h"
+
+#include "../project/ProjectManager.h"
+#include "../AppContext.h"
 
 class AppComponentRegistry {
 public:
@@ -16,14 +20,14 @@ public:
 	bool RegisterFileTypes(
 		std::vector<FileTypeDescriptor> descriptors);
 
+	void UpdateComponentContext(AppContext& context);
+
 	std::vector<TreeActionDescriptor> GetTreeActionsFolder(FolderKind folderKind) const;
 
 	//todo get tree actions for file
 	std::vector<TreeActionDescriptor> GetTreeActionsFile(FileType fileType) const;
 	
-	bool HandleCommand(
-		const std::string& command,
-		const std::string& path);
+	bool HandleCommand(AppContext& context, AppCommandRequest command);
 	//bool HandleOpenProjectFile(const std::string& path);
 
 	//connect to handlers for file explorer tree
