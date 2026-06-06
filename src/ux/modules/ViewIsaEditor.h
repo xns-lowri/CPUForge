@@ -6,17 +6,31 @@
 
 class ViewIsaEditor : public WindowBase {
 public:
-	ViewIsaEditor(const std::string& id, WindowManager& mgr) : 
-		WindowBase("main.isa_editor." + id, "ISA Editor", true), manager(mgr) {};
+	ViewIsaEditor(const UUID& docId, WindowManager& mgr, const std::string id) : 
+		WindowBase(id, "ISA Editor", true),
+		manager(mgr), documentId(docId) {};
 
 	void Render(AppContext& context) {
 
-		ImGui::Begin(title.c_str(), nullptr);
+		bool openButton = open;
+
+		ImGui::Begin(title.c_str(), &openButton);
 
 		//todo render contents
 
 		ImGui::End();
+
+		if (!openButton) {
+			//todo close all the way??
+			//manager.RemoveWindow("main.isa_editor_" + std::to_string(documentId));
+			context.appCommandQueue->Push(AppCommandRequest{
+				.command = AppCommand::CloseWindow,
+				.id = id,
+				.targetId = documentId
+			});
+		}
 	}
 private:
 	WindowManager& manager;
+	UUID documentId;
 };

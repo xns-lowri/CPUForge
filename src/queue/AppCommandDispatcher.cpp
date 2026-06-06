@@ -40,6 +40,10 @@ bool AppCommandDispatcher::CanDispatch(
         case AppCommand::ToggleWindow:
             return true;
 
+        case AppCommand::OpenWindow:
+        case AppCommand::CloseWindow:
+            return true;
+
         case AppCommand::NewFile:
         case AppCommand::OpenFile:
             return true;
@@ -132,6 +136,15 @@ void AppCommandDispatcher::Dispatch(
             window.ToggleWindowVisibility(command.id);
             break;
 
+        case AppCommand::OpenWindow:
+            //todo done direct by module
+            //add window
+            break;
+
+        case AppCommand::CloseWindow:
+            fmt::println("Remove window '{:s}'", command.id);
+            window.RemoveWindow(command.id);
+            break;
 
         case AppCommand::NewFile:
             fmt::println("New file '{:s}'", command.id);
@@ -140,7 +153,7 @@ void AppCommandDispatcher::Dispatch(
 			//todo open file
             
             components.HandleCommand(
-                context, command);
+                context, window, command);
 			//easy fix: split get component (registry)
             //directly handle command
             break;
@@ -151,7 +164,7 @@ void AppCommandDispatcher::Dispatch(
 
             //todo get file path
 			components.HandleCommand(
-                context, command);
+                context, window, command);
             
 			break;
 

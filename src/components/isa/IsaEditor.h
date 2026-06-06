@@ -7,6 +7,8 @@
 #include "../../project/FileHandler.h"
 //#include "../../AppContext.h"
 
+#include "../../ux/modules/ViewIsaEditor.h"
+
 class IsaEditor : public ComponentBase
 {
 public:
@@ -47,7 +49,10 @@ public:
 		return returnList;
 	}
 
-	bool HandleCommand(AppContext& context, AppCommandRequest command)
+	bool HandleCommand(
+		AppContext& context, 
+		WindowManager& window, 
+		AppCommandRequest command)
 	{
 		std::string commandAction = command.id.substr(
 			command.id.find_last_of(".") + 1);
@@ -58,7 +63,7 @@ public:
 		}
 
 		if (commandAction == "open_file") {
-			return OpenDocument(context, command.targetId, command.path);
+			return OpenDocument(context, window, command.targetId, command.path);
 		}
 		return false;
 	}
@@ -129,7 +134,12 @@ public:
 		return true;
 	}
 
-	bool OpenDocument(AppContext& context, UUID fileId, std::string filePath) {
+	bool OpenDocument(
+		AppContext& context,
+		WindowManager& window,
+		UUID fileId, 
+		std::string filePath) 
+	{
 		fmt::println("[IsaEditor] Opening file {} at path: {:s}",
 			fileId, filePath);
 		//todo open file in editor
@@ -179,23 +189,12 @@ public:
 		//document is open
 		//TODO push app command to open new vieweditor window with selected document
 
-		return true;
+		fmt::println("[IsaEditor] Opening window");
+		bool windowOpened = window.OpenIsaEditor(context, documentId);
+
+		return windowOpened;
 	}
 
-	//void Register(AppComponentRegistry& registry) override {
-		//register file types
-		//registry.RegisterFileType(FileTypeDescriptor{
-		//	.id = "isa.definition",
-		//	.displayName = "ISA Definiton",
-		//	.extensions = { ".isa" },
-		//	//icon
-		//	//.defaultOpenCommand = "isa.open"
-		//});
-
-		//register tree action provider
-
-		//register project template provider?
-	//}
 private:
 	//std::vector<IsaDefinition> openDocuments;
 };

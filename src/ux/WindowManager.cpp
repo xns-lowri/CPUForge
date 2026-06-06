@@ -12,12 +12,12 @@
 #include "menubar/MacOsNative.h"
 #endif
 
-WindowManager::WindowManager(AppContext& context)
+WindowManager::WindowManager(AppContext& context) //todo remove context, not needed
 {
 	//add available windows here, can also be added during render/runtime
 	//ViewProjectTree* viewProjectTree = new ViewProjectTree();
 	ViewProjectTree viewProjectTree = ViewProjectTree(*this);
-	AddWindow<ViewProjectTree>(context, viewProjectTree.GetId(), viewProjectTree);
+	AddWindow<ViewProjectTree>(viewProjectTree.GetId(), viewProjectTree);
 
 	/* DEBUG todo remove */
 	//ViewIsaEditor test1 = ViewIsaEditor(*this);
@@ -26,13 +26,13 @@ WindowManager::WindowManager(AppContext& context)
 
 	//add modals
 	ModalNewProject modalNewProject = ModalNewProject();
-	AddModal<ModalNewProject>(context, modalNewProject.GetId(), modalNewProject);
+	AddModal<ModalNewProject>(modalNewProject.GetId(), modalNewProject);
 	ModalOpenProject modalOpenProject = ModalOpenProject();
-	AddModal<ModalOpenProject>(context, modalOpenProject.GetId(), modalOpenProject);
+	AddModal<ModalOpenProject>(modalOpenProject.GetId(), modalOpenProject);
 	ModalNewFolder modalNewFolder = ModalNewFolder();
-	AddModal<ModalNewFolder>(context, modalNewFolder.GetId(), modalNewFolder);
+	AddModal<ModalNewFolder>(modalNewFolder.GetId(), modalNewFolder);
 	ModalNewFile modalNewFile = ModalNewFile();
-	AddModal<ModalNewFile>(context, modalNewFile.GetId(), modalNewFile);
+	AddModal<ModalNewFile>(modalNewFile.GetId(), modalNewFile);
 
 	//print all added windows for debugging before leaving
 	for (auto& window : windows) {
@@ -50,7 +50,7 @@ WindowManager::WindowManager(AppContext& context)
 }
 
 template <typename T, typename... Args>
-T& WindowManager::AddModal(AppContext& context, std::string id, Args&&... args)
+T& WindowManager::AddModal(std::string id, Args&&... args)
 {
 	// Create a new window of type T with the provided arguments
 	auto modal = std::make_unique<T>(std::forward<Args>(args)...);
@@ -61,7 +61,7 @@ T& WindowManager::AddModal(AppContext& context, std::string id, Args&&... args)
 }
 
 template <typename T, typename... Args>
-T& WindowManager::AddWindow(AppContext& context, std::string id, Args&&... args)
+T& WindowManager::AddWindow(std::string id, Args&&... args)
 {
 	// Create a new window of type T with the provided arguments
 	auto window = std::make_unique<T>(std::forward<Args>(args)...);
@@ -70,80 +70,48 @@ T& WindowManager::AddWindow(AppContext& context, std::string id, Args&&... args)
 	return ref; // Return the reference to the caller
 }
 
-//todo remove
-/*
-bool WindowManager::RenderMainMenuBar(AppContext& context) {
-	bool running = true;
-	if (!ImGui::BeginMainMenuBar()) { return running; }
-
-	if (ImGui::BeginMenu("File")) {
-		if (ImGui::MenuItem("New Project")) {
-			//context.projectManager.NewProject("New Project");
-			//open modal somehow??
-			OpenModal(context, "modal.new_project");
-		}
-		if (ImGui::MenuItem("Open Project", "Ctrl+O")) {
-			OpenModal(context, "modal.open_project");
-		}
-		ImGui::Separator();
-		//disable save options if no project loaded
-		bool hadProject = context.projectManager.HasActiveProject();
-		if (!hadProject)
-		{
-			ImGui::BeginDisabled();
-		}
-
-		//if (ImGui::MenuItem("Save Project")) {}
-		//ImGui::Separator();
-
-		if (ImGui::MenuItem("Save", "Ctrl+S")) {
-		}
-		if (ImGui::MenuItem("Save as..")) {
-		}
-		if (ImGui::MenuItem("Save All", "Ctrl+Shift+S")) {
-		}
-		if (ImGui::MenuItem("Close Project")) {
-			context.projectManager.CloseProject();
-		}
-
-		if (!hadProject)
-		{
-			//must not call EndDisabled if project is closed from menu
-			ImGui::EndDisabled();
-		}
-
-		ImGui::Separator();
-		if (ImGui::MenuItem("Quit", "Alt+F4")) {
-			running = false;
-		}
-		ImGui::EndMenu();
+bool WindowManager::RemoveWindow(std::string id) 
+{
+	if (windows.find(id) == windows.end()) {
+		fmt::println("[WindowManager] No window to remove '{:s}'", id);
+		//no window to remove
+		return false;
 	}
 
-	if (ImGui::BeginMenu("Edit")) {
-		//todo check workspace manager for active cuttable/copyable item
-		if (!context.projectManager.HasActiveProject()) { ImGui::BeginDisabled(); }
-		if (ImGui::MenuItem("Cut", "Ctrl+X")) {
-		}
-		if (ImGui::MenuItem("Copy", "Ctrl+C")) {
-		}
-		if (ImGui::MenuItem("Paste", "Ctrl+V")) {
-		}
-		if (!context.projectManager.HasActiveProject()) { ImGui::EndDisabled(); }
-		ImGui::EndMenu();
+	fmt::println("[WindowManager] Removing window '{:s}'", id);
+
+	windows.erase(id);
+	return true;
+}
+
+bool WindowManager::OpenIsaEditor(AppContext& context, UUID documentId) {
+	std::string id = "main.isa_editor_" + std::to_string(documentId);
+
+	fmt::println("Opening window '{:s}'", id);
+
+	if (windows.find(id) == windows.end()) {
+		//open window
+		ViewIsaEditor newEditor = ViewIsaEditor(documentId, *this, id);
+		AddWindow<ViewIsaEditor>(newEditor.GetId(), newEditor);
+		return true;
 	}
 
-	if (ImGui::BeginMenu("Window")) {
-		//todo add items from windowmanager
-		//if (ImGui::MenuItem("ISA Design")) {
-		//}
-		DrawWindowMenuItems();
-		ImGui::EndMenu();
+	//open window if closed
+	if (!windows.at(id)->IsOpen()) {
+		windows.at(id)->SetOpen(true);
+		return true;
 	}
-	//if (ImGui::Button("Test Button")) {}
-	ImGui::EndMainMenuBar();
 
-	return running;
-}*/
+	//window is open
+	return false;
+}
+
+bool WindowManager::HandleOpenDocument(UUID documentId) {
+	//open or add new window for selected document
+	//todo remove??
+	fmt::println("[WindowManager] Opening document {}", documentId);
+	return false;
+}
 
 /* Main entrypoint during rendering, draw all windows, modals, etc */
 void WindowManager::DrawAll(AppContext& context) {

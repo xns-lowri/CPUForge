@@ -22,6 +22,9 @@ enum class AppCommand {
 
     ToggleWindow,
 
+    OpenWindow,
+    CloseWindow,
+
     NewFile,
     OpenFile,
 
@@ -47,6 +50,9 @@ static std::string_view ToString(AppCommand command) {
         case AppCommand::SelectAll:    return "SelectAll";
 
         case AppCommand::ToggleWindow: return "ToggleWindow";
+
+        case AppCommand::OpenWindow:   return "OpenWindow";
+        case AppCommand::CloseWindow:  return "CloseWindow";
 
         case AppCommand::NewFile:      return "NewFile";
         case AppCommand::OpenFile:     return "OpenFile";

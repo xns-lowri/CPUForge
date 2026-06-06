@@ -13,9 +13,15 @@ class WindowManager
 public:
 	WindowManager(AppContext& context);
 	template <typename T, typename... Args>
-	T& AddModal(AppContext& context, std::string id, Args&&... args);
+	T& AddModal(std::string id, Args&&... args);
 	template <typename T, typename... Args>
-	T& AddWindow(AppContext& context, std::string id, Args&&... args);
+	T& AddWindow(std::string id, Args&&... args);
+
+	bool RemoveWindow(std::string id);
+
+	bool OpenIsaEditor(AppContext& context, UUID documentId);
+
+	bool HandleOpenDocument(UUID documentId);
 
 	//bool RenderMainMenuBar(AppContext& context);
 	void DrawAll(AppContext& context);

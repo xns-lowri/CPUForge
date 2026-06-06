@@ -111,7 +111,7 @@ std::vector<TreeActionDescriptor> AppComponentRegistry::GetTreeActionsFile(FileT
 //	return true;
 //};
 bool AppComponentRegistry::HandleCommand(
-	AppContext& context, AppCommandRequest command)
+	AppContext& context, WindowManager& window, AppCommandRequest command)
 {
 	//todo delegation to modules
 	fmt::println("AppComponentRegistry: {:s} at path '{:s}'", 
@@ -127,7 +127,7 @@ bool AppComponentRegistry::HandleCommand(
 		return false;
 	}
 
-	componentsById[componentId]->HandleCommand(context, command); //todo context????
+	componentsById[componentId]->HandleCommand(context, window, command); //todo context????
 
 	return true;
 }

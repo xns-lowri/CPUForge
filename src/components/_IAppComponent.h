@@ -21,7 +21,10 @@ public:
 	virtual std::vector<TreeActionDescriptor> GetTreeActionsFolder() const = 0;
 	virtual std::vector<TreeActionDescriptor> GetTreeActionsFile() const = 0;
 
-	virtual bool HandleCommand(AppContext& context, AppCommandRequest command) = 0;
+	virtual bool HandleCommand(
+		AppContext& context,
+		WindowManager& window,
+		AppCommandRequest command) = 0;
 
 	//virtual bool NewFile(std::string filePath) = 0;
 	//virtual bool OpenFile(std::string filePath) = 0;

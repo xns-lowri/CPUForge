@@ -3,6 +3,9 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
+
+#include "../ux/WindowManager.h"
+
 #include "../components/_IAppComponent.h"
 #include "../enumAppCommands.h"
 
@@ -27,7 +30,10 @@ public:
 	//todo get tree actions for file
 	std::vector<TreeActionDescriptor> GetTreeActionsFile(FileType fileType) const;
 	
-	bool HandleCommand(AppContext& context, AppCommandRequest command);
+	bool HandleCommand(
+		AppContext& context, 
+		WindowManager& window, 
+		AppCommandRequest command);
 	//bool HandleOpenProjectFile(const std::string& path);
 
 	//connect to handlers for file explorer tree
