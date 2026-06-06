@@ -65,6 +65,10 @@ inline IsaRegisterType IsaRegisterTypeFromString(const std::string& str) {
 	return IsaRegisterType::Other; // default
 }
 
+inline void from_json(const json& j, IsaRegisterType type) {
+	type = IsaRegisterTypeFromString(j);
+}
+
 //Register roles - todo revise?
 enum class IsaRegisterRole
 {
@@ -106,6 +110,27 @@ inline std::string ToString(IsaRegisterRole role) {
 	}
 }
 
+inline IsaRegisterRole IsaRegisterRoleFromString(const std::string& str) {
+	if (str == "General") return IsaRegisterRole::General;
+	if (str == "ProgramCounter") return IsaRegisterRole::ProgramCounter;
+	if (str == "StackPointer") return IsaRegisterRole::StackPointer;
+	if (str == "FramePointer") return IsaRegisterRole::FramePointer;
+	if (str == "InterruptVector") return IsaRegisterRole::InterruptVector;
+	if (str == "MemoryMapping") return IsaRegisterRole::MemoryMapping;
+	if (str == "Status") return IsaRegisterRole::Status;
+	if (str == "Control") return IsaRegisterRole::Control;
+	if (str == "Special") return IsaRegisterRole::Special;
+	if (str == "Custom") return IsaRegisterRole::Custom;
+	if (str == "Internal") return IsaRegisterRole::Internal;
+	if (str == "Debug") return IsaRegisterRole::Debug;
+	if (str == "Other") return IsaRegisterRole::Other;
+	return IsaRegisterRole::Other; // default
+}
+
+inline void from_json(const json& j, IsaRegisterRole role) {
+	role = IsaRegisterRoleFromString(j);
+}
+
 
 //Register file types
 enum class IsaRegisterFileType
@@ -138,6 +163,24 @@ inline std::string ToString(IsaRegisterFileType type) {
 	case IsaRegisterFileType::Other:			return "Other";
 	default: return "Unknown";
 	}
+}
+
+inline IsaRegisterFileType IsaRegisterFileTypeFromString(const std::string& str) {
+	if( str == "GeneralPurpose")	return IsaRegisterFileType::GeneralPurpose;
+	if( str == "FloatingPoint" )	return IsaRegisterFileType::FloatingPoint;
+	if( str == "Vector")			return IsaRegisterFileType::Vector;
+	if( str == "Status")			return IsaRegisterFileType::Status;
+	if( str == "Control")			return IsaRegisterFileType::Control;
+	if( str == "Special")			return IsaRegisterFileType::Special;
+	if( str == "Custom")			return IsaRegisterFileType::Custom;
+	if( str == "Internal")			return IsaRegisterFileType::Internal;
+	if( str == "Debug" )			return IsaRegisterFileType::Debug;
+	if( str == "Other" )			return IsaRegisterFileType::Other;
+	return IsaRegisterFileType::Other;
+}
+
+inline void from_json(const json& j, IsaRegisterFileType& type) {
+	type = IsaRegisterFileTypeFromString(j);
 }
 
 //instruction field types
@@ -177,6 +220,26 @@ inline std::string ToString(IsaInstructionFieldType type) {
 	}
 }
 
+inline IsaInstructionFieldType IsaInstructionFieldTypeFromString(const std::string& str) {
+	if (str == "Opcode")				return IsaInstructionFieldType::Opcode;
+	if (str == "Register")				return IsaInstructionFieldType::Register;
+	if( str == "Immediate" )			return IsaInstructionFieldType::Immediate;
+	if (str == "RegisterAddress")		return IsaInstructionFieldType::RegisterAddress;
+	if (str == "ImmediateAddress")		return IsaInstructionFieldType::ImmediateAddress;
+	if (str == "Flag")					return IsaInstructionFieldType::Flag;
+	if( str == "Label" )				return IsaInstructionFieldType::Label;
+	if (str == "Special")				return IsaInstructionFieldType::Special;
+	if (str == "Custom")				return IsaInstructionFieldType::Custom;
+	if (str == "Internal")				return IsaInstructionFieldType::Internal;
+	if( str == "Debug" )				return IsaInstructionFieldType::Debug;
+	if( str == "Other" )				return IsaInstructionFieldType::Other;
+	return IsaInstructionFieldType::Other;
+}
+
+inline void from_json(const json& j, IsaInstructionFieldType& type) {
+	type = IsaInstructionFieldTypeFromString(j);
+}
+
 enum class IsaStateObjectKind
 {
 	Register,
@@ -203,4 +266,20 @@ inline std::string ToString(IsaStateObjectKind kind) {
 	case IsaStateObjectKind::Other:			return "Other";
 	default: return "Unknown";
 	}
+}
+
+inline IsaStateObjectKind IsaStateObjectKindFromString(const std::string& str) {
+	if (str == "Register")			return IsaStateObjectKind::Register;
+	if (str == "RegisterField")		return IsaStateObjectKind::RegisterField;
+	if (str == "Memory")			return IsaStateObjectKind::Memory;
+	if (str == "Context")			return IsaStateObjectKind::Context;
+	if (str == "ProgramCounter")	return IsaStateObjectKind::ProgramCounter;
+	if (str == "Stack")				return IsaStateObjectKind::Stack;
+	if (str == "Custom")			return IsaStateObjectKind::Custom;
+	if (str == "Other")				return IsaStateObjectKind::Other;
+	return IsaStateObjectKind::Other;
+}
+
+inline void from_json(const json& j, IsaStateObjectKind& kind) {
+	kind = IsaStateObjectKindFromString(j);
 }

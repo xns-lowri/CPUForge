@@ -32,6 +32,14 @@ inline void to_json(json& j, const InstructionEncodingField& field) {
 	};
 }
 
+inline void from_json(const json& j, InstructionEncodingField& field) {
+	j.at("name").get_to(field.name);
+	j.at("description").get_to(field.description);
+	j.at("bitPosition").get_to(field.bitPosition);
+	j.at("bitWidth").get_to(field.bitWidth);
+	j.at("fieldType").get_to<IsaInstructionFieldType>(field.fieldType);
+}
+
 /* Encoding definitions - architecture data */
 struct InstructionEncodingFormat
 {
@@ -50,6 +58,13 @@ inline void to_json(json& j, const InstructionEncodingFormat& format) {
 		{ "instructionWidth", format.instructionWidth },
 		{ "encodingFields", format.encodingFields }
 	};
+}
+
+inline void from_json(const json& j, InstructionEncodingFormat& format) {
+	j.at("name").get_to(format.name);
+	j.at("description").get_to(format.description);
+	j.at("instructionWidth").get_to(format.instructionWidth);
+	j.at("encodingFields").get_to(format.encodingFields);
 }
 /* end metadata */
 
@@ -71,6 +86,12 @@ inline void to_json(json& j, const InstructionOperand& operand) {
 		{ "description", operand.description },
 		{ "encodingFieldName", operand.encodingFieldName }
 	};
+}
+
+inline void from_json(const json& j, InstructionOperand& operand) {
+	j.at("name").get_to(operand.name);
+	j.at("description").get_to(operand.description);
+	j.at("encodingFieldName").get_to(operand.encodingFieldName);
 }
 
 
@@ -102,6 +123,17 @@ inline void to_json(json& j, const IsaInstructionEffects& effects) {
 	};
 }
 
+inline void from_json(const json& j, IsaInstructionEffects& effects) {
+	j.at("description").get_to(effects.description);
+	j.at("reads").get_to(effects.reads);
+	j.at("writes").get_to(effects.writes);
+	j.at("modifies").get_to(effects.modifies);
+	j.at("transitions").get_to(effects.transitions);
+
+	if (j.at("pseudoCode") == "none") { effects.pseudoCode = std::nullopt; }
+	else { j.at("pseudoCode").get_to(effects.pseudoCode); }
+}
+
 //context rules structure for instruction
 struct IsaInstructionContextRules
 {
@@ -124,6 +156,15 @@ inline void to_json(json& j, const IsaInstructionContextRules& contextRules) {
 		{ "forbiddenFeatures", contextRules.forbiddenFeatures },
 		{ "faultIfInvalid", contextRules.faultIfInvalid.value_or("none") }
 	};
+}
+
+inline void from_json(const json& j, IsaInstructionContextRules& contextRules) {
+	j.at("allowedContexts").get_to(contextRules.allowedContexts);
+	j.at("requiredFeatures").get_to(contextRules.requiredFeatures);
+	j.at("forbiddenFeatures").get_to(contextRules.forbiddenFeatures);
+
+	if (j.at("faultIfInvalid") == "none") { contextRules.faultIfInvalid = std::nullopt; }
+	else { j.at("faultIfInvalid").get_to(contextRules.faultIfInvalid); }
 }
 
 
@@ -162,4 +203,17 @@ inline void to_json(json& j, const IsaInstruction& instruction) {
 		{ "aliases", instruction.aliases },
 		{ "tags", instruction.tags }
 	};
+}
+
+inline void from_json(const json& j, IsaInstruction& instruction) {
+	j.at("mnemonic").get_to(instruction.mnemonic);
+	j.at("name").get_to(instruction.name);
+	j.at("description").get_to(instruction.description);
+	j.at("opcode").get_to(instruction.opcode);
+	j.at("encodingName").get_to(instruction.encodingName);
+	j.at("operands").get_to(instruction.operands);
+	j.at("contextRules").get_to(instruction.contextRules);
+	j.at("effects").get_to(instruction.effects);
+	j.at("aliases").get_to(instruction.aliases);
+	j.at("tags").get_to(instruction.tags);
 }

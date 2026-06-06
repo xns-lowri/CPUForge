@@ -25,8 +25,17 @@ inline void to_json(json& j, const IsaContextState& state) {
 		{ "name", state.name },
 		{ "friendlyName", state.friendlyName },
 		{ "description", state.description },
-		{ "encodedValue", state.encodedValue.value_or(0) }
+		{ "encodedValue", state.encodedValue.value_or(-1) }
 	};
+}
+
+inline void from_json(const json& j, IsaContextState& state) {
+	j.at("name").get_to(state.name);
+	j.at("friendlyName").get_to(state.friendlyName);
+	j.at("description").get_to(state.description);
+
+	if (j.at("encodedValue") == -1) { state.encodedValue = std::nullopt; }
+	else { j.at("encodedValue").get_to(state.encodedValue); }
 }
 
 /* Context Dimensions - abstract context state handling */
@@ -48,8 +57,19 @@ inline void to_json(json& j, const IsaContextDimension& dimension) {
 		{ "friendlyName", dimension.friendlyName },
 		{ "description", dimension.description },
 		{ "states", dimension.states },
-		{ "registerFieldPath", dimension.registerFieldPath.value_or("none") }
+		{ "registerFieldPath", dimension.registerFieldPath.value_or("null") }
 	};
+}
+
+inline void from_json(const json& j, IsaContextDimension& dimension) {
+	j.at("name").get_to(dimension.name);
+	j.at("friendlyName").get_to(dimension.friendlyName);
+	j.at("description").get_to(dimension.description);
+
+	j.at("states").get_to(dimension.states);
+
+	if (j.at("registerFieldPath") == "null") { dimension.registerFieldPath = std::nullopt; }
+	else { j.at("registerFieldPath").get_to(dimension.registerFieldPath); }
 }
 
 /* Structs for Instruction context rules definition */
@@ -70,6 +90,12 @@ inline void to_json(json& j, const IsaContextRequirement& requirement) {
 	};
 }
 
+inline void from_json(const json& j, IsaContextRequirement& requirement) {
+	j.at("name").get_to(requirement.name);
+	j.at("dimensionId").get_to(requirement.dimensionId);
+	j.at("allowedStates").get_to(requirement.allowedStates);
+}
+
 struct IsaContextRule 
 {
     std::string name;
@@ -88,6 +114,11 @@ inline void to_json(json& j, const IsaContextRule& rule) {
 	};
 }
 
+inline void from_json(const json& j, IsaContextRule& rule) {
+	j.at("name").get_to(rule.name);
+	j.at("requiredStates").get_to(rule.requiredStates);
+}
+
 /* Defines state accesses (read/write/modify) for inst. effects */
 struct IsaStateAccess
 {
@@ -102,6 +133,14 @@ inline void to_json(json& j, const IsaStateAccess& access) {
 		{ "target", access.target },
 		{ "condition", access.condition.value_or("none") }
 	};
+}
+
+inline void from_json(const json& j, IsaStateAccess& access) {
+	j.at("kind").get_to<IsaStateObjectKind>(access.kind);
+	j.at("target").get_to(access.target);
+
+	if (j.at("condition") == "none") { access.condition = std::nullopt; }
+	else { j.at("condition").get_to(access.condition); }
 }
 
 /* Possible context transitions for instruction effects */
@@ -121,4 +160,11 @@ inline void to_json(json& j, const IsaContextTransition& transition) {
 		{ "fromStates", transition.fromStates },
 		{ "toState", transition.toState }
 	};
+}
+
+inline void from_json(const json& j, IsaContextTransition& trans) {
+	j.at("name").get_to(trans.name);
+	j.at("dimensionId").get_to(trans.dimensionId);
+	j.at("fromStates").get_to(trans.fromStates);
+	j.at("toState").get_to(trans.toState);
 }
