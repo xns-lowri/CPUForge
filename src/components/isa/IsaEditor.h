@@ -162,6 +162,8 @@ public:
 					GetIsaEditorState().openDocuments.emplace(documentId, result.value);
 
 				fmt::println("[IsaEditor] Got file {}", documentId);
+
+				fmt::println("Endianness: {}", ToString(result.value.endianness));
 			}
 		}
 

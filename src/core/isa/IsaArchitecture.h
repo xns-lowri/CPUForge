@@ -119,10 +119,12 @@ inline void to_json(json& j, const IsaDefinition& def) {
 		{ "header", def.header },
 		{ "architectureName", def.architectureName },
 		{ "endianness", ToString(def.endianness) },
+
 		{ "defaultDataWordSize", def.defaultDataWordSize },
 		{ "defaultAddressWordSize", def.defaultAddressWordSize },
 		{ "defaultOpcodeWidth", def.defaultOpcodeWidth },
 		{ "maxInstructionWidth", def.maxInstructionWidth },
+
 		{ "dataTypes", def.dataTypes },
 		{ "features", def.features },
 		{ "faults", def.faults },
@@ -135,4 +137,12 @@ inline void to_json(json& j, const IsaDefinition& def) {
 
 inline void from_json(const json& j, IsaDefinition& def) {
 	j.at("header").get_to<DocumentHeader>(def.header);
+	j.at("architectureName").get_to(def.architectureName);
+	j.at("endianness").get_to<Endianness>(def.endianness);
+
+	j.at("defaultDataWordSize").get_to(def.defaultDataWordSize);
+	j.at("defaultAddressWordSize").get_to(def.defaultAddressWordSize);
+	j.at("defaultOpcodeWidth").get_to(def.defaultOpcodeWidth);
+	j.at("maxInstructionWidth").get_to(def.maxInstructionWidth);
+	//todo finish
 }

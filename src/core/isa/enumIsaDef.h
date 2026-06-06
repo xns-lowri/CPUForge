@@ -24,7 +24,11 @@ inline Endianness EndiannessFromString(const std::string& str) {
 	if (str == "Custom")	return Endianness::Custom;
 	if (str == "Other")		return Endianness::Other;
 	return Endianness::Other; // default
-}
+};
+
+inline void from_json(const json& j, Endianness& endianness) {
+	endianness = EndiannessFromString(j);
+};
 
 
 /* ISA register types */

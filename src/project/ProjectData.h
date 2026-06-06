@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <filesystem>
 
+#include <fmt/core.h>
+
 #include "enumProjectDef.h"
 #include "Project.h"
 
@@ -27,8 +29,30 @@ struct ProjectData
 	std::map<UUID, FileObject> files;
 
 	//typed document storage containers
-	std::map<UUID, IsaDefinition> isaDefinitions;
+	//std::map<UUID, IsaDefinition> isaDefinitions;
 	//todo other document types 
 	// e.g. hardware sheets, source files, build manifests,
 	// simulation states, tool scripts, etc
 };
+
+inline void to_json(json& j, const ProjectData& data) {
+	j = json{
+		{ "id", data.id },
+		{ "name", data.name },
+		{ "description", data.description },
+		{ "path", data.path },
+		{ "nextId", data.nextId },
+		{ "folders", data.folders },
+		{ "files", data.files }
+	};
+}
+
+inline void from_json(const json& j, ProjectData& data) {
+	j.at("id").get_to(data.id);
+	j.at("name").get_to(data.name);
+	j.at("description").get_to(data.description);
+	j.at("path").get_to(data.path);
+	j.at("nextId").get_to(data.nextId);
+	j.at("folders").get_to(data.folders);
+	j.at("files").get_to(data.files);
+}

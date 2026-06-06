@@ -62,16 +62,6 @@ inline std::string FixedExtensionFromFileType(FileType fileType) {
 	}
 }
 
-inline FolderKind FolderTypeFromString(std::string value) {
-	if (value == "ISA")			return FolderKind::ISA;
-	if (value == "Hardware")	return FolderKind::Hardware;
-	if (value == "Source")      return FolderKind::Source;
-	if (value == "Debug")		return FolderKind::Debug;
-	if (value == "Build")		return FolderKind::Build;
-	if (value == "Notes")		return FolderKind::Notes;
-
-	return FolderKind::General;
-}
 inline std::string ToString(FolderKind type) {
 	switch (type)
 	{
@@ -85,19 +75,20 @@ inline std::string ToString(FolderKind type) {
 	default:                    return "General";
 	}
 }
+inline FolderKind FolderTypeFromString(std::string value) {
+	if (value == "ISA")			return FolderKind::ISA;
+	if (value == "Hardware")	return FolderKind::Hardware;
+	if (value == "Source")      return FolderKind::Source;
+	if (value == "Debug")		return FolderKind::Debug;
+	if (value == "Build")		return FolderKind::Build;
+	if (value == "Notes")		return FolderKind::Notes;
 
-inline FileType FileTypeFromString(std::string value) {
-	if (value == "ISADefinition")   return FileType::ISADefinition;
-	if (value == "HardwareSheet")   return FileType::HardwareSheet;
-	if (value == "SourceFile")      return FileType::SourceFile;
-	if (value == "BinaryFile")      return FileType::BinaryFile;
-	if (value == "BuildManifest")   return FileType::BuildManifest;
-	if (value == "SimulationState") return FileType::SimulationState;
-	if (value == "ToolScript")      return FileType::ToolScript;
-	if (value == "TextDocument")    return FileType::TextDocument;
-
-	return FileType::Unknown;
+	return FolderKind::General;
 }
+inline void from_json(const json& j, FolderKind& kind) {
+	kind = FolderTypeFromString(j);
+}
+
 inline std::string ToString(FileType type) {
 	switch (type)
 	{
@@ -112,6 +103,23 @@ inline std::string ToString(FileType type) {
 	default:                               return "Unknown";
 	}
 }
+inline FileType FileTypeFromString(std::string value) {
+	if (value == "ISADefinition")   return FileType::ISADefinition;
+	if (value == "HardwareSheet")   return FileType::HardwareSheet;
+	if (value == "SourceFile")      return FileType::SourceFile;
+	if (value == "BinaryFile")      return FileType::BinaryFile;
+	if (value == "BuildManifest")   return FileType::BuildManifest;
+	if (value == "SimulationState") return FileType::SimulationState;
+	if (value == "ToolScript")      return FileType::ToolScript;
+	if (value == "TextDocument")    return FileType::TextDocument;
+
+	return FileType::Unknown;
+}
+inline void from_json(const json& j, FileType& kind) {
+	kind = FileTypeFromString(j);
+}
+
+
 inline std::string ToString(bool b) {
 	return b ? "true" : "false";
 }

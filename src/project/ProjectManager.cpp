@@ -116,9 +116,10 @@ bool ProjectManager::SaveProject() {
 	//todo save dirty files first?
 	SaveProjectContext(); //update project context
 
-	json fileData = SerialiseProject();
+	//json fileData = SerialiseProject();
 	std::filesystem::path filePath = projectData->path / PROJECT_FILENAME;
-	ProjectResult result = FileHandler::Save(filePath, fileData);
+	//ProjectResult result = FileHandler::Save(filePath, fileData);
+	ProjectResult result = FileHandler::Save(filePath, projectData);
 	return result.ok;
 }
 
@@ -276,14 +277,16 @@ bool ProjectManager::OpenProject(const std::filesystem::path rootPath) {
 	}
 
 	fmt::println("Loading project at {}", filePath.string());
-	auto result = FileHandler::Load<json>(filePath / PROJECT_FILENAME);
+	//auto result = FileHandler::Load<json>(filePath / PROJECT_FILENAME);
+	auto result = FileHandler::Load<ProjectData>(filePath / PROJECT_FILENAME);
 	if (!result.ok) {
 		//error loading file, todo handle
-		fmt::println("Error loading project file");
+		fmt::println("Error loading project file: {}", result.error);
 		return false;
 	}
-	fmt::println("Start deserialising project");
-	bool deserial = DeserialiseProject(result.value);
+	//fmt::println("Start deserialising project");
+	projectData = std::move(result.value);
+	//bool deserial = DeserialiseProject(result.value);
 	//update path if necessary
 	//update last project opened metadata
 	SaveProjectContext(); //update project context
