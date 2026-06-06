@@ -6,14 +6,6 @@
 
 static int gNextMenuTag = 1;
 static std::unordered_map<int, AppCommandRequest> gCommandRequests;
-/*
-typedef NS_ENUM(NSInteger, CPUForgeMenuCommand) {
-    CPUForgeMenuCommandNewProject = 1001,
-    CPUForgeMenuCommandOpenProject,
-    CPUForgeMenuCommandSaveProject,
-    CPUForgeMenuCommandSaveProjectAs,
-    CPUForgeMenuCommandPreferences,
-};*/
 
 @interface CPUForgeMenuTarget : NSObject
 - (void)menuAction:(id)sender;
@@ -31,30 +23,7 @@ typedef NS_ENUM(NSInteger, CPUForgeMenuCommand) {
     }
 
     NativeCommandBridge::PushCommand(it->second);
-/*
-    switch ((CPUForgeMenuCommand)item.tag) {
-        case CPUForgeMenuCommandNewProject:
-            // TODO: call into your C++ command queue
-            NSLog(@"New Project");
-            break;
 
-        case CPUForgeMenuCommandOpenProject:
-            NSLog(@"Open Project");
-            break;
-
-        case CPUForgeMenuCommandSaveProject:
-            NSLog(@"Save Project");
-            break;
-
-        case CPUForgeMenuCommandSaveProjectAs:
-            NSLog(@"Save Project As");
-            break;
-
-        case CPUForgeMenuCommandPreferences:
-            NSLog(@"Preferences");
-            break;
-    }
-*/
 }
 
 @end
@@ -145,155 +114,6 @@ static NSMenuItem* BuildNativeMenuItem(const MenuItem& item) {
     return [NSMenuItem separatorItem];
 }
 
-/*
-static NSMenuItem* AddItem(
-    NSMenu* menu,
-    NSString* title,
-    SEL action,
-    NSString* key,
-    NSInteger tag
-) {
-    NSMenuItem* item = [[NSMenuItem alloc]
-        initWithTitle:title
-        action:action
-        keyEquivalent:key
-    ];
-
-    item.target = gMenuTarget;
-    item.tag = tag;
-
-    [menu addItem:item];
-    return item;
-}*/
-
-/*
-extern "C" void CPUForge_InstallMacMenu() {
-    @autoreleasepool {
-        NSApplication* app = [NSApplication sharedApplication];
-
-        gMenuTarget = [[CPUForgeMenuTarget alloc] init];
-
-        NSString* appName =
-            [[NSProcessInfo processInfo] processName];
-
-        NSMenu* mainMenu = [[NSMenu alloc] initWithTitle:@"MainMenu"];
-
-        // App menu: appears under app name next to Apple logo
-        NSMenuItem* appMenuItem =
-            [[NSMenuItem alloc] initWithTitle:@""
-                                       action:nil
-                                keyEquivalent:@""];
-
-        NSMenu* appMenu =
-            [[NSMenu alloc] initWithTitle:appName];
-
-        [appMenu addItemWithTitle:[NSString stringWithFormat:@"About %@", appName]
-                            action:@selector(orderFrontStandardAboutPanel:)
-                     keyEquivalent:@""];
-
-        [appMenu addItem:[NSMenuItem separatorItem]];
-
-        AddItem(appMenu,
-                @"Preferences…",
-                @selector(menuAction:),
-                @",",
-                CPUForgeMenuCommandPreferences);
-
-        [appMenu addItem:[NSMenuItem separatorItem]];
-
-        [appMenu addItemWithTitle:[NSString stringWithFormat:@"Hide %@", appName]
-                            action:@selector(hide:)
-                     keyEquivalent:@"h"];
-
-        [appMenu addItemWithTitle:@"Hide Others"
-                            action:@selector(hideOtherApplications:)
-                     keyEquivalent:@"h"]
-            .keyEquivalentModifierMask =
-                NSEventModifierFlagCommand | NSEventModifierFlagOption;
-
-        [appMenu addItemWithTitle:@"Show All"
-                            action:@selector(unhideAllApplications:)
-                     keyEquivalent:@""];
-
-        [appMenu addItem:[NSMenuItem separatorItem]];
-
-        [appMenu addItemWithTitle:[NSString stringWithFormat:@"Quit %@", appName]
-                            action:@selector(terminate:)
-                     keyEquivalent:@"q"];
-
-        [mainMenu addItem:appMenuItem];
-        [mainMenu setSubmenu:appMenu forItem:appMenuItem];
-
-        // File menu
-        NSMenuItem* fileMenuItem =
-            [[NSMenuItem alloc] initWithTitle:@"File"
-                                       action:nil
-                                keyEquivalent:@""];
-
-        NSMenu* fileMenu = [[NSMenu alloc] initWithTitle:@"File"];
-
-        AddItem(fileMenu, @"New Project", @selector(menuAction:), @"n",
-                CPUForgeMenuCommandNewProject);
-
-        AddItem(fileMenu, @"Open Project…", @selector(menuAction:), @"o",
-                CPUForgeMenuCommandOpenProject);
-
-        [fileMenu addItem:[NSMenuItem separatorItem]];
-
-        AddItem(fileMenu, @"Save", @selector(menuAction:), @"s",
-                CPUForgeMenuCommandSaveProject);
-
-        NSMenuItem* saveAs =
-            AddItem(fileMenu, @"Save As…", @selector(menuAction:), @"S",
-                    CPUForgeMenuCommandSaveProjectAs);
-
-        saveAs.keyEquivalentModifierMask =
-            NSEventModifierFlagCommand | NSEventModifierFlagShift;
-
-        [mainMenu addItem:fileMenuItem];
-        [mainMenu setSubmenu:fileMenu forItem:fileMenuItem];
-
-        // Edit menu, with native selectors so Cmd+C/V/etc work
-        NSMenuItem* editMenuItem =
-            [[NSMenuItem alloc] initWithTitle:@"Edit"
-                                       action:nil
-                                keyEquivalent:@""];
-
-        NSMenu* editMenu = [[NSMenu alloc] initWithTitle:@"Edit"];
-
-        [editMenu addItemWithTitle:@"Undo"
-                            action:@selector(undo:)
-                     keyEquivalent:@"z"];
-
-        [editMenu addItemWithTitle:@"Redo"
-                            action:@selector(redo:)
-                     keyEquivalent:@"Z"];
-
-        [editMenu addItem:[NSMenuItem separatorItem]];
-
-        [editMenu addItemWithTitle:@"Cut"
-                            action:@selector(cut:)
-                     keyEquivalent:@"x"];
-
-        [editMenu addItemWithTitle:@"Copy"
-                            action:@selector(copy:)
-                     keyEquivalent:@"c"];
-
-        [editMenu addItemWithTitle:@"Paste"
-                            action:@selector(paste:)
-                     keyEquivalent:@"v"];
-
-        [editMenu addItemWithTitle:@"Select All"
-                            action:@selector(selectAll:)
-                     keyEquivalent:@"a"];
-
-        [mainMenu addItem:editMenuItem];
-        [mainMenu setSubmenu:editMenu forItem:editMenuItem];
-
-        app.mainMenu = mainMenu;
-    }
-}*/
-
 static void AddAppMenu(NSMenu* mainMenu) {
     NSString* appName = [[NSProcessInfo processInfo] processName];
 
@@ -304,7 +124,7 @@ static void AddAppMenu(NSMenu* mainMenu) {
 
     NSMenu* appMenu = [[NSMenu alloc] initWithTitle:appName];
 
-    // About via your command dispatcher
+    // About via command dispatcher
     {
         int tag = gNextMenuTag++;
         gCommandRequests[tag] = { AppCommand::About, "" };
@@ -341,7 +161,7 @@ static void AddAppMenu(NSMenu* mainMenu) {
 
     [appMenu addItem:[NSMenuItem separatorItem]];
 
-    // Quit via your command dispatcher
+    // Quit via command dispatcher
     {
         int tag = gNextMenuTag++;
         gCommandRequests[tag] = { AppCommand::Quit, "" };
