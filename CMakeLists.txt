@@ -75,15 +75,18 @@ target_sources(CPUForge PRIVATE
 
     # core isa def
     "src/core/isa/enumIsaDef.h"
+    "src/core/isa/IsaDefinition.h" 
     "src/core/isa/IsaInstruction.h" 
-    "src/core/isa/IsaArchitecture.h" 
     "src/core/isa/IsaRegister.h"
     "src/core/isa/IsaContext.h"
+    "src/core/isa/IsaMemory.h" 
+    "src/core/isa/IsaAddress.h"
 
     # sources relating to isa editor
     "src/ux/modules/ViewIsaEditor.h" 
     "src/components/isa/IsaEditor.h"
     "src/components/isa/IsaEditorState.h"
+    "src/components/isa/IsaDocumentStore.h"
 
     # main ux modal modules
     "src/ux/core/ModalNewFolder.h" 

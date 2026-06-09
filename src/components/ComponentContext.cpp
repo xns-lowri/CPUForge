@@ -4,7 +4,7 @@ ComponentContext::ComponentContext() :
 	treeActionsByFolder(std::unordered_map<FolderKind, std::vector<TreeActionDescriptor>>()),
 	treeActionsByFile(std::unordered_map<FileType, std::vector<TreeActionDescriptor>>())
 {
-	isaEditorState = IsaEditorState();
+	isaDocuments = IsaDocumentStore();
 }
 
 void ComponentContext::SetTreeActionsFolder(
@@ -19,8 +19,8 @@ void ComponentContext::SetTreeActionsFile(
 	treeActionsByFile[folderKind] = std::move(actions);
 }
 
-IsaEditorState& ComponentContext::GetIsaEditorState() { 
-	return isaEditorState; 
+IsaDocumentStore& ComponentContext::GetIsaDocuments() { 
+	return isaDocuments; 
 }
 
 std::vector<TreeActionDescriptor> ComponentContext::GetTreeActionsFolder(

@@ -84,14 +84,14 @@ bool WindowManager::RemoveWindow(std::string id)
 	return true;
 }
 
-bool WindowManager::OpenIsaEditor(AppContext& context, UUID documentId) {
+bool WindowManager::OpenIsaEditor(AppContext& context, UUID documentId, const std::string& title) {
 	std::string id = "main.isa_editor_" + std::to_string(documentId);
 
 	fmt::println("Opening window '{:s}'", id);
 
 	if (windows.find(id) == windows.end()) {
 		//open window
-		ViewIsaEditor newEditor = ViewIsaEditor(documentId, *this, id);
+		ViewIsaEditor newEditor = ViewIsaEditor(documentId, *this, id, title);
 		AddWindow<ViewIsaEditor>(newEditor.GetId(), newEditor);
 		return true;
 	}

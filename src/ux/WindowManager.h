@@ -19,7 +19,7 @@ public:
 
 	bool RemoveWindow(std::string id);
 
-	bool OpenIsaEditor(AppContext& context, UUID documentId);
+	bool OpenIsaEditor(AppContext& context, UUID documentId, const std::string& title);
 
 	bool HandleOpenDocument(UUID documentId);
 

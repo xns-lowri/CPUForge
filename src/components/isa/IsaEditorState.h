@@ -1,7 +1,13 @@
 #pragma once
-#include <unordered_map>
-#include "../../core/isa/IsaArchitecture.h"
+
+enum class IsaEditorPanel {
+	Details,
+	Model,
+	Register,
+	Instruction
+};
 
 struct IsaEditorState {
-	std::unordered_map<UUID, IsaDefinition> openDocuments;
+	//todo state for ViewIsaEditor window
+	IsaEditorPanel currentPanel = IsaEditorPanel::Details;
 };

@@ -3,7 +3,7 @@
 #include "../project/enumProjectDef.h"
 #include "../project/Project.h"
 
-#include "isa/IsaEditorState.h"
+#include "isa/IsaDocumentStore.h"
 
 class ComponentContext {
 public:
@@ -13,10 +13,10 @@ public:
 	std::vector<TreeActionDescriptor> GetTreeActionsFolder(FolderKind folderKind) const;
 	std::vector<TreeActionDescriptor> GetTreeActionsFile(FileType fileType) const;
 
-	IsaEditorState& GetIsaEditorState();
+	IsaDocumentStore& GetIsaDocuments();
 private:
 	std::unordered_map<FolderKind, std::vector<TreeActionDescriptor>> treeActionsByFolder;
 	std::unordered_map<FileType, std::vector<TreeActionDescriptor>> treeActionsByFile;
 
-	IsaEditorState isaEditorState;
+	IsaDocumentStore isaDocuments;
 };

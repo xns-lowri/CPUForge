@@ -7,8 +7,8 @@
 #include "../../project/Project.h"
 
 #include "enumIsaDef.h"
-
 #include "IsaContext.h"
+#include "IsaAddress.h"
 
 //instruction field description within encoding def - metadata
 struct InstructionEncodingField {
@@ -31,7 +31,6 @@ inline void to_json(json& j, const InstructionEncodingField& field) {
 		{ "fieldType", ToString(field.fieldType) }
 	};
 }
-
 inline void from_json(const json& j, InstructionEncodingField& field) {
 	j.at("name").get_to(field.name);
 	j.at("description").get_to(field.description);
@@ -41,7 +40,7 @@ inline void from_json(const json& j, InstructionEncodingField& field) {
 }
 
 /* Encoding definitions - architecture data */
-struct InstructionEncodingFormat
+struct IsaInstructionEncodingFormat
 {
 	//UUID id = 0;
 	std::string name;
@@ -51,7 +50,7 @@ struct InstructionEncodingFormat
 	std::unordered_map<std::string, InstructionEncodingField> encodingFields;
 };
 
-inline void to_json(json& j, const InstructionEncodingFormat& format) {
+inline void to_json(json& j, const IsaInstructionEncodingFormat& format) {
 	j = json{
 		{ "name", format.name },
 		{ "description", format.description },
@@ -59,8 +58,7 @@ inline void to_json(json& j, const InstructionEncodingFormat& format) {
 		{ "encodingFields", format.encodingFields }
 	};
 }
-
-inline void from_json(const json& j, InstructionEncodingFormat& format) {
+inline void from_json(const json& j, IsaInstructionEncodingFormat& format) {
 	j.at("name").get_to(format.name);
 	j.at("description").get_to(format.description);
 	j.at("instructionWidth").get_to(format.instructionWidth);
@@ -70,28 +68,48 @@ inline void from_json(const json& j, InstructionEncodingFormat& format) {
 
 
 /* Instruction operand within ISA instruction definition */
-struct InstructionOperand
+struct IsaInstructionOperand
 {
 	//UUID id = 0;
 	std::string name;
 	std::string description;
 
 	//UUID encodingFieldId; // = 0;	//points to instruction field definition
-	std::string encodingFieldName;
+	std::string encodingField;
+
+	//operand kind
+	OperandRole role;
+	OperandKind kind;
+
+	std::optional<std::string> dataType;
+	std::optional<std::string> addressingMode;
+	//access flags
+
+	std::vector<std::string> tags;
 };
 
-inline void to_json(json& j, const InstructionOperand& operand) {
+inline void to_json(json& j, const IsaInstructionOperand& operand) {
 	j = json{
 		{ "name", operand.name },
 		{ "description", operand.description },
-		{ "encodingFieldName", operand.encodingFieldName }
+		{ "encodingField", operand.encodingField },
+		{ "dataType", operand.dataType.value_or("none") },
+		{ "addressingMode", operand.addressingMode.value_or("none") },
+		{ "tags", operand.tags }
 	};
 }
-
-inline void from_json(const json& j, InstructionOperand& operand) {
+inline void from_json(const json& j, IsaInstructionOperand& operand) {
 	j.at("name").get_to(operand.name);
 	j.at("description").get_to(operand.description);
-	j.at("encodingFieldName").get_to(operand.encodingFieldName);
+	j.at("encodingField").get_to(operand.encodingField);
+
+	if (j.at("dataType") == "none") { operand.dataType = std::nullopt; }
+	else { j.at("dataType").get_to(operand.dataType); }
+
+	if (j.at("addressingMode") == "none") { operand.addressingMode = std::nullopt; }
+	else { j.at("addressingMode").get_to(operand.addressingMode); }
+
+	j.at("tags").get_to(operand.tags);
 }
 
 
@@ -122,7 +140,6 @@ inline void to_json(json& j, const IsaInstructionEffects& effects) {
 		{ "pseudoCode", effects.pseudoCode.value_or("none") }
 	};
 }
-
 inline void from_json(const json& j, IsaInstructionEffects& effects) {
 	j.at("description").get_to(effects.description);
 	j.at("reads").get_to(effects.reads);
@@ -157,7 +174,6 @@ inline void to_json(json& j, const IsaInstructionContextRules& contextRules) {
 		{ "faultIfInvalid", contextRules.faultIfInvalid.value_or("none") }
 	};
 }
-
 inline void from_json(const json& j, IsaInstructionContextRules& contextRules) {
 	j.at("allowedContexts").get_to(contextRules.allowedContexts);
 	j.at("requiredFeatures").get_to(contextRules.requiredFeatures);
@@ -178,13 +194,13 @@ struct IsaInstruction {
 
 	uint16_t opcode;	//opcode value assigned to instruction
 
-
-	std::string encodingName;	//link to relevant instruction encoding for format
-	std::unordered_map<std::string, InstructionOperand> operands; //operands	
+	std::string encoding;	//link to relevant instruction encoding for format
+	std::unordered_map<std::string, IsaInstructionOperand> operands; //operands	
 
 	//semantics - todo vectors? requirement expression?
 	IsaInstructionContextRules contextRules;	//context reqs for instruction
 	IsaInstructionEffects effects;				//effects from instruction
+	//todo execution model for instruction - in effects??
 
 	std::vector<std::string> aliases;
 	std::vector<std::string> tags;
@@ -195,25 +211,32 @@ inline void to_json(json& j, const IsaInstruction& instruction) {
 		{ "mnemonic", instruction.mnemonic },
 		{ "name", instruction.name },
 		{ "description", instruction.description },
+
 		{ "opcode", instruction.opcode },
-		{ "encodingName", instruction.encodingName },
+
+		{ "encoding", instruction.encoding },
 		{ "operands", instruction.operands },
+
 		{ "contextRules", instruction.contextRules },
 		{ "effects", instruction.effects },
+
 		{ "aliases", instruction.aliases },
 		{ "tags", instruction.tags }
 	};
 }
-
 inline void from_json(const json& j, IsaInstruction& instruction) {
 	j.at("mnemonic").get_to(instruction.mnemonic);
 	j.at("name").get_to(instruction.name);
 	j.at("description").get_to(instruction.description);
+
 	j.at("opcode").get_to(instruction.opcode);
-	j.at("encodingName").get_to(instruction.encodingName);
+
+	j.at("encoding").get_to(instruction.encoding);
 	j.at("operands").get_to(instruction.operands);
+
 	j.at("contextRules").get_to(instruction.contextRules);
 	j.at("effects").get_to(instruction.effects);
+
 	j.at("aliases").get_to(instruction.aliases);
 	j.at("tags").get_to(instruction.tags);
 }

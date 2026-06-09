@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../_IAppComponent.h"
-#include "../../core/isa/IsaArchitecture.h"
+#include "../../core/isa/IsaDefinition.h"
 
 #include "../project/ProjectManager.h"
 #include "../../project/FileHandler.h"
@@ -115,11 +115,13 @@ public:
 		document.header.modifiedUtc = document.header.createdUtc;
 		document.header.id = documentId;
 
+		document.architectureName = fileName;
+
 		//fmt::println("[IsaEditor] Get file object");
 
 		//put document in editor state
 		context.componentContext->
-			GetIsaEditorState().openDocuments.emplace(documentId, document);
+			GetIsaDocuments().openDocuments.emplace(documentId, document);
 
 		//fmt::println("[IsaEditor] Push open document to state");
 		//todo open isa editor window - command?
@@ -152,8 +154,8 @@ public:
 		UUID documentId = context.projectManager->
 			GetCurrentProject()->files.at(fileId).documentId;
 
-		if (context.componentContext->GetIsaEditorState().openDocuments.find(documentId)
-			== context.componentContext->GetIsaEditorState().openDocuments.end()) 
+		if (context.componentContext->GetIsaDocuments().openDocuments.find(documentId)
+			== context.componentContext->GetIsaDocuments().openDocuments.end()) 
 		{
 			fmt::println("[IsaEditor] Try open from file");
 			//todo
@@ -169,7 +171,7 @@ public:
 			if (result.ok) {
 				//put document in editor state
 				context.componentContext->
-					GetIsaEditorState().openDocuments.emplace(documentId, result.value);
+					GetIsaDocuments().openDocuments.emplace(documentId, result.value);
 
 				fmt::println("[IsaEditor] Got file {}", documentId);
 
@@ -178,8 +180,8 @@ public:
 		}
 
 		//retry load
-		if (context.componentContext->GetIsaEditorState().openDocuments.find(documentId)
-			== context.componentContext->GetIsaEditorState().openDocuments.end())
+		if (context.componentContext->GetIsaDocuments().openDocuments.find(documentId)
+			== context.componentContext->GetIsaDocuments().openDocuments.end())
 		{
 			fmt::println("[IsaEditor] Error: Document not found - cannot open");
 			//todo
@@ -189,8 +191,11 @@ public:
 		//document is open
 		//TODO push app command to open new vieweditor window with selected document
 
+		std::string title = "IsaEditor - " + context.projectManager->
+			GetCurrentProject()->files.at(fileId).name;
+
 		fmt::println("[IsaEditor] Opening window");
-		bool windowOpened = window.OpenIsaEditor(context, documentId);
+		bool windowOpened = window.OpenIsaEditor(context, documentId, title);
 
 		return windowOpened;
 	}

@@ -11,6 +11,8 @@
 #include "IsaContext.h"
 #include "IsaInstruction.h"
 #include "IsaRegister.h"
+#include "IsaMemory.h"
+#include "IsaAddress.h"
 
 //TODO remove UUID fields from all isa objects
 //and generally from project data objects going forward??
@@ -25,8 +27,12 @@ struct IsaDataType
 	std::string description;
 
 	uint16_t bitWidth = 8;
+
+	IsaDataTypeKind dataTypeKind = IsaDataTypeKind::Other;
 	bool isSigned = false;	
 	//bool isCoded = false;	//e.g. float, bcd, char?
+
+	//todo add optional address space id for pointer types?
 
 	std::vector<std::string> aliases;	//alternate names
 	std::vector<std::string> tags;
@@ -37,19 +43,24 @@ inline void to_json(json& j, const IsaDataType& type) {
 		{ "name", type.name },
 		{ "friendlyName", type.friendlyName },
 		{ "description", type.description },
+
+		{ "dataTypeKind", ToString(type.dataTypeKind) },
 		{ "bitWidth", type.bitWidth },
 		{ "isSigned", type.isSigned },
+
 		{ "aliases", type.aliases },
 		{ "tags", type.tags }
 	};
 }
-
 inline void from_json(const json& j, IsaDataType& type) {
 	j.at("name").get_to(type.name);
 	j.at("friendlyName").get_to(type.friendlyName);
 	j.at("description").get_to(type.description);
+
+	j.at("dataTypeKind").get_to<IsaDataTypeKind>(type.dataTypeKind);
 	j.at("bitWidth").get_to(type.bitWidth);
 	j.at("isSigned").get_to(type.isSigned);
+
 	j.at("aliases").get_to(type.aliases);
 	j.at("tags").get_to(type.tags);
 }
@@ -69,7 +80,6 @@ inline void to_json(json& j, const IsaFeature& feature) {
 		{ "description", feature.description }
 	};
 }
-
 inline void from_json(const json& j, IsaFeature& feature) {
 	j.at("name").get_to(feature.name);
 	j.at("friendlyName").get_to(feature.friendlyName);
@@ -96,7 +106,6 @@ inline void to_json(json& j, const IsaFault& fault) {
 		{ "vectorAddress", fault.vectorAddress.value_or(-1) }
 	};
 }
-
 inline void from_json(const json& j, IsaFault& fault) {
 	j.at("name").get_to(fault.name);
 	j.at("friendlyName").get_to(fault.friendlyName);
@@ -120,26 +129,57 @@ struct IsaDefinition
 	//isa definition
 	Endianness endianness = Endianness::Little;
 
-	uint16_t defaultDataWordSize = 8;	//in bits
-	uint16_t defaultAddressWordSize = 8;	//in bits
+	uint16_t defaultDataByteWidth = 8;
+	uint16_t defaultDataWordBytes = 1;
 
-	uint16_t defaultOpcodeWidth = 8;	//in bits
-	uint16_t maxInstructionWidth = 8;	//in bits - sets total number of instructions available
+	uint16_t defaultAddressByteWidth = 8;
+	uint16_t defaultAddressWordBytes = 1;
+
+	uint16_t defaultInstructionByteWidth = 8;
+	uint16_t defaultInstructionWordBytes = 1;
+	uint16_t maxInstructionWordBytes = 1;
+
+	uint16_t defaultOpcodeWidth = 8;	
+	uint16_t maxOpcodeWidth = 8;		//sets total number of instructions available
+
+	uint16_t defaultAlignmentBits = 8;	//for memory addressing
+
+	//todo move to memory?
+	IsaMemoryConsistencyModel memoryConsistencyModel 
+		= IsaMemoryConsistencyModel::Sequential;
 
 	//isa components
-	std::unordered_map<std::string, IsaDataType> dataTypes;	//data types supported
-	std::vector<IsaFeature> features;	//features comprising ISA family
+	std::vector<IsaFeature> features;
 	std::vector<IsaFault> faults;
+	std::vector<IsaContextDimension> contextDimensions;
 
-	std::vector<IsaContextDimension> contextDimensions;	//context dimensions inmplemented in ISA
+	std::unordered_map<std::string, IsaDataType> dataTypes;
 	
+	//register model:
 	std::unordered_map<std::string, IsaRegisterFile> registerFiles;
 
-	std::unordered_map<std::string, InstructionEncodingFormat> instructionFormats;
+	//todo address spaces/memory model
+	std::unordered_map<std::string, IsaAddressSpace> addressSpaces;
+	std::unordered_map<std::string, IsaAddressTranslationStage> addressTranslationStages;
+	//todo ports 
+
+	std::unordered_map<std::string, IsaInstructionEncodingFormat> instructionFormats;
 	std::unordered_map<std::string, IsaInstruction> instructions;
 
 	//assembly syntax
 	//context links
+
+	//todo think about how to include memory model:
+	/*
+	* Byte-addressability (memory access rules)
+	* 
+	* Memory modes:
+	* - Immediate (value in instruction)
+	* - Register Direct (value in register)
+	* - Register Indirect (value in memory pointed to by register)
+	* - Memory Direct (memory pointer in instruction)
+	* - Memory Indirect (pointer from register, offset from instruction)
+	*/
 };
 
 inline void to_json(json& j, const IsaDefinition& def) {
@@ -148,36 +188,66 @@ inline void to_json(json& j, const IsaDefinition& def) {
 		{ "architectureName", def.architectureName },
 		{ "endianness", ToString(def.endianness) },
 
-		{ "defaultDataWordSize", def.defaultDataWordSize },
-		{ "defaultAddressWordSize", def.defaultAddressWordSize },
-		{ "defaultOpcodeWidth", def.defaultOpcodeWidth },
-		{ "maxInstructionWidth", def.maxInstructionWidth },
+		{ "defaultDataByteWidth", def.defaultDataByteWidth },
+		{ "defaultDataWordBytes", def.defaultDataWordBytes },
 
-		{ "dataTypes", def.dataTypes },
+		{ "defaultAddressByteWidth", def.defaultAddressByteWidth },
+		{ "defaultAddressWordBytes", def.defaultAddressWordBytes },
+
+		{ "defaultInstructionByteWidth", def.defaultInstructionByteWidth },
+		{ "defaultInstructionWordBytes", def.defaultInstructionWordBytes },
+		{ "maxInstructionWordBytes", def.maxInstructionWordBytes },
+
+		{ "defaultOpcodeWidth", def.defaultOpcodeWidth },
+		{ "maxOpcodeWidth", def.maxOpcodeWidth },
+
+		{ "defaultAlignmentBits", def.defaultAlignmentBits },
+
+		{ "memoryConsistencyModel", ToString(def.memoryConsistencyModel) },
+
 		{ "features", def.features },
 		{ "faults", def.faults },
 		{ "contextDimensions", def.contextDimensions },
+
+		{ "dataTypes", def.dataTypes },
 		{ "registerFiles", def.registerFiles },
+
+		//
+
 		{ "instructionFormats", def.instructionFormats },
 		{ "instructions", def.instructions }
 	};
 }
-
 inline void from_json(const json& j, IsaDefinition& def) {
 	j.at("header").get_to<DocumentHeader>(def.header);
 	j.at("architectureName").get_to(def.architectureName);
 	j.at("endianness").get_to<Endianness>(def.endianness);
 
-	j.at("defaultDataWordSize").get_to(def.defaultDataWordSize);
-	j.at("defaultAddressWordSize").get_to(def.defaultAddressWordSize);
+	j.at("defaultDataByteWidth").get_to(def.defaultDataByteWidth);
+	j.at("defaultDataWordBytes").get_to(def.defaultDataWordBytes);
+
+	j.at("defaultAddressByteWidth").get_to(def.defaultAddressByteWidth);
+	j.at("defaultAddressWordBytes").get_to(def.defaultAddressWordBytes);
+
+	j.at("defaultInstructionByteWidth").get_to(def.defaultInstructionByteWidth);
+	j.at("defaultInstructionWordBytes").get_to(def.defaultInstructionWordBytes);
+	j.at("maxInstructionWordBytes").get_to(def.maxInstructionWordBytes);
+
 	j.at("defaultOpcodeWidth").get_to(def.defaultOpcodeWidth);
-	j.at("maxInstructionWidth").get_to(def.maxInstructionWidth);
+	j.at("maxOpcodeWidth").get_to(def.maxOpcodeWidth);
+
+	j.at("defaultAlignmentBits").get_to(def.defaultAlignmentBits);
+	j.at("memoryConsistencyModel").get_to<IsaMemoryConsistencyModel>(def.memoryConsistencyModel);
 	
-	j.at("dataTypes").get_to(def.dataTypes);
 	j.at("features").get_to(def.features);
 	j.at("faults").get_to(def.faults);
 	j.at("contextDimensions").get_to(def.contextDimensions);
+
+	j.at("dataTypes").get_to(def.dataTypes);
 	j.at("registerFiles").get_to(def.registerFiles);
+
+	//
+
 	j.at("instructionFormats").get_to(def.instructionFormats);
 	j.at("instructions").get_to(def.instructions);
 }

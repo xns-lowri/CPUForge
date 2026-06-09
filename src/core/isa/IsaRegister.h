@@ -7,39 +7,6 @@
 
 #include "enumIsaDef.h"
 
-/* Structs defining registers available in ISA*/
-//struct IsaRegisterType
-//{
-//	UUID id = 0;
-//	std::string name;
-//	std::string description;
-//};
-
-/* Custom enum definitions for register field values */
-struct IsaEnumValue
-{
-	//UUID id = 0;
-	std::string name;
-	std::string friendlyName;
-	uint64_t value;
-	std::string description;
-};
-
-inline void to_json(json& j, const IsaEnumValue& enumVal) {
-	j = json{
-		{ "name", enumVal.name },
-		{ "friendlyName", enumVal.friendlyName },
-		{ "value", enumVal.value },
-		{ "description", enumVal.description }
-	};
-}
-
-inline void from_json(const json& j, IsaEnumValue& enumVal) {
-	j.at("name").get_to(enumVal.name);
-	j.at("friendlyName").get_to(enumVal.friendlyName);
-	j.at("value").get_to(enumVal.value);
-	j.at("description").get_to(enumVal.description);
-}
 /* Defines individual fields within register 
 * - gp registers may have 1 field: r0(16) has data(16)
 * - special registers may have more: FLAGS has PRV(2), Z/N/C/V(1), etc
@@ -78,7 +45,6 @@ inline void to_json(json& j, const IsaRegisterField& field) {
 		{ "enumValues", field.enumValues }
 	};
 }
-
 inline void from_json(const json& j, IsaRegisterField& field) {
 	j.at("name").get_to(field.name);
 	j.at("friendlyName").get_to(field.friendlyName);
@@ -136,7 +102,6 @@ inline void to_json(json& j, const IsaRegister& reg) {
 		{ "tags", reg.tags }
 	};
 }
-
 inline void from_json(const json& j, IsaRegister& reg) {
 	j.at("name").get_to(reg.name);
 	j.at("friendlyName").get_to(reg.friendlyName);
@@ -160,7 +125,7 @@ struct IsaRegisterFile
 	std::string friendlyName;
 	std::string description;
 
-	IsaRegisterFileType type;
+	IsaRegisterFileType type = IsaRegisterFileType::GeneralPurpose;
 
 	uint16_t defaultBitWidth = 8;
 
@@ -178,7 +143,6 @@ inline void to_json(json& j, const IsaRegisterFile& regFile) {
 		{ "registers", regFile.registers }
 	};
 }
-
 inline void from_json(const json& j, IsaRegisterFile& regFile) {
 	j.at("name").get_to(regFile.name);
 	j.at("friendlyName").get_to(regFile.friendlyName);

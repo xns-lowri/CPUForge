@@ -39,7 +39,6 @@ inline void to_json(json& j, const DocumentHeader& header) {
 		{ "contentRevision", header.contentRevision }
 	};
 }
-
 inline void from_json(const json& j, DocumentHeader& header) {
 	j.at("id").get_to(header.id);
 	j.at("title").get_to(header.title);
@@ -67,7 +66,6 @@ inline void to_json(json& j, const TreeActionDescriptor& treeAction) {
 		{ "displayName", treeAction.displayName }
 	};
 }
-
 inline void from_json(const json& j, TreeActionDescriptor& treeAction) {
 	j.at("action").get_to(treeAction.action);
 	j.at("displayName").get_to(treeAction.displayName);
@@ -90,7 +88,6 @@ inline void to_json(json& j, const FileTypeDescriptor& fileType) {
 		{ "type", ToString(fileType.type) }
 	};
 }
-
 inline void from_json(const json& j, FileTypeDescriptor& fileType) {
 	j.at("id").get_to(fileType.id);
 	j.at("displayName").get_to(fileType.displayName);
@@ -129,7 +126,6 @@ inline void to_json(json& j, const FileObject& fileObject) {
 		{ "readOnly", fileObject.readOnly }
 	};
 }
-
 inline void from_json(const json& j, FileObject& fileObject) {
 	j.at("id").get_to(fileObject.id);
 	j.at("parentId").get_to(fileObject.parentId);
@@ -156,7 +152,6 @@ inline void to_json(json& j, const FolderProperties& props) {
 		{ "canRename", props.canRename }
 	};
 }
-
 inline void from_json(const json& j, FolderProperties& props) {
 	j.at("canAddFolders").get_to(props.canAddFolders);
 	j.at("canAddFiles").get_to(props.canAddFiles);
@@ -192,7 +187,6 @@ inline void to_json(json& j, const FolderObject& folder) {
 		{ "childFiles", folder.childFiles }
 	};
 }
-
 inline void from_json(const json& j, FolderObject& folder) {
 	j.at("id").get_to(folder.id);
 	j.at("parentId").get_to(folder.parentId);
