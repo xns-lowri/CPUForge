@@ -3,7 +3,7 @@
 #include "../_IAppComponent.h"
 #include "../../core/isa/IsaDefinition.h"
 
-#include "../project/ProjectManager.h"
+#include "../../project/ProjectManager.h"
 #include "../../project/FileHandler.h"
 //#include "../../AppContext.h"
 

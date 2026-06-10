@@ -9,7 +9,7 @@
 #include "enumProjectDef.h"
 #include "Project.h"
 
-#include "../core/isa/IsaArchitecture.h"
+#include "../core/isa/IsaDefinition.h"
 
 /* Main project struct */
 struct ProjectData
