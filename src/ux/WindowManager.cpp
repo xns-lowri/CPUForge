@@ -55,6 +55,9 @@ T& WindowManager::AddModal(std::string id, Args&&... args)
 	// Create a new window of type T with the provided arguments
 	auto modal = std::make_unique<T>(std::forward<Args>(args)...);
 	T& ref = *modal; // Get a reference to the newly created window
+
+	//TODO use vector, list, or ordered map??
+
 	modals.emplace(std::move(id), std::move(modal)); 
 		// Store the modal in the map
 	return ref; // Return the reference to the caller
@@ -178,6 +181,6 @@ void WindowManager::DrawWindowMenuItems()
 	}
 }*/
 
-std::unordered_map<std::string, std::unique_ptr<IWindow>>& WindowManager::GetWindows() {
+std::map<std::string, std::unique_ptr<IWindow>>& WindowManager::GetWindows() {
 	return windows;
 }

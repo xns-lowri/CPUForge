@@ -41,8 +41,8 @@ public:
 	//void DrawMenuBarItems();
 	//void DrawWindowMenuItems();
 
-	std::unordered_map<std::string, std::unique_ptr<IWindow>>& GetWindows();
+	std::map<std::string, std::unique_ptr<IWindow>>& GetWindows();
 private:
-	std::unordered_map<std::string, std::unique_ptr<IModal>> modals;
-	std::unordered_map<std::string, std::unique_ptr<IWindow>> windows;
+	std::map<std::string, std::unique_ptr<IModal>> modals;
+	std::map<std::string, std::unique_ptr<IWindow>> windows;
 };

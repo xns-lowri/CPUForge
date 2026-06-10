@@ -103,7 +103,7 @@ inline MenuShortcut CtrlAltShift(char key) {
     return MenuShortcut{ key, true, true, true };
 }
 
-inline MenuItem BuildWindowMenuModel(std::unordered_map<std::string, std::unique_ptr<IWindow>>& windows) {
+inline MenuItem BuildWindowMenuModel(std::map<std::string, std::unique_ptr<IWindow>>& windows) {
     MenuBarModel windowMenuItems = MenuBarModel();
 
     for(auto& window : windows) {
@@ -117,7 +117,7 @@ inline MenuItem BuildWindowMenuModel(std::unordered_map<std::string, std::unique
    return MenuItem::Submenu("Window", windowMenuItems);
 }
 
-inline MenuBarModel BuildMainMenuModel(std::unordered_map<std::string, std::unique_ptr<IWindow>>& windows) {   
+inline MenuBarModel BuildMainMenuModel(std::map<std::string, std::unique_ptr<IWindow>>& windows) {   
     return {
         MenuItem::Submenu("File", {
             MenuItem::Command("New Project", AppCommand::NewProject, Ctrl('n')),
