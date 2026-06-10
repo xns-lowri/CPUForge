@@ -55,7 +55,7 @@ T& WindowManager::AddModal(std::string id, Args&&... args)
 	// Create a new window of type T with the provided arguments
 	auto modal = std::make_unique<T>(std::forward<Args>(args)...);
 	T& ref = *modal; // Get a reference to the newly created window
-	modals.emplace(std::move(id), std::move(modal)); 
+	modals.emplace_back(std::move(id), std::move(modal)); 
 		// Store the modal in the map
 	return ref; // Return the reference to the caller
 }
@@ -66,7 +66,7 @@ T& WindowManager::AddWindow(std::string id, Args&&... args)
 	// Create a new window of type T with the provided arguments
 	auto window = std::make_unique<T>(std::forward<Args>(args)...);
 	T& ref = *window; // Get a reference to the newly created window
-	windows.emplace(std::move(id), std::move(window)); // Store the window in the vector
+	windows.emplace_back(std::move(id), std::move(window)); // Store the window in the vector
 	return ref; // Return the reference to the caller
 }
 
