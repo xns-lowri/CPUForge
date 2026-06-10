@@ -131,7 +131,6 @@ bool UI::Render(AppContext& context)
 
     const MenuBarModel menu = BuildMainMenuModel(windowManager.GetWindows());
 
-    DrawMainMenuBar(menu, context);
     //#endif    
 
 #ifdef __APPLE__
@@ -139,6 +138,7 @@ bool UI::Render(AppContext& context)
     MacMenu_Update(menu);
 #else
     //fmt::print("Using menu bar rendered in-app");
+    DrawMainMenuBar(menu, context);
 #endif
 
 	//set params for docking space root window
