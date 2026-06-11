@@ -22,6 +22,7 @@ public:
 		//	title,
 		//	context.projectManager.GetCurrentProject()->name);
 
+		//todo not safe?? D:
 		ImGui::Text(fmt::format("Project '{:s}'",
 			context.projectManager->GetCurrentProject()->name).c_str());
 
