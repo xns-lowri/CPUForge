@@ -26,6 +26,12 @@ struct IsaAddressTranslationStage {
 
 	std::vector<std::string> tags;
 };
+inline void to_json(json& j, const IsaAddressTranslationStage& stage) {
+
+}
+inline void from_json(const json& j, IsaAddressTranslationStage& stage) {
+
+}
 
 struct IsaAddressingMode {
 	std::string name;
@@ -44,3 +50,9 @@ struct IsaAddressingMode {
 
 	std::vector<std::string> tags;
 };
+inline void to_json(json& j, const IsaAddressingMode& mode) {
+
+}
+inline void from_json(const json& j, IsaAddressingMode& mode) {
+
+}

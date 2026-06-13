@@ -32,20 +32,22 @@ public:
 			static char projectName[128] = "new project";
 			static char projectPath[256] = "root folder path";
 
+			const float separator = 100.f;
+
 			ImGui::TextUnformatted("Enter details for new project");
 			ImGui::Separator();
 
 			ImGui::Spacing();
 
 			ImGui::TextUnformatted("Name");
-			ImGui::SameLine();
+			ImGui::SameLine(separator);
 			ImGui::SetNextItemWidth(-FLT_MIN);
 			ImGui::InputText("##ProjectName", projectName, IM_ARRAYSIZE(projectName));
 
 			ImGui::Spacing();
 
 			ImGui::TextUnformatted("Path");
-			ImGui::SameLine();
+			ImGui::SameLine(separator);
 			ImGui::SetNextItemWidth(-FLT_MIN);
 			ImGui::InputText("##ProjectPath", projectPath, IM_ARRAYSIZE(projectPath));
 

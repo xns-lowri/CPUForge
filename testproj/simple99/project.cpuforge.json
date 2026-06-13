@@ -1,0 +1,196 @@
+{
+    "description": "",
+    "files": [
+        [
+            1781351751,
+            {
+                "documentId": 1781351752,
+                "extension": ".isa",
+                "generated": false,
+                "id": 1781351751,
+                "name": "core1.isa",
+                "parentId": 1781351743,
+                "path": "isa\\core1.isa",
+                "readOnly": false,
+                "type": "ISADefinition"
+            }
+        ],
+        [
+            1781351753,
+            {
+                "documentId": 1781351754,
+                "extension": ".isa",
+                "generated": false,
+                "id": 1781351753,
+                "name": "new file.isa",
+                "parentId": 1781351743,
+                "path": "isa\\new file.isa",
+                "readOnly": false,
+                "type": "ISADefinition"
+            }
+        ],
+        [
+            1781351755,
+            {
+                "documentId": 1781351756,
+                "extension": ".isa",
+                "generated": false,
+                "id": 1781351755,
+                "name": "core2duo.isa",
+                "parentId": 1781351743,
+                "path": "isa\\core2duo.isa",
+                "readOnly": false,
+                "type": "ISADefinition"
+            }
+        ]
+    ],
+    "folders": [
+        [
+            1781351743,
+            {
+                "childFiles": [
+                    1781351751,
+                    1781351753,
+                    1781351755
+                ],
+                "childFolders": [],
+                "id": 1781351743,
+                "name": "isa",
+                "parentId": 0,
+                "path": "isa",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": false,
+                    "canRename": false
+                },
+                "type": "ISA"
+            }
+        ],
+        [
+            1781351744,
+            {
+                "childFiles": [],
+                "childFolders": [],
+                "id": 1781351744,
+                "name": "hardware",
+                "parentId": 0,
+                "path": "hardware",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": false,
+                    "canRename": false
+                },
+                "type": "Hardware"
+            }
+        ],
+        [
+            1781351745,
+            {
+                "childFiles": [],
+                "childFolders": [
+                    1781351746,
+                    1781351747
+                ],
+                "id": 1781351745,
+                "name": "sources",
+                "parentId": 0,
+                "path": "sources",
+                "properties": {
+                    "canAddFiles": false,
+                    "canAddFolders": false,
+                    "canRename": false
+                },
+                "type": "Source"
+            }
+        ],
+        [
+            1781351746,
+            {
+                "childFiles": [],
+                "childFolders": [],
+                "id": 1781351746,
+                "name": "host",
+                "parentId": 1781351745,
+                "path": "sources\\host",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": true,
+                    "canRename": false
+                },
+                "type": "Source"
+            }
+        ],
+        [
+            1781351747,
+            {
+                "childFiles": [],
+                "childFolders": [],
+                "id": 1781351747,
+                "name": "target",
+                "parentId": 1781351745,
+                "path": "sources\\target",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": true,
+                    "canRename": false
+                },
+                "type": "Source"
+            }
+        ],
+        [
+            1781351748,
+            {
+                "childFiles": [],
+                "childFolders": [],
+                "id": 1781351748,
+                "name": "debug",
+                "parentId": 0,
+                "path": "debug",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": false,
+                    "canRename": false
+                },
+                "type": "Debug"
+            }
+        ],
+        [
+            1781351749,
+            {
+                "childFiles": [],
+                "childFolders": [],
+                "id": 1781351749,
+                "name": "build",
+                "parentId": 0,
+                "path": "build",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": false,
+                    "canRename": false
+                },
+                "type": "Build"
+            }
+        ],
+        [
+            1781351750,
+            {
+                "childFiles": [],
+                "childFolders": [],
+                "id": 1781351750,
+                "name": "notes",
+                "parentId": 0,
+                "path": "notes",
+                "properties": {
+                    "canAddFiles": true,
+                    "canAddFolders": false,
+                    "canRename": false
+                },
+                "type": "Notes"
+            }
+        ]
+    ],
+    "id": 1781351742,
+    "name": "simple99",
+    "nextId": 1781351757,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple99"
+}

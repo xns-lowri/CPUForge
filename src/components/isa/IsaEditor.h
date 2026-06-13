@@ -65,6 +65,10 @@ public:
 		if (commandAction == "open_file") {
 			return OpenDocument(context, window, command.targetId, command.path);
 		}
+
+		if (commandAction == "save_file") {
+			return SaveDocument(context, command.targetId);
+		}
 		return false;
 	}
 
@@ -111,7 +115,7 @@ public:
 		//	GetCurrentProject()->files.at(fileId).documentId);
 
 		IsaDefinition document = IsaDefinition();
-		document.header.createdUtc = "now"; //todo get current time
+		document.header.createdUtc = context.projectManager->GetCurrentTimestamp();
 		document.header.modifiedUtc = document.header.createdUtc;
 		document.header.id = documentId;
 
@@ -198,6 +202,11 @@ public:
 		bool windowOpened = window.OpenIsaEditor(context, documentId, title);
 
 		return windowOpened;
+	}
+
+	bool SaveDocument(AppContext& context, UUID target) {
+		fmt::println("[IsaEditor] Saving document {}", target);
+		return false;
 	}
 
 private:

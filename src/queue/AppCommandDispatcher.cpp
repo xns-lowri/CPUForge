@@ -85,6 +85,21 @@ void AppCommandDispatcher::Dispatch(
 
         case AppCommand::Save:
             //ctx.projectManager.SaveCurrentProject(ctx);
+            fmt::println("Command: id={}; targetId={}; path={:s}", 
+                command.id, command.targetId, command.path);
+
+            fmt::println("Save document {} in editor {:s}", 
+                context.workspaceManager->activeDocument,
+                context.workspaceManager->lastEditor);
+
+            if (command.id == "") { 
+                command.id = context.workspaceManager->lastEditor; 
+            }
+
+            //todo handler
+            components.HandleCommand(
+                context, window, command);
+
             break;
 
         case AppCommand::SaveAs:

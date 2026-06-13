@@ -26,7 +26,12 @@ struct IsaMemoryAccessClass {
 
 	std::vector<std::string> tags;
 };
+inline void to_json(json& j, const IsaMemoryAccessClass& access) {
 
+}
+inline void from_json(const json& j, IsaMemoryAccessClass& access) {
+
+}
 //todo to/from json
 
 
@@ -53,6 +58,12 @@ struct IsaMemoryRegion {
 
 	std::vector<std::string> tags;
 };
+inline void to_json(json& j, const IsaMemoryRegion& region) {
+
+}
+inline void from_json(const json& j, IsaMemoryRegion& region) {
+
+}
 
 //todo to/from json
 
@@ -64,6 +75,10 @@ struct IsaAddressSpace {
 	std::string description;
 
 	Endianness endianness = Endianness::Little;	//usually same as isa?
+
+	//todo move to memory?
+	IsaMemoryConsistencyModel memoryConsistencyModel
+		= IsaMemoryConsistencyModel::Sequential;
 
 	uint16_t addressWidthBits = 16;	//2^bits = number of units in address space
 
@@ -87,6 +102,12 @@ struct IsaAddressSpace {
 
 	std::vector<std::string> tags;
 };
+inline void to_json(json& j, const IsaAddressSpace& space) {
+
+}
+inline void from_json(const json& j, IsaAddressSpace& space) {
+
+}
 
 //todo to/from json
 

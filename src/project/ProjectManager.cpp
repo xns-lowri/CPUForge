@@ -293,6 +293,12 @@ bool ProjectManager::OpenProject(const std::filesystem::path rootPath) {
 	return true;
 }
 
+std::string ProjectManager::GetCurrentTimestamp() {
+	//time_t now = std::time(nullptr);
+	auto now = std::chrono::system_clock::now();
+	return fmt::format("{:%Y-%m-%d %H:%M:%S}", now);
+}
+
 /* Project tree management functions */
 UUID ProjectManager::NewFolder(
 	const std::string name, 

@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <unordered_map>
 #include <fmt/core.h>
+#include <fmt/chrono.h>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 #include "FileHandler.h"
@@ -53,6 +54,8 @@ public:
 	void CloseProject();
 
 	bool SaveFile(UUID fileId, json data);
+
+	std::string GetCurrentTimestamp();
 
 	//project tree management functions
 	UUID NewFolder(

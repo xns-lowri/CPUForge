@@ -129,6 +129,12 @@ struct IsaDefinition
 	//isa definition
 	Endianness endianness = Endianness::Little;
 
+	uint16_t defaultByteWidth = 8;
+
+	bool dataUsesDefaultByte = true;
+	bool addressUsesDefaultByte = true;
+	bool instructionUsesDefaultByte = true;
+
 	uint16_t defaultDataByteWidth = 8;
 	uint16_t defaultDataWordBytes = 1;
 
@@ -143,10 +149,6 @@ struct IsaDefinition
 	uint16_t maxOpcodeWidth = 8;		//sets total number of instructions available
 
 	uint16_t defaultAlignmentBits = 8;	//for memory addressing
-
-	//todo move to memory?
-	IsaMemoryConsistencyModel memoryConsistencyModel 
-		= IsaMemoryConsistencyModel::Sequential;
 
 	//isa components
 	std::vector<IsaFeature> features;
@@ -188,6 +190,12 @@ inline void to_json(json& j, const IsaDefinition& def) {
 		{ "architectureName", def.architectureName },
 		{ "endianness", ToString(def.endianness) },
 
+		{ "defaultByteWidth", def.defaultByteWidth },
+
+		{ "dataUsesDefaultByte", def.dataUsesDefaultByte },
+		{ "addressUsesDefaultByte", def.addressUsesDefaultByte },
+		{ "instructionUsesDefaultByte", def.instructionUsesDefaultByte },
+
 		{ "defaultDataByteWidth", def.defaultDataByteWidth },
 		{ "defaultDataWordBytes", def.defaultDataWordBytes },
 
@@ -203,7 +211,7 @@ inline void to_json(json& j, const IsaDefinition& def) {
 
 		{ "defaultAlignmentBits", def.defaultAlignmentBits },
 
-		{ "memoryConsistencyModel", ToString(def.memoryConsistencyModel) },
+		//{ "memoryConsistencyModel", ToString(def.memoryConsistencyModel) },
 
 		{ "features", def.features },
 		{ "faults", def.faults },
@@ -212,7 +220,8 @@ inline void to_json(json& j, const IsaDefinition& def) {
 		{ "dataTypes", def.dataTypes },
 		{ "registerFiles", def.registerFiles },
 
-		//
+		{ "addressSpaces", def.addressSpaces },
+		{ "addressTranslationStages", def.addressTranslationStages },
 
 		{ "instructionFormats", def.instructionFormats },
 		{ "instructions", def.instructions }
@@ -222,6 +231,12 @@ inline void from_json(const json& j, IsaDefinition& def) {
 	j.at("header").get_to<DocumentHeader>(def.header);
 	j.at("architectureName").get_to(def.architectureName);
 	j.at("endianness").get_to<Endianness>(def.endianness);
+
+	j.at("defaultByteWidth").get_to(def.defaultByteWidth);
+
+	j.at("dataUsesDefaultByte").get_to(def.dataUsesDefaultByte);
+	j.at("addressUsesDefaultByte").get_to(def.addressUsesDefaultByte);
+	j.at("instructionUsesDefaultByte").get_to(def.instructionUsesDefaultByte);
 
 	j.at("defaultDataByteWidth").get_to(def.defaultDataByteWidth);
 	j.at("defaultDataWordBytes").get_to(def.defaultDataWordBytes);
@@ -237,7 +252,8 @@ inline void from_json(const json& j, IsaDefinition& def) {
 	j.at("maxOpcodeWidth").get_to(def.maxOpcodeWidth);
 
 	j.at("defaultAlignmentBits").get_to(def.defaultAlignmentBits);
-	j.at("memoryConsistencyModel").get_to<IsaMemoryConsistencyModel>(def.memoryConsistencyModel);
+
+	//j.at("memoryConsistencyModel").get_to<IsaMemoryConsistencyModel>(def.memoryConsistencyModel);
 	
 	j.at("features").get_to(def.features);
 	j.at("faults").get_to(def.faults);
@@ -246,7 +262,8 @@ inline void from_json(const json& j, IsaDefinition& def) {
 	j.at("dataTypes").get_to(def.dataTypes);
 	j.at("registerFiles").get_to(def.registerFiles);
 
-	//
+	j.at("addressSpaces").get_to(def.addressSpaces);
+	j.at("addressTranslationStages").get_to(def.addressTranslationStages);
 
 	j.at("instructionFormats").get_to(def.instructionFormats);
 	j.at("instructions").get_to(def.instructions);

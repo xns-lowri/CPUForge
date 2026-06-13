@@ -110,7 +110,7 @@ public:
 					if (folder.second.properties.canAddFolders) {
 						if (ImGui::MenuItem("New Folder")) {
 							fmt::println("New folder in folder: {:s}", folder.second.name);
-							context.workspaceManager->SetSelectedFolder(folder.second.id);
+							context.workspaceManager->lastFolderInTree = folder.second.id;
 							manager.OpenModal(context, "modal.new_folder");
 							//context.projectManager.NewFolder("New Folder", folder.second.id);
 							//todo handle new folder
@@ -131,9 +131,9 @@ public:
 								//});
 								std::string componentId = action.action.substr(0, action.action.find('.'));
 								std::string actionId = action.action.substr(action.action.find_last_of('.') + 1);
-								context.workspaceManager->SetSelectedFolder(folder.second.id);
-								context.workspaceManager->SetAction(action.action);
-								context.workspaceManager->SetPath(folder.second.path);
+								context.workspaceManager->lastFolderInTree = folder.second.id;
+								context.workspaceManager->lastAction = action.action;
+								context.workspaceManager->lastPath = folder.second.path;
 
 								//fmt::println(" ***** Action: {:s}", actionId);
 
@@ -206,15 +206,15 @@ public:
 								//});
 								std::string componentId = action.action.substr(0, action.action.find('.'));
 								std::string actionId = action.action.substr(action.action.find_last_of('.') + 1);
-								context.workspaceManager->SetSelectedFolder(folder.second.id);
-								context.workspaceManager->SetAction(action.action);
-								context.workspaceManager->SetPath(curFile.path);
+								context.workspaceManager->lastFolderInTree = folder.second.id;
+								context.workspaceManager->lastAction = action.action;
+								context.workspaceManager->lastPath = curFile.path;
 
 								//fmt::println(" ***** Action: {:s}", actionId);
 								context.appCommandQueue->Push(AppCommandRequest{
 									.command = AppCommand::OpenFile,
-									.id = context.workspaceManager->GetAction(),
-									.path = context.workspaceManager->GetPath(),
+									.id = context.workspaceManager->lastAction,
+									.path = context.workspaceManager->lastPath,
 									.targetId = curFile.id
 								});
 							}

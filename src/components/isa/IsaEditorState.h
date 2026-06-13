@@ -1,13 +1,16 @@
 #pragma once
 
-enum class IsaEditorPanel {
+enum class IsaEditorTabState {
 	Details,
-	Model,
-	Register,
-	Instruction
+	DataModel,
+	Registers,
+	MemoryIO,
+	InstructionSet,
+	ExecutionContext,
+	Validation
 };
 
 struct IsaEditorState {
 	//todo state for ViewIsaEditor window
-	IsaEditorPanel currentPanel = IsaEditorPanel::Details;
+	IsaEditorTabState tabState = IsaEditorTabState::Details;
 };

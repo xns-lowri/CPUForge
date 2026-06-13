@@ -72,7 +72,7 @@ public:
 				fmt::println("Creating new folder");
 				if (context.projectManager->NewFolder(
 					std::string(folderName), 
-					context.workspaceManager->GetSelectedFolder(),
+					context.workspaceManager->lastFolderInTree,
 					FolderProperties{ true, true, true },
 					std::nullopt) != 0)
 				{

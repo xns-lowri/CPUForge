@@ -5,6 +5,7 @@
 #include <memory>
 #include <optional>
 #include <imgui.h>
+#include <imgui_stdlib.h>
 
 //#include "../project/ProjectManager.h"
 #include "../AppContext.h"

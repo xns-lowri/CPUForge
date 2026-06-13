@@ -1,11 +1,16 @@
 #include "WorkspaceManager.h"
 
+/*
 const UUID WorkspaceManager::GetSelectedFolder() const {
 	return lastFolderInTree;
 }
 
 const UUID WorkspaceManager::GetSelectedFile() const {
 	return lastFileInTree;
+}
+
+const UUID WorkspaceManager::GetActiveDocument() const {
+	return activeDocument;
 }
 
 const std::string WorkspaceManager::GetAction() const {
@@ -24,6 +29,11 @@ void WorkspaceManager::SetSelectedFolder(UUID folderId) {
 void WorkspaceManager::SetSelectedFile(UUID fileId) {
 	//todo check file exists
 	lastFileInTree = fileId;
+}
+
+void WorkspaceManager::SetActiveDocument(UUID documentId) {
+	//todo check file exists
+	activeDocument = documentId;
 }
 
 void WorkspaceManager::SetAction(std::string action) {

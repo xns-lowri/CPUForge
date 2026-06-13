@@ -14,6 +14,8 @@ public:
 	std::vector<TreeActionDescriptor> GetTreeActionsFile(FileType fileType) const;
 
 	IsaDocumentStore& GetIsaDocuments();
+	IsaDefinition& GetIsaDocument(const UUID& id);
+
 private:
 	std::unordered_map<FolderKind, std::vector<TreeActionDescriptor>> treeActionsByFolder;
 	std::unordered_map<FileType, std::vector<TreeActionDescriptor>> treeActionsByFile;

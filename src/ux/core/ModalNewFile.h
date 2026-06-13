@@ -71,7 +71,7 @@ public:
 			if (ImGui::Button(createLabel, ImVec2(createButtonWidth, 0))) {
 				//get file kind for selected folder
 				UUID currentFolderId = 
-					context.workspaceManager->GetSelectedFolder();
+					context.workspaceManager->lastFolderInTree;
 				FolderKind currentFolderKind = 
 					context.projectManager->
 					GetCurrentProject()->
@@ -102,8 +102,8 @@ public:
 					//push app request to create editor state for new file
 					context.appCommandQueue->Push(AppCommandRequest{
 						.command = AppCommand::NewFile,
-						.id = context.workspaceManager->GetAction(),
-						.path = context.workspaceManager->GetPath(),
+						.id = context.workspaceManager->lastAction,
+						.path = context.workspaceManager->lastPath,
 						.targetId = newFileId
 					});
 				}

@@ -87,6 +87,13 @@ int UI::Init(AppContext& context)
     
     ImGui::StyleColorsDark();
 
+    ImGuiIO& imio = ImGui::GetIO();
+    ImFont* newFont = imio.Fonts->AddFontFromFileTTF("DroidSans.ttf", 16.f); //AddFontDefaultVector();
+    //ImFontConfig fontConfig;
+    //fontConfig.SizePixels = 14;
+    //ImFont* newFont = imio.Fonts->AddFontDefaultVector(&fontConfig);
+    imio.FontDefault = newFont;
+
     ImGui_ImplSDL2_InitForOpenGL(window, glContext);
     ImGui_ImplOpenGL3_Init("#version 330");
 
@@ -145,6 +152,7 @@ bool UI::Render(AppContext& context)
     ImGui::SetNextWindowPos(viewport->WorkPos);
     ImGui::SetNextWindowSize(viewport->WorkSize);
     ImGui::SetNextWindowViewport(viewport->ID);
+
 	//set style vars for docking space
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -157,38 +165,8 @@ bool UI::Render(AppContext& context)
     ImGui::PopStyleVar(2);
 	// docking area added, add later windows can be docked to this
 
-    /* TODO Render proper UI elements and handle actions */
-
-    // UI
-    //if (last_selected)
-    //{
-    //    ImGui::Begin("Hello", &toolbar_test, TOOLBAR_FLAGS);
-    //    ImGui::Text("It vworks!");
-    //    ImGui::Text("Test line");
-    //    ImGui::Text("Text line");
-    //    //if (ImGui::IsWindowFocused()) {
-	//	//	fmt::println("Menu 1 is focused");
-    //    //}
-    //    ImGui::End();
-    //}
-    //
-    //
-    //ImGui::Begin("Hello2", nullptr, TOOLBAR_FLAGS);
-    //ImGui::Text("It vworks22!");
-	//if (ImGui::Button("Open Toolbar"))
-    //{
-    //    toolbar_test = true;
-    //}
-    //ImGui::End();
-
     //draw ui here
-	windowManager.DrawAll(context);
-
-	/*ImGuiID current_window = ImGui::GetFocusID();
-	if (last_selected != current_window) {
-		last_selected = current_window;
-        fmt::println("Focus: {:d}", current_window);
-	}*/
+	windowManager.DrawAll(context); //all drawing handled by window manager
 
 	// Render - finish all imgui calls before this line
     ImGui::Render();

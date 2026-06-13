@@ -22,6 +22,9 @@ void ComponentContext::SetTreeActionsFile(
 IsaDocumentStore& ComponentContext::GetIsaDocuments() { 
 	return isaDocuments; 
 }
+IsaDefinition& ComponentContext::GetIsaDocument(const UUID& id) {
+	return isaDocuments.openDocuments.at(id);
+}
 
 std::vector<TreeActionDescriptor> ComponentContext::GetTreeActionsFolder(
 	FolderKind folderKind) const 
