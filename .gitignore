@@ -110,7 +110,7 @@ Thumbs.db
 desktop.ini
 
 # fonts
-# *.ttf # am lazy
+*.ttf # am lazy
 
 # CLion
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
