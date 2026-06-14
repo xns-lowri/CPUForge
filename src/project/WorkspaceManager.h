@@ -12,7 +12,8 @@
 //todo add separate file with struct for all saveable state in workspace, 
 //e.g. open documents, selected items, etc. and serialize to disk on close and load on open
 
-struct WorkspaceManager {
+class WorkspaceManager {
+public:
 	UUID lastFolderInTree = 0;
 	UUID lastFileInTree = 0;
 
@@ -21,6 +22,25 @@ struct WorkspaceManager {
 
 	std::string lastAction = "";
 	std::string lastPath = "";
+
+	std::map<UUID, UUID> dirtyFilesByDocId;
+
+	void SetDocumentDirtyState(UUID documentId, UUID fileId, bool dirty = true) {
+		if (dirty) {
+			if (!dirtyFilesByDocId.contains(documentId)) {
+				dirtyFilesByDocId.emplace(
+					documentId,
+					fileId
+				);
+			}
+		}
+		else {
+			if (dirtyFilesByDocId.contains(documentId))
+			{
+				dirtyFilesByDocId.extract(documentId);
+			}
+		}
+	}
 };
 
 /*
@@ -58,4 +78,4 @@ public:
 	//todo methods for opening documents etc
 	//std::unordered_map<std::string, std::unique_ptr<IModal>>& GetModalMap();
 	//std::unordered_map<std::string, std::unique_ptr<IWindow>>& GetWindowMap();
-};*/
+}; */

@@ -25,6 +25,7 @@ public:
 			context.componentContext->GetIsaDocument(documentId);
 
 		bool openButton = open;
+		bool dirtied = false;
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(720, 480), ImVec2(FLT_MAX, FLT_MAX));
 		
@@ -34,10 +35,10 @@ public:
 
 		ImGui::Begin(fullTitle.c_str(), &openButton);
 
-
+		//set context if focused
 		if (ImGui::IsWindowFocused()) {
 			context.workspaceManager->activeDocument = documentId;
-			context.workspaceManager->lastEditor = GetId();
+			context.workspaceManager->lastEditor = "isa_editor"; //GetId();
 		}
 
 		//render toolbar
@@ -45,15 +46,48 @@ public:
 
 		switch (state.tabState) {
 			case IsaEditorTabState::Details:	
-				RenderDetailsView(context, curDoc); break;
+				dirtied |= RenderDetailsView(context, curDoc); 
+				break;
 
-			default:	break;
+			case IsaEditorTabState::DataModel:
+				dirtied |= RenderDataModelView(context, curDoc);
+				break;
+
+			case IsaEditorTabState::Registers:
+				dirtied |= RenderRegistersView(context, curDoc);
+				break;
+
+			case IsaEditorTabState::MemoryIO:
+				dirtied |= RenderMemoryIOView(context, curDoc);
+				break;
+
+			case IsaEditorTabState::InstructionSet:
+				dirtied |= RenderInstructionSetView(context, curDoc);
+				break;
+
+			case IsaEditorTabState::ExecutionContext:
+				dirtied |= RenderExecutionContextView(context, curDoc);
+				break;
+
+			case IsaEditorTabState::Validation:
+				dirtied |= RenderValidationView(context, curDoc);
+				break;
+
+			default:	
+				break;
 		}
 
+		//render status bar
+		ImGui::BeginChild("IsaStatusBar", ImVec2(0, 0), true);
+		ImGui::Text("Valid | 0 Warnings");
+		ImGui::EndChild();
+
 		//handle dirty state
-		if (curDoc.header.dirty && !context.projectManager->IsDirty())
+		if (dirtied) //context.projectManager->IsDirty())
 		{
-			context.projectManager->MarkProjectDirty();
+			context.workspaceManager->SetDocumentDirtyState(
+				documentId, context.projectManager->GetFileIdForDocument(documentId));
+			curDoc.header.dirty = true;
 			curDoc.header.modifiedUtc = context.projectManager->GetCurrentTimestamp();
 			//curDoc.header.modifiedUtc = static_cast<std::string>(now); //unique id base for new project
 			
@@ -75,9 +109,11 @@ public:
 		}
 	}
 
-	void RenderDetailsView(AppContext& context, IsaDefinition& curDoc) {
+	bool RenderDetailsView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
 
 		int inByteWidth = curDoc.defaultByteWidth;
+		int inWordBytes = curDoc.defaultWordBytes;
 
 		int inDataByteWidth = curDoc.defaultDataByteWidth;
 		int inDataWordBytes = curDoc.defaultDataWordBytes;
@@ -93,6 +129,15 @@ public:
 		int inMaxOpcodeWidth = curDoc.maxOpcodeWidth;
 
 		int inAlignmentBits = curDoc.defaultAlignmentBits;
+		/* TODO:
+		* * text output for architecture 'bit-ness' e.g. 16-bit
+		* 
+		* Instruction width alignment (byte width, word width, etc)
+		* * disable options as necessary
+		* 
+		* Allow expanding opcode checkbox
+		* 
+		*/
 
 		const char* endianItems[]{ "Little", "Big", "Custom" };
 		int selectedEndianness = 2;
@@ -101,7 +146,11 @@ public:
 		case Endianness::Big: selectedEndianness = 1; break;
 		}	//eeee hard coded magic numbers disgustang :(
 
-		ImGui::BeginChild("IsaDetailsPanel", ImVec2(0, 0), true);
+
+		ImGui::BeginChild(
+			"IsaDetailsPanel", 
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f), 
+			true);
 		//single panel
 		float separator = 350.f;
 
@@ -109,7 +158,7 @@ public:
 		ImGui::Text("Title:");
 		ImGui::SameLine(separator);
 		ImGui::PushItemWidth(-FLT_MIN);
-		curDoc.header.dirty |= ImGui::InputText(
+		retDirty |= ImGui::InputText(
 			"###IsaDocumentTitle", 
 			&curDoc.header.title);
 		ImGui::PopItemWidth();
@@ -117,44 +166,71 @@ public:
 		ImGui::Text("Description:");
 		ImGui::SameLine(separator);
 		ImGui::PushItemWidth(-FLT_MIN);
-		curDoc.header.dirty |= ImGui::InputTextMultiline(
+		retDirty |= ImGui::InputTextMultiline(
 			"###IsaDocumentDescription", 
 			&curDoc.header.description, 
 			ImVec2(0, 64));
 		ImGui::PopItemWidth();
 
+
+		ImGui::SeparatorText("General");
+
+		//processor endianness
+		ImGui::Text("Endianness:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		if (ImGui::Combo("##EndiannessCombo",
+			&selectedEndianness, endianItems, IM_ARRAYSIZE(endianItems)))
+		{
+			retDirty |= true;
+			curDoc.endianness = EndiannessFromString(endianItems[selectedEndianness]);
+		}
+		ImGui::PopItemWidth();
+
 		//default general data unit sizes
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default unit \"byte\" width (bits)",
 			inByteWidth, curDoc.defaultByteWidth,
 			1, UINT16_MAX, separator, true);
 
-		curDoc.header.dirty |= ImGui::Checkbox("Data uses default unit",
+		retDirty |= InputIntConstrained(
+			"Default word width (units)",
+			inWordBytes, curDoc.defaultWordBytes,
+			1, UINT16_MAX, separator, true);
+
+		retDirty |= ImGui::Checkbox("Data uses default unit",
 			&curDoc.dataUsesDefaultByte);
-
 		ImGui::SameLine(250.f);
-
-		curDoc.header.dirty |= ImGui::Checkbox("Address uses default unit",
+		retDirty |= ImGui::Checkbox("Address uses default unit",
 			&curDoc.addressUsesDefaultByte);
-
 		ImGui::SameLine(500.f);
-
-		curDoc.header.dirty |= ImGui::Checkbox("Instruction uses default unit",
+		retDirty |= ImGui::Checkbox("Instruction uses default unit",
 			&curDoc.instructionUsesDefaultByte);
+
+		retDirty |= ImGui::Checkbox("Data uses default word",
+			&curDoc.dataUsesDefaultWord);
+		ImGui::SameLine(250.f);
+		retDirty |= ImGui::Checkbox("Address uses default word",
+			&curDoc.addressUsesDefaultWord);
+		ImGui::SameLine(500.f);
+		retDirty |= ImGui::Checkbox("Instruction uses default word",
+			&curDoc.instructionUsesDefaultWord);
 
 		//data sizes
 		ImGui::SeparatorText("Data");
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Data unit \"byte\" width (bits)",
 			curDoc.dataUsesDefaultByte ? inByteWidth : inDataByteWidth,
 			curDoc.defaultDataByteWidth,
 			1, UINT16_MAX, separator, 
 			!curDoc.dataUsesDefaultByte);
 
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Data word width (units)",
-			inDataWordBytes, curDoc.defaultDataWordBytes,
-			1, UINT16_MAX, separator, true);
+			curDoc.dataUsesDefaultWord ? inWordBytes : inDataWordBytes,
+			curDoc.defaultDataWordBytes,
+			1, UINT16_MAX, separator, 
+			!curDoc.dataUsesDefaultWord);
 
 		int dataWidth = curDoc.defaultDataByteWidth * curDoc.defaultDataWordBytes;
 		ImGui::SetCursorPosX(separator);
@@ -163,17 +239,19 @@ public:
 
 		//address sizes
 		ImGui::SeparatorText("Address");
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Address unit \"byte\" width (bits)",
 			curDoc.addressUsesDefaultByte ? inByteWidth : inAddressByteWidth, 
 			curDoc.defaultAddressByteWidth,
 			1, UINT16_MAX, separator,
 			!curDoc.addressUsesDefaultByte);
 
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Address word width (units)",
-			inAddressWordBytes, curDoc.defaultAddressWordBytes,
-			1, UINT16_MAX, separator, true);
+			curDoc.addressUsesDefaultWord ? inWordBytes : inAddressWordBytes,
+			curDoc.defaultAddressWordBytes,
+			1, UINT16_MAX, separator, 
+			!curDoc.addressUsesDefaultWord);
 
 		int addressWidth = curDoc.defaultAddressByteWidth * curDoc.defaultAddressWordBytes;
 		ImGui::SetCursorPosX(separator);
@@ -182,22 +260,39 @@ public:
 
 		//instruction sizes
 		ImGui::SeparatorText("Instruction");
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Instruction unit \"byte\" width (bits)",
 			curDoc.instructionUsesDefaultByte ? inByteWidth : inInstructionByteWidth,
 			curDoc.defaultInstructionByteWidth,
 			1, UINT16_MAX, separator,
 			!curDoc.instructionUsesDefaultByte);
 
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Instruction word width (units)",
-			inInstructionWordBytes, curDoc.defaultInstructionWordBytes,
-			1, UINT16_MAX, separator, true);
+			curDoc.instructionUsesDefaultWord ? inWordBytes : inInstructionWordBytes,
+			curDoc.defaultInstructionWordBytes,
+			1, UINT16_MAX, separator, 
+			!curDoc.instructionUsesDefaultWord);
 
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= ImGui::Checkbox("Instruction width must be multiple of word width",
+			&curDoc.instructionWidthIsWordAligned);
+
+		//if(curDoc.instructionWidthIsWordAligned)
+		//{
+		//	inMaxInstructionWordBytes = inMaxInstructionWordBytes +
+		//		(inMaxInstructionWordBytes % static_cast<int>(curDoc.defaultInstructionWordBytes));
+		//}
+
+		retDirty |= InputIntConstrained(
 			"Maximum Instruction word width (units)",
-			inMaxInstructionWordBytes, curDoc.maxInstructionWordBytes,
-			1, UINT16_MAX, separator, true);
+			inMaxInstructionWordBytes,
+			curDoc.maxInstructionWordBytes,
+			curDoc.instructionWidthIsWordAligned ? curDoc.defaultInstructionWordBytes : 1,
+			UINT16_MAX, 
+			separator, 
+			true, 
+			curDoc.instructionWidthIsWordAligned ? curDoc.defaultInstructionWordBytes : 1);
+
 
 		int instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
 		ImGui::SetCursorPosX(separator);
@@ -218,35 +313,257 @@ public:
 		//16x16 grids - up to 2 byte opcode window - can be moved around longer
 		//instructions to allow a type of 'zoom' for instruction set?
 
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Opcode width (bits)",
 			inOpcodeWidth, curDoc.defaultOpcodeWidth,
 			1, UINT16_MAX, separator, true);
 
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Maximum Opcode width (bits)",
 			inMaxOpcodeWidth, curDoc.maxOpcodeWidth,
 			1, UINT16_MAX, separator, true);
 
 		//memory alignment
 		ImGui::SeparatorText("Memory");
-		curDoc.header.dirty |= InputIntConstrained(
+		retDirty |= InputIntConstrained(
 			"Default Memory access alignment (bits)",
 			inAlignmentBits, curDoc.defaultAlignmentBits,
 			1, UINT16_MAX, separator, true);
 
-		ImGui::Text("Endianness:");
+		ImGui::EndChild();
+
+		return retDirty;
+	}
+
+	bool RenderDataModelView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		float separator = 250.f;
+		static float hsplit = 300.f;
+
+		//UUID selectedTypeId = 0;
+
+		//main panel
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+		ImGui::BeginChild(
+			"IsaDataModelPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			false);
+		ImGui::PopStyleVar();
+
+		/* LHS panel - data types list and new button */
+		//ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		ImGui::BeginChild(
+			"IsaDataModelPanelLeft",
+			ImVec2(hsplit, 0),
+			true);
+		//todo left inner
+		//ImGui::PopStyleVar();
+
+		ImGui::Text("Data types:");
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		if(ImGui::Button("New", ImVec2(ImGui::GetContentRegionAvail().x, 0))) {
+			//todo add data type
+			IsaDataType newType = IsaDataType();
+			newType.name = fmt::format("type{}", curDoc.dataTypes.size());
+
+			newType.id = context.projectManager->GetNextUUID();
+			curDoc.dataTypes.emplace(newType.id, newType);
+			retDirty |= true;
+		}
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		//todo data types list and selection
+		auto x = 0;
+		for (auto& type : curDoc.dataTypes) {
+			if (ImGui::RadioButton(
+				fmt::format("{:s}###{}", 
+					type.second.name,
+					type.second.id).c_str(), 
+				&state.DataModelSelectedType, x++)
+			) {
+				//select this
+				state.DataModelSelectedTypeId = type.second.id;
+			}
+		}
+
+		ImGui::EndChild(); //close left panel
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+
+		ImGui::SameLine();
+		ImGui::InvisibleButton("vsplitter", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
+		if (ImGui::IsItemActive())
+			hsplit += ImGui::GetIO().MouseDelta.x;
+		ImGui::SameLine();
+
+		/* RHS panel - selected data type editing */
+		ImGui::BeginChild(
+			"IsaDataModelPanelRight",
+			ImVec2(ImGui::GetContentRegionAvail().x, 0),
+			true);
+
+		ImGui::PopStyleVar();
+
+		//todo find selected?
+		if (curDoc.dataTypes.size() == 0 || state.DataModelSelectedTypeId <= 0) {
+			ImGui::EndChild();
+			ImGui::EndChild();
+			return retDirty;
+		} //end early (blank lhs panel) if no data type selected
+
+		//data type selected, get context and fill lhs panel
+		auto& dataType = curDoc.dataTypes.at(state.DataModelSelectedTypeId);
+
+		const char* displayTypeItems[]{
+			"Integer", 
+			"Float", 
+			"Bool",
+			"Pointer",
+			"Vector",
+			"Packed",
+			"Custom",
+			"Other"
+		};
+
+		int selectedDisplayType = 7;
+		switch (dataType.dataTypeKind) {
+		case IsaDataTypeKind::Integer: selectedDisplayType = 0; break;
+		case IsaDataTypeKind::Float: selectedDisplayType = 1; break;
+		case IsaDataTypeKind::Bool: selectedDisplayType = 2; break;
+		case IsaDataTypeKind::Pointer: selectedDisplayType = 3; break;
+		case IsaDataTypeKind::Vector: selectedDisplayType = 4; break;
+		case IsaDataTypeKind::Packed: selectedDisplayType = 5; break;
+		case IsaDataTypeKind::Custom: selectedDisplayType = 6; break;
+		}	//this is getting silly now D:
+
+		int inBitWidth = dataType.bitWidth;
+		
+		ImGui::Text("Name:");
 		ImGui::SameLine(separator);
 		ImGui::PushItemWidth(-FLT_MIN);
-		if (ImGui::Combo("##EndiannessCombo",
-			&selectedEndianness, endianItems, IM_ARRAYSIZE(endianItems))) 
-		{
-			curDoc.header.dirty |= true;
-			curDoc.endianness = EndiannessFromString(endianItems[selectedEndianness]);
+		retDirty |= ImGui::InputText(
+			"###IsaDataTypeName",
+			&dataType.name);
+		ImGui::PopItemWidth();
+
+		ImGui::Text("Friendly Name:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputText(
+			"###IsaDataTypeFriendlyName",
+			&dataType.friendlyName);
+		ImGui::PopItemWidth();
+
+		ImGui::Text("Description:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputTextMultiline(
+			"###IsaDataTypeDescription",
+			&dataType.description,
+			ImVec2(0, 64));
+		ImGui::PopItemWidth();
+
+		//ImGui::Text("Width (bits):");
+		//ImGui::SameLine(separator);
+		//ImGui::PushItemWidth(-FLT_MIN);
+
+		ImGui::SeparatorText("Data properties");
+
+		retDirty |= InputIntConstrained(
+			"Data width (bits):",
+			inBitWidth, dataType.bitWidth,
+			1, UINT16_MAX, separator, true);
+		//ImGui::PopItemWidth();
+
+		//data display kind
+		ImGui::Text("Display type:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		if (ImGui::Combo(
+			"##EndiannessCombo",
+			&selectedDisplayType, 
+			displayTypeItems, 
+			IM_ARRAYSIZE(displayTypeItems))
+		) {
+			retDirty |= true;
+			dataType.dataTypeKind = 
+				DataTypeKindFromString(displayTypeItems[selectedDisplayType]);
 		}
 		ImGui::PopItemWidth();
 
+		retDirty |= ImGui::Checkbox("Signed data (include negative values)",
+			&dataType.isSigned);
+
+		//todo add/remove aliases and tags
+		//text input + button to add new field
+		//list with options to remove? also reorder?
+
 		ImGui::EndChild();
+
+		ImGui::EndChild();
+		return retDirty;
+	}
+
+	bool RenderRegistersView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		ImGui::BeginChild(
+			"IsaRegistersPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			true);
+		//todo
+		ImGui::EndChild();
+		return retDirty;
+	}
+
+	bool RenderMemoryIOView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		ImGui::BeginChild(
+			"IsaMemoryIOPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			true);
+		//todo
+		ImGui::EndChild();
+		return retDirty;
+	}
+
+	bool RenderInstructionSetView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		ImGui::BeginChild(
+			"IsaInstructionSetPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			true);
+		//todo
+		ImGui::EndChild();
+		return retDirty;
+	}
+
+	bool RenderExecutionContextView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		ImGui::BeginChild(
+			"IsaExecutionContextPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			true);
+		//todo
+		ImGui::EndChild();
+		return retDirty;
+	}
+
+	bool RenderValidationView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		ImGui::BeginChild(
+			"IsaValidationPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			true);
+		//todo
+		ImGui::EndChild();
+		return retDirty;
 	}
 
 	template <typename T>
@@ -255,15 +572,16 @@ public:
 		int& val, T& docVal, 
 		int min, int max,
 		float separator,
-		bool enabled) 
+		bool enabled,
+		int increment = 1) 
 	{
 		bool retVal = false;
-		if (!enabled) { ImGui::BeginDisabled(); }
-		ImGui::Text(label.c_str());
+		if (!enabled) { ImGui::BeginDisabled(); } //disabled
+		ImGui::Text(label.c_str()); //ux label for input
 		ImGui::SameLine(separator);
 		ImGui::PushItemWidth(-FLT_MIN);
 		std::string idLabel = "##" + label;
-		if (ImGui::InputInt(idLabel.c_str(), &val)) {
+		if (ImGui::InputInt(idLabel.c_str(), &val, increment)) {
 			//fmt::println("[DEBUG] Input int = {}", val);
 
 			if (val < min) { val = min; }
@@ -273,6 +591,14 @@ public:
 			retVal = true;
 		}
 		ImGui::PopItemWidth();
+		//handle increment >1
+		if (increment > 1 && val % increment > 0) {
+			val -= val % increment;
+			if (val < increment) { val = increment; } //lower limit
+			if (docVal != val) { docVal = val; }
+		} //this actually behaves really nicely with incrememnt changes lol
+		
+		// handle disabled input
 		if (!enabled && docVal != val) { docVal = val; }
 		if (!enabled) { ImGui::EndDisabled(); }
 		return retVal;

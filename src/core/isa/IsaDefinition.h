@@ -21,14 +21,14 @@
 /* Structs defining individual data types in ISA */
 struct IsaDataType
 {
-	//UUID id = 0;
-	std::string name;
-	std::string friendlyName;
-	std::string description;
+	UUID id = 0;
+	std::string name = "";
+	std::string friendlyName = "";
+	std::string description = "";
 
 	uint16_t bitWidth = 8;
 
-	IsaDataTypeKind dataTypeKind = IsaDataTypeKind::Other;
+	IsaDataTypeKind dataTypeKind = IsaDataTypeKind::Integer;
 	bool isSigned = false;	
 	//bool isCoded = false;	//e.g. float, bcd, char?
 
@@ -40,6 +40,8 @@ struct IsaDataType
 
 inline void to_json(json& j, const IsaDataType& type) {
 	j = json{
+		{ "id", type.id },
+
 		{ "name", type.name },
 		{ "friendlyName", type.friendlyName },
 		{ "description", type.description },
@@ -53,6 +55,8 @@ inline void to_json(json& j, const IsaDataType& type) {
 	};
 }
 inline void from_json(const json& j, IsaDataType& type) {
+	j.at("id").get_to(type.id);
+
 	j.at("name").get_to(type.name);
 	j.at("friendlyName").get_to(type.friendlyName);
 	j.at("description").get_to(type.description);
@@ -130,10 +134,18 @@ struct IsaDefinition
 	Endianness endianness = Endianness::Little;
 
 	uint16_t defaultByteWidth = 8;
+	uint16_t defaultWordBytes = 1;
 
 	bool dataUsesDefaultByte = true;
+	bool dataUsesDefaultWord = true;
+
 	bool addressUsesDefaultByte = true;
+	bool addressUsesDefaultWord = true;
+
 	bool instructionUsesDefaultByte = true;
+	bool instructionUsesDefaultWord = true;
+
+	bool instructionWidthIsWordAligned = true;
 
 	uint16_t defaultDataByteWidth = 8;
 	uint16_t defaultDataWordBytes = 1;
@@ -155,18 +167,18 @@ struct IsaDefinition
 	std::vector<IsaFault> faults;
 	std::vector<IsaContextDimension> contextDimensions;
 
-	std::unordered_map<std::string, IsaDataType> dataTypes;
+	std::unordered_map<UUID, IsaDataType> dataTypes;
 	
 	//register model:
-	std::unordered_map<std::string, IsaRegisterFile> registerFiles;
+	std::unordered_map<UUID, IsaRegisterFile> registerFiles;
 
 	//todo address spaces/memory model
-	std::unordered_map<std::string, IsaAddressSpace> addressSpaces;
-	std::unordered_map<std::string, IsaAddressTranslationStage> addressTranslationStages;
+	std::unordered_map<UUID, IsaAddressSpace> addressSpaces;
+	std::unordered_map<UUID, IsaAddressTranslationStage> addressTranslationStages;
 	//todo ports 
 
-	std::unordered_map<std::string, IsaInstructionEncodingFormat> instructionFormats;
-	std::unordered_map<std::string, IsaInstruction> instructions;
+	std::unordered_map<UUID, IsaInstructionEncodingFormat> instructionFormats;
+	std::unordered_map<UUID, IsaInstruction> instructions;
 
 	//assembly syntax
 	//context links
@@ -191,10 +203,15 @@ inline void to_json(json& j, const IsaDefinition& def) {
 		{ "endianness", ToString(def.endianness) },
 
 		{ "defaultByteWidth", def.defaultByteWidth },
+		{ "defaultWordBytes", def.defaultWordBytes },
 
 		{ "dataUsesDefaultByte", def.dataUsesDefaultByte },
+		{ "dataUsesDefaultWord", def.dataUsesDefaultWord },
 		{ "addressUsesDefaultByte", def.addressUsesDefaultByte },
+		{ "addressUsesDefaultWord", def.addressUsesDefaultWord },
 		{ "instructionUsesDefaultByte", def.instructionUsesDefaultByte },
+		{ "instructionUsesDefaultWord", def.instructionUsesDefaultWord },
+		{ "instructionWidthIsWordAligned", def.instructionWidthIsWordAligned },
 
 		{ "defaultDataByteWidth", def.defaultDataByteWidth },
 		{ "defaultDataWordBytes", def.defaultDataWordBytes },
@@ -233,10 +250,15 @@ inline void from_json(const json& j, IsaDefinition& def) {
 	j.at("endianness").get_to<Endianness>(def.endianness);
 
 	j.at("defaultByteWidth").get_to(def.defaultByteWidth);
+	j.at("defaultWordBytes").get_to(def.defaultWordBytes);
 
 	j.at("dataUsesDefaultByte").get_to(def.dataUsesDefaultByte);
+	j.at("dataUsesDefaultWord").get_to(def.dataUsesDefaultWord);
 	j.at("addressUsesDefaultByte").get_to(def.addressUsesDefaultByte);
+	j.at("addressUsesDefaultWord").get_to(def.addressUsesDefaultWord);
 	j.at("instructionUsesDefaultByte").get_to(def.instructionUsesDefaultByte);
+	j.at("instructionUsesDefaultWord").get_to(def.instructionUsesDefaultWord);
+	j.at("instructionWidthIsWordAligned").get_to(def.instructionWidthIsWordAligned);
 
 	j.at("defaultDataByteWidth").get_to(def.defaultDataByteWidth);
 	j.at("defaultDataWordBytes").get_to(def.defaultDataWordBytes);

@@ -121,6 +121,9 @@ void WindowManager::DrawAll(AppContext& context) {
 	//note: do not call RenderMainMenuBar here!! handled by UI.cpp
 	DrawWindows(context);
 	DrawModals(context);
+
+	//update dirty flag
+	context.projectManager->MarkProjectDirty(context.workspaceManager->dirtyFilesByDocId.size() > 0);
 }
 
 void WindowManager::DrawModals(AppContext& context)

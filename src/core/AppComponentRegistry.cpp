@@ -117,7 +117,7 @@ bool AppComponentRegistry::HandleCommand(
 	fmt::println("AppComponentRegistry: {:s} at path '{:s}'", 
 		command.id, command.path);
 
-	std::string componentId = command.id.substr(0, command.id.find('.'));
+	std::string componentId = command.id.substr(0, command.id.find_last_of('.'));
 	std::string commandAction = command.id.substr(command.id.find_last_of('.') + 1);
 	fmt::println("ComponentId: {:s}, command: {:s}", componentId, commandAction);
 

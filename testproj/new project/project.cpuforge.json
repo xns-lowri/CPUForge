@@ -2,43 +2,15 @@
     "description": "",
     "files": [
         [
-            1781351751,
+            1781390098,
             {
-                "documentId": 1781351752,
+                "documentId": 1781390099,
                 "extension": ".isa",
                 "generated": false,
-                "id": 1781351751,
-                "name": "core1.isa",
-                "parentId": 1781351743,
-                "path": "isa\\core1.isa",
-                "readOnly": false,
-                "type": "ISADefinition"
-            }
-        ],
-        [
-            1781351753,
-            {
-                "documentId": 1781351754,
-                "extension": ".isa",
-                "generated": false,
-                "id": 1781351753,
-                "name": "new file.isa",
-                "parentId": 1781351743,
-                "path": "isa\\new file.isa",
-                "readOnly": false,
-                "type": "ISADefinition"
-            }
-        ],
-        [
-            1781351755,
-            {
-                "documentId": 1781351756,
-                "extension": ".isa",
-                "generated": false,
-                "id": 1781351755,
-                "name": "core2duo.isa",
-                "parentId": 1781351743,
-                "path": "isa\\core2duo.isa",
+                "id": 1781390098,
+                "name": "simple9.isa",
+                "parentId": 1781390090,
+                "path": "isa\\simple9.isa",
                 "readOnly": false,
                 "type": "ISADefinition"
             }
@@ -46,15 +18,13 @@
     ],
     "folders": [
         [
-            1781351743,
+            1781390090,
             {
                 "childFiles": [
-                    1781351751,
-                    1781351753,
-                    1781351755
+                    1781390098
                 ],
                 "childFolders": [],
-                "id": 1781351743,
+                "id": 1781390090,
                 "name": "isa",
                 "parentId": 0,
                 "path": "isa",
@@ -67,11 +37,11 @@
             }
         ],
         [
-            1781351744,
+            1781390091,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781351744,
+                "id": 1781390091,
                 "name": "hardware",
                 "parentId": 0,
                 "path": "hardware",
@@ -84,14 +54,14 @@
             }
         ],
         [
-            1781351745,
+            1781390092,
             {
                 "childFiles": [],
                 "childFolders": [
-                    1781351746,
-                    1781351747
+                    1781390093,
+                    1781390094
                 ],
-                "id": 1781351745,
+                "id": 1781390092,
                 "name": "sources",
                 "parentId": 0,
                 "path": "sources",
@@ -104,13 +74,13 @@
             }
         ],
         [
-            1781351746,
+            1781390093,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781351746,
+                "id": 1781390093,
                 "name": "host",
-                "parentId": 1781351745,
+                "parentId": 1781390092,
                 "path": "sources\\host",
                 "properties": {
                     "canAddFiles": true,
@@ -121,13 +91,13 @@
             }
         ],
         [
-            1781351747,
+            1781390094,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781351747,
+                "id": 1781390094,
                 "name": "target",
-                "parentId": 1781351745,
+                "parentId": 1781390092,
                 "path": "sources\\target",
                 "properties": {
                     "canAddFiles": true,
@@ -138,11 +108,11 @@
             }
         ],
         [
-            1781351748,
+            1781390095,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781351748,
+                "id": 1781390095,
                 "name": "debug",
                 "parentId": 0,
                 "path": "debug",
@@ -155,11 +125,11 @@
             }
         ],
         [
-            1781351749,
+            1781390096,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781351749,
+                "id": 1781390096,
                 "name": "build",
                 "parentId": 0,
                 "path": "build",
@@ -172,11 +142,11 @@
             }
         ],
         [
-            1781351750,
+            1781390097,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781351750,
+                "id": 1781390097,
                 "name": "notes",
                 "parentId": 0,
                 "path": "notes",
@@ -189,8 +159,8 @@
             }
         ]
     ],
-    "id": 1781351742,
-    "name": "simple99",
-    "nextId": 1781351757,
-    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\simple99"
+    "id": 1781390089,
+    "name": "new project",
+    "nextId": 1781390105,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\new project"
 }

@@ -1,0 +1,112 @@
+{
+    "addressSpaces": [],
+    "addressTranslationStages": [],
+    "addressUsesDefaultByte": true,
+    "addressUsesDefaultWord": true,
+    "architectureName": "simple9.isa",
+    "contextDimensions": [],
+    "dataTypes": [
+        [
+            1781390100,
+            {
+                "aliases": [],
+                "bitWidth": 8,
+                "dataTypeKind": "Integer",
+                "description": "",
+                "friendlyName": "",
+                "id": 1781390100,
+                "isSigned": true,
+                "name": "uint8",
+                "tags": []
+            }
+        ],
+        [
+            1781390101,
+            {
+                "aliases": [],
+                "bitWidth": 8,
+                "dataTypeKind": "Other",
+                "description": "",
+                "friendlyName": "signed int8",
+                "id": 1781390101,
+                "isSigned": false,
+                "name": "int8",
+                "tags": []
+            }
+        ],
+        [
+            1781390102,
+            {
+                "aliases": [],
+                "bitWidth": 8,
+                "dataTypeKind": "Other",
+                "description": "",
+                "friendlyName": "unsigned int 16",
+                "id": 1781390102,
+                "isSigned": false,
+                "name": "uint16",
+                "tags": []
+            }
+        ],
+        [
+            1781390103,
+            {
+                "aliases": [],
+                "bitWidth": 16,
+                "dataTypeKind": "Integer",
+                "description": "",
+                "friendlyName": "signed int 16",
+                "id": 1781390103,
+                "isSigned": true,
+                "name": "int16",
+                "tags": []
+            }
+        ],
+        [
+            1781390104,
+            {
+                "aliases": [],
+                "bitWidth": 24,
+                "dataTypeKind": "Pointer",
+                "description": "",
+                "friendlyName": "address 24",
+                "id": 1781390104,
+                "isSigned": false,
+                "name": "addr24",
+                "tags": []
+            }
+        ]
+    ],
+    "dataUsesDefaultByte": true,
+    "dataUsesDefaultWord": true,
+    "defaultAddressByteWidth": 8,
+    "defaultAddressWordBytes": 1,
+    "defaultAlignmentBits": 8,
+    "defaultByteWidth": 8,
+    "defaultDataByteWidth": 8,
+    "defaultDataWordBytes": 1,
+    "defaultInstructionByteWidth": 8,
+    "defaultInstructionWordBytes": 1,
+    "defaultOpcodeWidth": 8,
+    "defaultWordBytes": 1,
+    "endianness": "Little",
+    "faults": [],
+    "features": [],
+    "header": {
+        "contentRevision": 0,
+        "createdUtc": "2026-06-13 22:34:56.7229129",
+        "description": "",
+        "id": 1781390099,
+        "modifiedUtc": "2026-06-14 13:20:04.6282448",
+        "schemaVersion": 1,
+        "title": ""
+    },
+    "instructionFormats": [],
+    "instructionUsesDefaultByte": true,
+    "instructionUsesDefaultWord": true,
+    "instructionWidthIsWordAligned": true,
+    "instructions": [],
+    "maxInstructionWordBytes": 1,
+    "maxOpcodeWidth": 8,
+    "registerFiles": []
+}

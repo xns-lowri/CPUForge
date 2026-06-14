@@ -47,10 +47,10 @@ bool ProjectManager::IsDirty() const
 		return false;
 }
 
-void ProjectManager::MarkProjectDirty()
+void ProjectManager::MarkProjectDirty(bool dirty)
 {
 	if (projectData.has_value())
-		projectData->isDirty = true;
+		projectData->isDirty = dirty;
 }
 
 const std::string ProjectManager::GetProjectName() const {
@@ -62,7 +62,9 @@ const std::string ProjectManager::GetProjectName() const {
 
 const UUID ProjectManager::GetNextUUID()
 {
-	return projectData->nextId++;
+	UUID retVal = projectData->nextId++;
+	SaveProject(); //save uuid increment
+	return retVal;
 }
 
 /* Project data/state management */
@@ -447,4 +449,14 @@ bool ProjectManager::SetDocumentIdInFile(UUID fileId, UUID documentId) {
 	}
 	projectData->files[fileId].documentId = documentId;
 	return true;
+}
+
+UUID ProjectManager::GetFileIdForDocument(UUID documentId) {
+	UUID retVal = 0;
+	for (auto& file : projectData->files) {
+		if (file.second.documentId == documentId) {
+			retVal = file.second.id;
+		}
+	}
+	return retVal;
 }

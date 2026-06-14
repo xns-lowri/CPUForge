@@ -30,7 +30,7 @@ public:
 	const std::optional<ProjectData> GetCurrentProject() const;	//read only access e.g. UI
 	bool HasActiveProject() const;
 	bool IsDirty() const;
-	void MarkProjectDirty();
+	void MarkProjectDirty(bool dirty = true);
 
 	const std::string GetProjectName() const;
 
@@ -50,10 +50,10 @@ public:
 
 	bool OpenProject(const std::filesystem::path filePath);
 	bool SaveProject();
-	bool SaveProjectAs(const std::filesystem::path filePath);
+	bool SaveProjectAs(const std::filesystem::path filePath); //todo implememt
 	void CloseProject();
 
-	bool SaveFile(UUID fileId, json data);
+	//bool SaveFile(UUID fileId, json data);	//idk let editors handle files for now?? :L
 
 	std::string GetCurrentTimestamp();
 
@@ -72,6 +72,7 @@ public:
 	//bool deleteItem(UUID itemId);
 	//bool renameItem(UUID itemId, const std::string& newName);
 	bool SetDocumentIdInFile(UUID fileId, UUID documentId); 
+	UUID GetFileIdForDocument(UUID documentId);
 
 	//document management functions
 	//bool createISADefinitionDocument(const std::string& name, const std::string& description);

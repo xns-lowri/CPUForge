@@ -92,9 +92,10 @@ void AppCommandDispatcher::Dispatch(
                 context.workspaceManager->activeDocument,
                 context.workspaceManager->lastEditor);
 
-            if (command.id == "") { 
-                command.id = context.workspaceManager->lastEditor; 
-            }
+            //update context as menu bar has no awareness of last focused editor window
+            command.id = context.workspaceManager->lastEditor + ".save_file";
+            command.targetId = context.workspaceManager->activeDocument;
+            
 
             //todo handler
             components.HandleCommand(

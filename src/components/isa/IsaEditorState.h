@@ -1,4 +1,5 @@
 #pragma once
+#include "../../_types.h"
 
 enum class IsaEditorTabState {
 	Details,
@@ -13,4 +14,6 @@ enum class IsaEditorTabState {
 struct IsaEditorState {
 	//todo state for ViewIsaEditor window
 	IsaEditorTabState tabState = IsaEditorTabState::Details;
+	int DataModelSelectedType = -1;
+	UUID DataModelSelectedTypeId = 0;
 };

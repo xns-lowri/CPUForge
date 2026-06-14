@@ -206,7 +206,35 @@ public:
 
 	bool SaveDocument(AppContext& context, UUID target) {
 		fmt::println("[IsaEditor] Saving document {}", target);
-		return false;
+		UUID fileId = context.projectManager->GetFileIdForDocument(target);
+		if (fileId == 0) {
+			fmt::println("File for documentId {} does not exist.", target);
+			return false;
+		}
+
+		std::filesystem::path fileFullPath = context.projectManager->
+			GetCurrentProject()->files.at(fileId).path;
+		fmt::println("[IsaEditor] Saving file {} at path '{}'", fileId, fileFullPath.string());
+
+		fileFullPath = context.projectManager->GetCurrentProject()->path / fileFullPath;
+
+		ProjectResult<void> result = FileHandler::Save<IsaDefinition>(
+			fileFullPath, 
+			context.componentContext->GetIsaDocuments().openDocuments.at(target)
+		);
+
+		if (!result.ok) {
+			fmt::println("Error saving file: {:s}", result.error);
+			return result.ok;
+		}
+
+		//clear dirty flag
+		context.componentContext->GetIsaDocuments().openDocuments.at(target).header.dirty = false;
+		
+		//remove document from dirty list
+		context.workspaceManager->SetDocumentDirtyState(target, 0, false);
+
+		return result.ok;
 	}
 
 private:
