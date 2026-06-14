@@ -2,15 +2,15 @@
     "description": "",
     "files": [
         [
-            1781390098,
+            1781471534,
             {
-                "documentId": 1781390099,
+                "documentId": 1781471535,
                 "extension": ".isa",
                 "generated": false,
-                "id": 1781390098,
-                "name": "simple9.isa",
-                "parentId": 1781390090,
-                "path": "isa\\simple9.isa",
+                "id": 1781471534,
+                "name": "core1solo.isa",
+                "parentId": 1781471526,
+                "path": "isa\\core1solo.isa",
                 "readOnly": false,
                 "type": "ISADefinition"
             }
@@ -18,13 +18,13 @@
     ],
     "folders": [
         [
-            1781390090,
+            1781471526,
             {
                 "childFiles": [
-                    1781390098
+                    1781471534
                 ],
                 "childFolders": [],
-                "id": 1781390090,
+                "id": 1781471526,
                 "name": "isa",
                 "parentId": 0,
                 "path": "isa",
@@ -37,11 +37,11 @@
             }
         ],
         [
-            1781390091,
+            1781471527,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781390091,
+                "id": 1781471527,
                 "name": "hardware",
                 "parentId": 0,
                 "path": "hardware",
@@ -54,14 +54,14 @@
             }
         ],
         [
-            1781390092,
+            1781471528,
             {
                 "childFiles": [],
                 "childFolders": [
-                    1781390093,
-                    1781390094
+                    1781471529,
+                    1781471530
                 ],
-                "id": 1781390092,
+                "id": 1781471528,
                 "name": "sources",
                 "parentId": 0,
                 "path": "sources",
@@ -74,13 +74,13 @@
             }
         ],
         [
-            1781390093,
+            1781471529,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781390093,
+                "id": 1781471529,
                 "name": "host",
-                "parentId": 1781390092,
+                "parentId": 1781471528,
                 "path": "sources\\host",
                 "properties": {
                     "canAddFiles": true,
@@ -91,13 +91,13 @@
             }
         ],
         [
-            1781390094,
+            1781471530,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781390094,
+                "id": 1781471530,
                 "name": "target",
-                "parentId": 1781390092,
+                "parentId": 1781471528,
                 "path": "sources\\target",
                 "properties": {
                     "canAddFiles": true,
@@ -108,11 +108,11 @@
             }
         ],
         [
-            1781390095,
+            1781471531,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781390095,
+                "id": 1781471531,
                 "name": "debug",
                 "parentId": 0,
                 "path": "debug",
@@ -125,11 +125,11 @@
             }
         ],
         [
-            1781390096,
+            1781471532,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781390096,
+                "id": 1781471532,
                 "name": "build",
                 "parentId": 0,
                 "path": "build",
@@ -142,11 +142,11 @@
             }
         ],
         [
-            1781390097,
+            1781471533,
             {
                 "childFiles": [],
                 "childFolders": [],
-                "id": 1781390097,
+                "id": 1781471533,
                 "name": "notes",
                 "parentId": 0,
                 "path": "notes",
@@ -159,8 +159,8 @@
             }
         ]
     ],
-    "id": 1781390089,
-    "name": "new project",
-    "nextId": 1781390105,
-    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\new project"
+    "id": 1781471525,
+    "name": "coer1",
+    "nextId": 1781471546,
+    "path": "C:\\Users\\lewys\\source\\repos\\CPUForge\\testproj\\coer1"
 }

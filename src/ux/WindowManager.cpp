@@ -6,6 +6,7 @@
 #include "core/ModalNewFile.h"
 
 #include "modules/ViewProjectTree.h"
+#include "modules/ViewConsole.h"
 #include "modules/ViewIsaEditor.h"
 
 #ifdef __APPLE__
@@ -18,6 +19,8 @@ WindowManager::WindowManager(AppContext& context) //todo remove context, not nee
 	//ViewProjectTree* viewProjectTree = new ViewProjectTree();
 	ViewProjectTree viewProjectTree = ViewProjectTree(*this);
 	AddWindow<ViewProjectTree>(viewProjectTree.GetId(), viewProjectTree);
+	ViewConsole viewConsole = ViewConsole(*this);
+	AddWindow<ViewConsole>(viewConsole.GetId(), viewConsole);
 
 	/* DEBUG todo remove */
 	//ViewIsaEditor test1 = ViewIsaEditor(*this);

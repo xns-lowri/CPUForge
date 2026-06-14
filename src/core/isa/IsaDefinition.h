@@ -28,8 +28,8 @@ struct IsaDataType
 
 	uint16_t bitWidth = 8;
 
-	IsaDataTypeKind dataTypeKind = IsaDataTypeKind::Integer;
-	bool isSigned = false;	
+	IsaDataTypeKind dataTypeKind = IsaDataTypeKind::UnsignedInt;
+	//bool isSigned = false;	
 	//bool isCoded = false;	//e.g. float, bcd, char?
 
 	//todo add optional address space id for pointer types?
@@ -48,7 +48,7 @@ inline void to_json(json& j, const IsaDataType& type) {
 
 		{ "dataTypeKind", ToString(type.dataTypeKind) },
 		{ "bitWidth", type.bitWidth },
-		{ "isSigned", type.isSigned },
+		//{ "isSigned", type.isSigned },
 
 		{ "aliases", type.aliases },
 		{ "tags", type.tags }
@@ -63,7 +63,7 @@ inline void from_json(const json& j, IsaDataType& type) {
 
 	j.at("dataTypeKind").get_to<IsaDataTypeKind>(type.dataTypeKind);
 	j.at("bitWidth").get_to(type.bitWidth);
-	j.at("isSigned").get_to(type.isSigned);
+	//j.at("isSigned").get_to(type.isSigned);
 
 	j.at("aliases").get_to(type.aliases);
 	j.at("tags").get_to(type.tags);

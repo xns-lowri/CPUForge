@@ -92,7 +92,8 @@ public:
 					fileName,
 					fileExtension,
 					fileType,
-					currentFolderId);
+					currentFolderId,
+					context.projectManager->GetNextUUID());
 
 				if (newFileId != 0)
 				{

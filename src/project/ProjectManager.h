@@ -34,7 +34,7 @@ public:
 
 	const std::string GetProjectName() const;
 
-	const UUID GetNextUUID();
+	const UUID GetNextUUID(bool saveProject = true);
 
 	//project state management
 	bool NewProject(
@@ -61,6 +61,7 @@ public:
 	UUID NewFolder(
 		const std::string name, 
 		UUID parentId,
+		UUID newFolderId,
 		std::optional<FolderProperties> props,
 		std::optional<FolderKind> type);
 
@@ -68,7 +69,9 @@ public:
 		const std::string name, 
 		const std::string extension, 
 		FileType type, 
-		UUID parentId);
+		UUID parentId,
+		UUID newFileId);
+
 	//bool deleteItem(UUID itemId);
 	//bool renameItem(UUID itemId, const std::string& newName);
 	bool SetDocumentIdInFile(UUID fileId, UUID documentId); 

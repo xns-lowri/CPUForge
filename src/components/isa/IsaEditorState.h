@@ -16,4 +16,7 @@ struct IsaEditorState {
 	IsaEditorTabState tabState = IsaEditorTabState::Details;
 	int DataModelSelectedType = -1;
 	UUID DataModelSelectedTypeId = 0;
+
+	const char* RegisterFileComboSelection = "Select Register";
+	UUID RegisterSelectedRegisterFile = 0;
 };

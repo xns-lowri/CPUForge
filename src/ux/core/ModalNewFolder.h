@@ -73,6 +73,7 @@ public:
 				if (context.projectManager->NewFolder(
 					std::string(folderName), 
 					context.workspaceManager->lastFolderInTree,
+					context.projectManager->GetNextUUID(),
 					FolderProperties{ true, true, true },
 					std::nullopt) != 0)
 				{

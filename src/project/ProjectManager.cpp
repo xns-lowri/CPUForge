@@ -60,10 +60,10 @@ const std::string ProjectManager::GetProjectName() const {
 		return "null";
 }
 
-const UUID ProjectManager::GetNextUUID()
+const UUID ProjectManager::GetNextUUID(bool saveProject)
 {
 	UUID retVal = projectData->nextId++;
-	SaveProject(); //save uuid increment
+	if (saveProject) { SaveProject(); } //save uuid increment
 	return retVal;
 }
 
@@ -91,21 +91,21 @@ bool ProjectManager::NewProject(
 
 	time_t now = std::time(nullptr);
 	projectData->nextId = static_cast<UUID>(now); //unique id base for new project
-	projectData->id = GetNextUUID();
+	projectData->id = GetNextUUID(false);
 	projectData->name = name;
 
 	projectData->path = projectPath;
 	//return false if path is invalid or read-only
 
 	//todo default folder structure
-	NewFolder("isa", 0, FolderProperties{ false, true, false }, FolderKind::ISA);
-	NewFolder("hardware", 0, FolderProperties{ false, true, false }, FolderKind::Hardware);
-	UUID sources = NewFolder("sources", 0, FolderProperties{ false, false, false }, FolderKind::Source);
-	NewFolder("host", sources, FolderProperties{ true, true, false }, FolderKind::Source);
-	NewFolder("target", sources, FolderProperties{ true, true, false }, FolderKind::Source);
-	NewFolder("debug", 0, FolderProperties{ false, true, false }, FolderKind::Debug);
-	NewFolder("build", 0, FolderProperties{ false, true, false }, FolderKind::Build);
-	NewFolder("notes", 0, FolderProperties{ false, true, false }, FolderKind::Notes);
+	NewFolder("isa", 0, GetNextUUID(false), FolderProperties{ false, true, false }, FolderKind::ISA);
+	NewFolder("hardware", 0, GetNextUUID(false), FolderProperties{ false, true, false }, FolderKind::Hardware);
+	UUID sources = NewFolder("sources", 0, GetNextUUID(false), FolderProperties{ false, false, false }, FolderKind::Source);
+	NewFolder("host", sources, GetNextUUID(false), FolderProperties{ true, true, false }, FolderKind::Source);
+	NewFolder("target", sources, GetNextUUID(false), FolderProperties{ true, true, false }, FolderKind::Source);
+	NewFolder("debug", 0, GetNextUUID(false), FolderProperties{ false, true, false }, FolderKind::Debug);
+	NewFolder("build", 0, GetNextUUID(false), FolderProperties{ false, true, false }, FolderKind::Build);
+	NewFolder("notes", 0, GetNextUUID(false), FolderProperties{ false, true, false }, FolderKind::Notes);
 
 	//save project file
 	SaveProject();
@@ -305,6 +305,7 @@ std::string ProjectManager::GetCurrentTimestamp() {
 UUID ProjectManager::NewFolder(
 	const std::string name, 
 	UUID parentId, 
+	UUID newFolderId,
 	std::optional<FolderProperties> props,
 	std::optional<FolderKind> type)
 {
@@ -320,7 +321,7 @@ UUID ProjectManager::NewFolder(
 
 	//create new folder object
 	FolderObject newFolder;
-	newFolder.id = GetNextUUID();
+	newFolder.id = newFolderId;
 	newFolder.parentId = parentId;
 	newFolder.name = name;
 	//newFolder.path = ""; //build later from parent folders
@@ -389,7 +390,8 @@ UUID ProjectManager::NewFile(
 	const std::string name,
 	const std::string extension,
 	FileType type,
-	UUID parentId) 
+	UUID parentId,
+	UUID newFileId) 
 {
 	fmt::println("Create file {} at {}", name, parentId);
 	//todo
@@ -412,7 +414,7 @@ UUID ProjectManager::NewFile(
 	}
 
 	FileObject newFile;
-	newFile.id = GetNextUUID();
+	newFile.id = newFileId;
 	newFile.parentId = parentId;
 	newFile.name = name;
 	newFile.extension = extension; //todo get from type

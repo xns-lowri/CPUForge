@@ -396,7 +396,6 @@ public:
 		ImGui::EndChild(); //close left panel
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-
 		ImGui::SameLine();
 		ImGui::InvisibleButton("vsplitter", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
 		if (ImGui::IsItemActive())
@@ -422,24 +421,24 @@ public:
 		auto& dataType = curDoc.dataTypes.at(state.DataModelSelectedTypeId);
 
 		const char* displayTypeItems[]{
-			"Integer", 
+			"Unsigned Integer", 
+			"Signed Integer", 
+			"Binary Coded Decimal",
 			"Float", 
-			"Bool",
 			"Pointer",
-			"Vector",
-			"Packed",
+			"Bitfield",
 			"Custom",
 			"Other"
 		};
 
 		int selectedDisplayType = 7;
 		switch (dataType.dataTypeKind) {
-		case IsaDataTypeKind::Integer: selectedDisplayType = 0; break;
-		case IsaDataTypeKind::Float: selectedDisplayType = 1; break;
-		case IsaDataTypeKind::Bool: selectedDisplayType = 2; break;
-		case IsaDataTypeKind::Pointer: selectedDisplayType = 3; break;
-		case IsaDataTypeKind::Vector: selectedDisplayType = 4; break;
-		case IsaDataTypeKind::Packed: selectedDisplayType = 5; break;
+		case IsaDataTypeKind::UnsignedInt: selectedDisplayType = 0; break;
+		case IsaDataTypeKind::SignedInt: selectedDisplayType = 1; break;
+		case IsaDataTypeKind::BinaryCodedDecimal: selectedDisplayType = 2; break;
+		case IsaDataTypeKind::Float: selectedDisplayType = 3; break;
+		case IsaDataTypeKind::Pointer: selectedDisplayType = 4; break;
+		case IsaDataTypeKind::Bitfield: selectedDisplayType = 5; break;
 		case IsaDataTypeKind::Custom: selectedDisplayType = 6; break;
 		}	//this is getting silly now D:
 
@@ -453,7 +452,7 @@ public:
 			&dataType.name);
 		ImGui::PopItemWidth();
 
-		ImGui::Text("Friendly Name:");
+		ImGui::Text("Friendly name:");
 		ImGui::SameLine(separator);
 		ImGui::PushItemWidth(-FLT_MIN);
 		retDirty |= ImGui::InputText(
@@ -498,8 +497,8 @@ public:
 		}
 		ImGui::PopItemWidth();
 
-		retDirty |= ImGui::Checkbox("Signed data (include negative values)",
-			&dataType.isSigned);
+		//retDirty |= ImGui::Checkbox("Signed data (include negative values)",
+		//	&dataType.isSigned);
 
 		//todo add/remove aliases and tags
 		//text input + button to add new field
@@ -513,11 +512,236 @@ public:
 
 	bool RenderRegistersView(AppContext& context, IsaDefinition& curDoc) {
 		bool retDirty = false;
+
+		//static UUID selectedRegisterFile = 0;
+		//static const char* registerComboSelection = "Select register";
+
+		//register file selection strip
+		ImGui::BeginChild(
+			"IsaRegisterFilesPanel",
+			ImVec2(0, 38.f),
+			true);
+
+		ImGui::Text("Register file:");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(150.f);
+		if (ImGui::BeginCombo("##IsaRegisterFileSelection", 
+			state.RegisterFileComboSelection)) 
+		{
+			for (auto& registerFile : curDoc.registerFiles) 
+			{
+				std::string fmtName = 
+					fmt::format("{}##{}", registerFile.second.name, registerFile.second.id);
+				
+				bool isSelected = (state.RegisterSelectedRegisterFile == registerFile.second.id);
+
+				if (ImGui::Selectable(fmtName.c_str(), isSelected)) 
+				{
+					state.RegisterSelectedRegisterFile = registerFile.second.id;
+					state.RegisterFileComboSelection = registerFile.second.name.c_str();
+				}
+				if (isSelected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+		//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20.f);
+		if (ImGui::Button("+ Register File", ImVec2(0, 0))) {
+			IsaRegisterFile newRegFile = IsaRegisterFile();
+			UUID nextId = context.projectManager->GetNextUUID();
+			newRegFile.id = nextId;
+			newRegFile.name = fmt::format("registerFile{}", curDoc.registerFiles.size());
+			curDoc.registerFiles.emplace(newRegFile.id, newRegFile);
+			state.RegisterSelectedRegisterFile = curDoc.registerFiles.at(nextId).id;
+			state.RegisterFileComboSelection = curDoc.registerFiles.at(nextId).name.c_str();
+			retDirty |= true;
+		}
+
+		ImGui::EndChild(); 
+		//end register file selection strip
+
+		//main register file panel
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::BeginChild(
 			"IsaRegistersPanel",
 			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
-			true);
+			false);
+		ImGui::PopStyleVar();
+		//todo main panel here
+		
+		//check selected register file exists
+		if (state.RegisterSelectedRegisterFile == 0) {
+			ImGui::EndChild();
+			return retDirty;
+			//early return if nothing selected
+		}
+		//get selected 
+		auto& registerFile = 
+			curDoc.registerFiles.at(state.RegisterSelectedRegisterFile);
+
+		//todo different separators for each horizontal panel
+		const float separatorLeft = 120.f;
+		const float separatorCentre = 200.f;
+		const float separatorRight = 150.f;
 		//todo
+
+		//static split vars for 3-panel
+		static float hsplit1 = 300.f;
+		static float hsplit2 = 250.f;
+
+		if (hsplit1 > ImGui::GetContentRegionAvail().x * 0.35f) {
+			hsplit1 = ImGui::GetContentRegionAvail().x * 0.35f;
+		}
+		if (hsplit1 < 100.f) { hsplit1 = 100.f; }
+
+		if (hsplit2 > ImGui::GetContentRegionAvail().x * 0.35f) {
+			hsplit2 = ImGui::GetContentRegionAvail().x * 0.35f;
+		}
+		if (hsplit2 < 100.f) { hsplit2 = 100.f; }
+
+		//begin left hand panel
+		ImGui::BeginChild(
+			"IsaRegisterFileDetailsPanel",
+			ImVec2(hsplit1, 0),
+			true);
+
+		ImGui::SeparatorText("Register file");
+
+		ImGui::Text("Name:");
+		ImGui::SameLine(separatorLeft);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputText(
+			"###IsaRegisterFileName",
+			&registerFile.name);
+		ImGui::PopItemWidth();
+
+		ImGui::Text("Friendly name:");
+		ImGui::SameLine(separatorLeft);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputText(
+			"###IsaRegisterFileFriendlyName",
+			&registerFile.friendlyName);
+		ImGui::PopItemWidth();
+
+		ImGui::Text("Description:");
+		ImGui::SameLine(separatorLeft);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputTextMultiline(
+			"###IsaRegisterFileDescription",
+			&registerFile.description,
+			ImVec2(0, 64));
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		
+		if (ImGui::Button(
+			fmt::format("+ Register (Unit width: {} bit)", curDoc.defaultByteWidth).c_str(),
+			ImVec2(ImGui::GetContentRegionAvail().x, 0))
+		) {
+			//todo add data type
+			IsaRegister newRegister = IsaRegister();
+			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.id = context.projectManager->GetNextUUID();
+			newRegister.bitWidth = curDoc.defaultByteWidth;
+			registerFile.registers.emplace(newRegister.id, newRegister);
+			retDirty |= true;
+		}
+
+		uint16_t dataWidth = curDoc.defaultDataByteWidth * curDoc.defaultDataWordBytes;
+		if (ImGui::Button(
+			fmt::format("+ Register (Data width: {} bit)", dataWidth).c_str(),
+			ImVec2(ImGui::GetContentRegionAvail().x, 0))
+			) {
+			//todo add data type
+			IsaRegister newRegister = IsaRegister();
+			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.id = context.projectManager->GetNextUUID();
+			newRegister.bitWidth = dataWidth;
+			registerFile.registers.emplace(newRegister.id, newRegister);
+			retDirty |= true;
+		}
+
+		uint16_t addressWidth = curDoc.defaultAddressByteWidth * curDoc.defaultAddressWordBytes;
+		if (ImGui::Button(
+			fmt::format("+ Register (Address width: {} bit)", addressWidth).c_str(),
+			ImVec2(ImGui::GetContentRegionAvail().x, 0))
+			) {
+			//todo add data type
+			IsaRegister newRegister = IsaRegister();
+			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.id = context.projectManager->GetNextUUID();
+			newRegister.bitWidth = addressWidth;
+			registerFile.registers.emplace(newRegister.id, newRegister);
+			retDirty |= true;
+		}
+
+		uint16_t instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
+		if (ImGui::Button(
+			fmt::format("+ Register (Instruction width: {} bit)", instructionWidth).c_str(),
+			ImVec2(ImGui::GetContentRegionAvail().x, 0))
+			) {
+			//todo add data type
+			IsaRegister newRegister = IsaRegister();
+			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.id = context.projectManager->GetNextUUID();
+			newRegister.bitWidth = instructionWidth;
+			registerFile.registers.emplace(newRegister.id, newRegister);
+			retDirty |= true;
+		}
+
+		//todo register list?
+		//ImGui::SeparatorText("Registers");
+
+		ImGui::EndChild();
+		//end left hand panel
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		ImGui::SameLine();
+		ImGui::InvisibleButton("vsplitter1", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
+		if (ImGui::IsItemActive())
+			hsplit1 += ImGui::GetIO().MouseDelta.x;
+		ImGui::SameLine();
+
+		//begin central panel
+		ImGui::BeginChild(
+			"IsaRegisterEditorPanel",
+			ImVec2(ImGui::GetContentRegionAvail().x - hsplit2, 0),
+			true);
+		ImGui::PopStyleVar();
+
+		ImGui::SeparatorText("Registers");
+		//todo central panel
+		//get selected register
+		//can't return early unless this gets moved to separate function
+		//if-wrapped?? :(
+
+		ImGui::EndChild();
+		//end central panel
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		ImGui::SameLine();
+		ImGui::InvisibleButton("vsplitter2", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
+		if (ImGui::IsItemActive())
+			hsplit2 -= ImGui::GetIO().MouseDelta.x;
+		ImGui::SameLine();
+
+		//begin right hand panel
+		ImGui::BeginChild(
+			"IsaRegisterInspectorPanel",
+			ImVec2(0, 0),
+			true);
+		ImGui::PopStyleVar();
+		ImGui::SeparatorText("Inspector");
+		//todo right hand panel
+		ImGui::EndChild();
+		//end right hand panel
+
 		ImGui::EndChild();
 		return retDirty;
 	}

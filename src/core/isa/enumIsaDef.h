@@ -121,7 +121,6 @@ inline IsaRegisterRole IsaRegisterRoleFromString(const std::string& str) {
 	if (str == "Other")				return IsaRegisterRole::Other;
 	return IsaRegisterRole::Other; // default
 }
-
 inline void from_json(const json& j, IsaRegisterRole role) {
 	role = IsaRegisterRoleFromString(j);
 }
@@ -284,35 +283,40 @@ inline void from_json(const json& j, IsaStateObjectKind& kind) {
 }
 
 enum class IsaDataTypeKind {
-	Integer,
+	//Bool,
+	//Vector,
+	UnsignedInt,
+	SignedInt,
+	BinaryCodedDecimal,
 	Float,
-	Bool,
 	Pointer,
-	Vector,
-	Packed,
+	Bitfield,
 	Custom,
 	Other
 };
 inline std::string ToString(IsaDataTypeKind kind) {
 	switch (kind) {
-	case IsaDataTypeKind::Integer:	return "Integer";
+	case IsaDataTypeKind::UnsignedInt:	return "UnsignedInt";
+	case IsaDataTypeKind::SignedInt:	return "SignedInt";
+	case IsaDataTypeKind::BinaryCodedDecimal:	return "BinaryCodedDecimal";
 	case IsaDataTypeKind::Float:	return "Float";
-	case IsaDataTypeKind::Bool:	return "Bool";
 	case IsaDataTypeKind::Pointer:	return "Pointer";
-	case IsaDataTypeKind::Vector:	return "Vector";
-	case IsaDataTypeKind::Packed:	return "Packed";
+	case IsaDataTypeKind::Bitfield:	return "Bitfield";
 	case IsaDataTypeKind::Custom:	return "Custom";
 	case IsaDataTypeKind::Other:	return "Other";
 	default:					return "Other";
 	}
 }
 inline IsaDataTypeKind DataTypeKindFromString(std::string str) {
-	if (str == "Integer")	return IsaDataTypeKind::Integer;
+	if (str == "UnsignedInt" || str == "Unsigned Integer")
+		return IsaDataTypeKind::UnsignedInt;
+	if (str == "SignedInt" || str == "Signed Integer")
+		return IsaDataTypeKind::SignedInt;
+	if (str == "BinaryCodedDecimal" || str == "Binary Coded Decimal")
+		return IsaDataTypeKind::BinaryCodedDecimal;
 	if (str == "Float")		return IsaDataTypeKind::Float;
-	if (str == "Bool")		return IsaDataTypeKind::Bool;
 	if (str == "Pointer")	return IsaDataTypeKind::Pointer;
-	if (str == "Vector")	return IsaDataTypeKind::Vector;
-	if (str == "Packed")	return IsaDataTypeKind::Packed;
+	if (str == "Bitfield")	return IsaDataTypeKind::Bitfield;
 	if (str == "Custom")	return IsaDataTypeKind::Custom;
 	if (str == "Other")		return IsaDataTypeKind::Other;
 	return IsaDataTypeKind::Other;
@@ -320,6 +324,14 @@ inline IsaDataTypeKind DataTypeKindFromString(std::string str) {
 inline void from_json(const json& j, IsaDataTypeKind& kind) {
 	kind = DataTypeKindFromString(j);
 }
+
+//enum class IsaDataSignedIntTypes {
+//	SignedIntSignMag,
+//	SignedIntOnes,
+//	SignedIntTwos,
+//	SignedIntOffsetBin,
+//	SignedIntBaseN2,
+//}; //todo add helpers n stuff
 
 //todo implement:
 //addressing strategy for memory space

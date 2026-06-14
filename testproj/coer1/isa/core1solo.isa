@@ -1,0 +1,107 @@
+{
+    "addressSpaces": [],
+    "addressTranslationStages": [],
+    "addressUsesDefaultByte": true,
+    "addressUsesDefaultWord": false,
+    "architectureName": "core1solo.isa",
+    "contextDimensions": [],
+    "dataTypes": [
+        [
+            1781471536,
+            {
+                "aliases": [],
+                "bitWidth": 8,
+                "dataTypeKind": "UnsignedInt",
+                "description": "",
+                "friendlyName": "unsigned int8",
+                "id": 1781471536,
+                "name": "uint8",
+                "tags": []
+            }
+        ],
+        [
+            1781471537,
+            {
+                "aliases": [],
+                "bitWidth": 16,
+                "dataTypeKind": "UnsignedInt",
+                "description": "",
+                "friendlyName": "",
+                "id": 1781471537,
+                "name": "uint16",
+                "tags": []
+            }
+        ],
+        [
+            1781471539,
+            {
+                "aliases": [],
+                "bitWidth": 8,
+                "dataTypeKind": "SignedInt",
+                "description": "",
+                "friendlyName": "",
+                "id": 1781471539,
+                "name": "int8",
+                "tags": []
+            }
+        ],
+        [
+            1781471540,
+            {
+                "aliases": [],
+                "bitWidth": 16,
+                "dataTypeKind": "SignedInt",
+                "description": "",
+                "friendlyName": "",
+                "id": 1781471540,
+                "name": "int16",
+                "tags": []
+            }
+        ]
+    ],
+    "dataUsesDefaultByte": true,
+    "dataUsesDefaultWord": true,
+    "defaultAddressByteWidth": 8,
+    "defaultAddressWordBytes": 3,
+    "defaultAlignmentBits": 16,
+    "defaultByteWidth": 8,
+    "defaultDataByteWidth": 8,
+    "defaultDataWordBytes": 2,
+    "defaultInstructionByteWidth": 8,
+    "defaultInstructionWordBytes": 2,
+    "defaultOpcodeWidth": 8,
+    "defaultWordBytes": 2,
+    "endianness": "Little",
+    "faults": [],
+    "features": [],
+    "header": {
+        "contentRevision": 0,
+        "createdUtc": "2026-06-14 21:12:15.1438652",
+        "description": "",
+        "id": 1781471535,
+        "modifiedUtc": "2026-06-14 22:26:48.0821002",
+        "schemaVersion": 1,
+        "title": ""
+    },
+    "instructionFormats": [],
+    "instructionUsesDefaultByte": true,
+    "instructionUsesDefaultWord": true,
+    "instructionWidthIsWordAligned": true,
+    "instructions": [],
+    "maxInstructionWordBytes": 4,
+    "maxOpcodeWidth": 8,
+    "registerFiles": [
+        [
+            1781471538,
+            {
+                "defaultBitWidth": 8,
+                "description": "",
+                "friendlyName": "",
+                "id": 1781471538,
+                "name": "processor",
+                "registers": [],
+                "type": "GeneralPurpose"
+            }
+        ]
+    ]
+}

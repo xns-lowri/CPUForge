@@ -99,7 +99,7 @@ target_sources(CPUForge PRIVATE
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
     "src/ux/menubar/WindowMenuData.h"
-)
+ "src/ux/modules/ViewConsole.h")
 
 if(APPLE)
     target_sources(CPUForge PRIVATE

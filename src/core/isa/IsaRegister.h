@@ -64,10 +64,10 @@ inline void from_json(const json& j, IsaRegisterField& field) {
 /* Define single register within design */
 struct IsaRegister
 {
-	//UUID id = 0;				//generated id, track registers in app
-	std::string name;			//string identifier e.g. r0, gpr0 - assy/disassy
-	std::string friendlyName;	//human readable e.g. GP Data Register 0
-	std::string description;	//write a novel if u want xo
+	UUID id = 0;				//generated id, track registers in app
+	std::string name = "";			//string identifier e.g. r0, gpr0 - assy/disassy
+	std::string friendlyName = "";	//human readable e.g. GP Data Register 0
+	std::string description = "";	//write a novel if u want xo
 
 	uint16_t bitWidth = 8;
 	IsaRegisterType type = IsaRegisterType::Other;
@@ -120,20 +120,22 @@ inline void from_json(const json& j, IsaRegister& reg) {
 /* Define register file within design */
 struct IsaRegisterFile
 {
-	//UUID id = 0;
-	std::string name;
-	std::string friendlyName;
-	std::string description;
+	UUID id = 0;
+	std::string name = "";
+	std::string friendlyName = "";
+	std::string description = "";
 
 	IsaRegisterFileType type = IsaRegisterFileType::GeneralPurpose;
 
 	uint16_t defaultBitWidth = 8;
 
-	std::map<std::string, IsaRegister> registers;
+	std::map<UUID, IsaRegister> registers;
 };
 
 inline void to_json(json& j, const IsaRegisterFile& regFile) {
 	j = json{
+		{ "id", regFile.id },
+
 		{ "name", regFile.name },
 		{ "friendlyName", regFile.friendlyName },
 		{ "description", regFile.description },
@@ -144,6 +146,8 @@ inline void to_json(json& j, const IsaRegisterFile& regFile) {
 	};
 }
 inline void from_json(const json& j, IsaRegisterFile& regFile) {
+	j.at("id").get_to(regFile.id);
+
 	j.at("name").get_to(regFile.name);
 	j.at("friendlyName").get_to(regFile.friendlyName);
 	j.at("description").get_to(regFile.description);
