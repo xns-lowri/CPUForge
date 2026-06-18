@@ -79,7 +79,7 @@
         "createdUtc": "2026-06-14 21:12:15.1438652",
         "description": "",
         "id": 1781471535,
-        "modifiedUtc": "2026-06-14 22:26:48.0821002",
+        "modifiedUtc": "2026-06-15 19:19:30.6935101",
         "schemaVersion": 1,
         "title": ""
     },
@@ -99,7 +99,40 @@
                 "friendlyName": "",
                 "id": 1781471538,
                 "name": "processor",
-                "registers": [],
+                "registers": [
+                    [
+                        1781471551,
+                        {
+                            "aliases": [],
+                            "bitWidth": 8,
+                            "description": "",
+                            "fields": [],
+                            "friendlyName": "",
+                            "name": "reg0",
+                            "readable": true,
+                            "role": "General",
+                            "tags": [],
+                            "type": "Other",
+                            "writable": true
+                        }
+                    ],
+                    [
+                        1781471552,
+                        {
+                            "aliases": [],
+                            "bitWidth": 8,
+                            "description": "",
+                            "fields": [],
+                            "friendlyName": "",
+                            "name": "reg1",
+                            "readable": true,
+                            "role": "General",
+                            "tags": [],
+                            "type": "Other",
+                            "writable": true
+                        }
+                    ]
+                ],
                 "type": "GeneralPurpose"
             }
         ]
