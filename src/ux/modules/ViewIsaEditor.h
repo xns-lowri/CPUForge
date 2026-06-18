@@ -641,12 +641,12 @@ public:
 
 		
 		if (ImGui::Button(
-			fmt::format("+ Register (Unit width: {} bit)", curDoc.defaultByteWidth).c_str(),
+			fmt::format("+ Register (Unit: {} bit)", curDoc.defaultByteWidth).c_str(),
 			ImVec2(ImGui::GetContentRegionAvail().x, 0))
 		) {
 			//todo add data type
 			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.name = fmt::format("reg{}", registerFile.registers.size());
 			newRegister.id = context.projectManager->GetNextUUID();
 			newRegister.bitWidth = curDoc.defaultByteWidth;
 			registerFile.registers.emplace(newRegister.id, newRegister);
@@ -655,12 +655,12 @@ public:
 
 		uint16_t dataWidth = curDoc.defaultDataByteWidth * curDoc.defaultDataWordBytes;
 		if (ImGui::Button(
-			fmt::format("+ Register (Data width: {} bit)", dataWidth).c_str(),
+			fmt::format("+ Register (Data: {} bit)", dataWidth).c_str(),
 			ImVec2(ImGui::GetContentRegionAvail().x, 0))
 			) {
 			//todo add data type
 			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.name = fmt::format("data{}", registerFile.registers.size());
 			newRegister.id = context.projectManager->GetNextUUID();
 			newRegister.bitWidth = dataWidth;
 			registerFile.registers.emplace(newRegister.id, newRegister);
@@ -669,12 +669,12 @@ public:
 
 		uint16_t addressWidth = curDoc.defaultAddressByteWidth * curDoc.defaultAddressWordBytes;
 		if (ImGui::Button(
-			fmt::format("+ Register (Address width: {} bit)", addressWidth).c_str(),
+			fmt::format("+ Register (Address: {} bit)", addressWidth).c_str(),
 			ImVec2(ImGui::GetContentRegionAvail().x, 0))
 			) {
 			//todo add data type
 			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.name = fmt::format("addr{}", registerFile.registers.size());
 			newRegister.id = context.projectManager->GetNextUUID();
 			newRegister.bitWidth = addressWidth;
 			registerFile.registers.emplace(newRegister.id, newRegister);
@@ -683,12 +683,12 @@ public:
 
 		uint16_t instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
 		if (ImGui::Button(
-			fmt::format("+ Register (Instruction width: {} bit)", instructionWidth).c_str(),
+			fmt::format("+ Register (Instruction: {} bit)", instructionWidth).c_str(),
 			ImVec2(ImGui::GetContentRegionAvail().x, 0))
 			) {
 			//todo add data type
 			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("reg{}", curDoc.dataTypes.size());
+			newRegister.name = fmt::format("inst{}", curDoc.dataTypes.size());
 			newRegister.id = context.projectManager->GetNextUUID();
 			newRegister.bitWidth = instructionWidth;
 			registerFile.registers.emplace(newRegister.id, newRegister);
@@ -716,6 +716,11 @@ public:
 		ImGui::PopStyleVar();
 
 		ImGui::SeparatorText("Registers");
+		for(auto& reg : registerFile.registers) {
+			bool selected = false;
+			ImGui::Selectable(reg.second.name.c_str(), &selected);
+			
+		}
 		//todo central panel
 		//get selected register
 		//can't return early unless this gets moved to separate function
