@@ -61,10 +61,11 @@ target_sources(CPUForge PRIVATE
     "src/ux/_UxComponent.h" 
     "src/ux/WindowManager.h" 
     "src/ux/WindowManager.cpp" 
+    "src/ux/KeyHandler.h"
 
     # main ux window modules
     "src/ux/modules/ViewProjectTree.h" 
-        # todo console window
+    "src/ux/modules/ViewConsole.h"
 
     # app component registry modules
     "src/components/_IAppComponent.h"
@@ -98,8 +99,8 @@ target_sources(CPUForge PRIVATE
     "src/ux/menubar/MenuData.h"
     "src/ux/menubar/ImGuiMenuHandler.h"
     "src/ux/menubar/ImGuiMenuHandler.cpp"
-    "src/ux/menubar/WindowMenuData.h"
- "src/ux/modules/ViewConsole.h")
+    "src/ux/menubar/WindowMenuData.h" 
+)
 
 if(APPLE)
     target_sources(CPUForge PRIVATE
