@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include "../../_types.h"
 #include "../../enumAppCommands.h"
 #include "../_UxComponent.h"
 
@@ -13,21 +14,13 @@ enum class MenuItemKind {
     Window
 };
 
-struct MenuShortcut {
-    char key = 0;
-
-    bool ctrl = false;
-    bool shift = false;
-    bool alt = false;
-};
-
 struct MenuItem {
     MenuItemKind kind = MenuItemKind::Command;
 
     std::string label;
     std::string id = "";
     std::optional<AppCommand> command;
-    std::optional<MenuShortcut> shortcut;
+    std::optional<KeyboardCommand> shortcut;
 
     std::vector<MenuItem> children;
 
@@ -37,7 +30,7 @@ struct MenuItem {
     static MenuItem Command(
         std::string label,
         AppCommand command,
-        std::optional<MenuShortcut> shortcut = std::nullopt)
+        std::optional<KeyboardCommand> shortcut = std::nullopt)
     {
         MenuItem item;
         item.kind = MenuItemKind::Command;
@@ -81,27 +74,6 @@ struct MenuItem {
 
 using MenuBarModel = std::vector<MenuItem>;
 
-inline MenuShortcut Ctrl(char key) {
-    return MenuShortcut{ key, true, false, false };
-}
-inline MenuShortcut Shift(char key) {
-    return MenuShortcut{ key, false, true, false };
-}
-inline MenuShortcut Alt(char key) {
-    return MenuShortcut{ key, false, false, true };
-}
-inline MenuShortcut CtrlShift(char key) {
-    return MenuShortcut{ key, true, true, false };
-}
-inline MenuShortcut CtrlAlt(char key) {
-    return MenuShortcut{ key, true, false, true };
-}
-inline MenuShortcut AltShift(char key) {
-    return MenuShortcut{ key, false, true, true };
-}
-inline MenuShortcut CtrlAltShift(char key) {
-    return MenuShortcut{ key, true, true, true };
-}
 
 inline MenuItem BuildWindowMenuModel(std::map<std::string, std::unique_ptr<IWindow>>& windows) {
     MenuBarModel windowMenuItems = MenuBarModel();

@@ -1,6 +1,6 @@
 #include "ImGuiMenuHandler.h"
 
-static const std::string ShortcutToImguiText(const std::optional<MenuShortcut>& shortcut) {
+static const std::string ShortcutToImguiText(const std::optional<KeyboardCommand>& shortcut) {
     if (!shortcut.has_value()) {
         return "";
     }

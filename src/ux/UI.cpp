@@ -166,7 +166,7 @@ bool UI::Render(AppContext& context)
         firstPass = false;
         //set default docking
         auto dock_id_left = ImGui::DockBuilderSplitNode(
-            dockspace_id, ImGuiDir_Left, 0.2f, nullptr, &dockspace_id);
+            dockspace_id, ImGuiDir_Left, 0.15f, nullptr, &dockspace_id);
         auto dock_id_bottom = ImGui::DockBuilderSplitNode(
             dockspace_id, ImGuiDir_Down, 0.2f, nullptr, &dockspace_id);
         ImGui::DockBuilderDockWindow("Project Tree", dock_id_left);
@@ -185,11 +185,14 @@ bool UI::Render(AppContext& context)
 	// Render - finish all imgui calls before this line
     ImGui::Render();
 
-    if (ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_S, false)) {
-        //save
-        fmt::println("[Keyboard Handler] Save current file");
-        context.appCommandQueue->Push(AppCommand::Save);
-    }
+    //TODO keyboard handler
+    //if (ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_S, false)) {
+    //    //save
+    //    fmt::println("[Keyboard Handler] Save current file");
+    //    context.appCommandQueue->Push(AppCommand::Save);
+    //}
+
+    KeyHandler::ScanKeys(context);
 
     //clear screen
     int display_w, display_h;

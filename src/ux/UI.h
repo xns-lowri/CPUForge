@@ -17,6 +17,8 @@
 #include "WindowManager.h"
 #include "menubar/ImGuiMenuHandler.h"
 
+#include "KeyHandler.h" //keyboard scanner
+
 #include "../AppContext.h"
 
 #ifdef __APPLE__
@@ -36,7 +38,7 @@ private:
 	ImGuiViewport* viewport = nullptr;
 	SDL_GLContext glContext;
 
-	ImGuiID lastSelected = NULL;
+	//ImGuiID lastSelected = NULL; //moved to editor state
 
 	WindowManager& windowManager;
 };
