@@ -3,58 +3,71 @@
     "addressTranslationStages": [],
     "addressUsesDefaultByte": true,
     "addressUsesDefaultWord": false,
-    "architectureName": "core1solo.isa",
+    "architectureName": "core1.isa",
     "contextDimensions": [],
     "dataTypes": [
         [
-            1781471536,
+            1781900054,
             {
                 "aliases": [],
                 "bitWidth": 8,
                 "dataTypeKind": "UnsignedInt",
                 "description": "",
-                "friendlyName": "unsigned int8",
-                "id": 1781471536,
+                "friendlyName": "",
+                "id": 1781900054,
                 "name": "uint8",
                 "tags": []
             }
         ],
         [
-            1781471537,
+            1781900055,
             {
                 "aliases": [],
                 "bitWidth": 16,
                 "dataTypeKind": "UnsignedInt",
                 "description": "",
                 "friendlyName": "",
-                "id": 1781471537,
+                "id": 1781900055,
                 "name": "uint16",
                 "tags": []
             }
         ],
         [
-            1781471539,
+            1781900057,
             {
                 "aliases": [],
                 "bitWidth": 8,
                 "dataTypeKind": "SignedInt",
                 "description": "",
                 "friendlyName": "",
-                "id": 1781471539,
+                "id": 1781900057,
                 "name": "int8",
                 "tags": []
             }
         ],
         [
-            1781471540,
+            1781900058,
             {
                 "aliases": [],
                 "bitWidth": 16,
-                "dataTypeKind": "SignedInt",
+                "dataTypeKind": "UnsignedInt",
                 "description": "",
                 "friendlyName": "",
-                "id": 1781471540,
+                "id": 1781900058,
                 "name": "int16",
+                "tags": []
+            }
+        ],
+        [
+            1781900059,
+            {
+                "aliases": [],
+                "bitWidth": 32,
+                "dataTypeKind": "Float",
+                "description": "",
+                "friendlyName": "",
+                "id": 1781900059,
+                "name": "float",
                 "tags": []
             }
         ]
@@ -63,7 +76,7 @@
     "dataUsesDefaultWord": true,
     "defaultAddressByteWidth": 8,
     "defaultAddressWordBytes": 3,
-    "defaultAlignmentBits": 16,
+    "defaultAlignmentBits": 8,
     "defaultByteWidth": 8,
     "defaultDataByteWidth": 8,
     "defaultDataWordBytes": 2,
@@ -76,10 +89,10 @@
     "features": [],
     "header": {
         "contentRevision": 0,
-        "createdUtc": "2026-06-14 21:12:15.1438652",
+        "createdUtc": "2026-06-19 20:14:10.3429162",
         "description": "",
-        "id": 1781471535,
-        "modifiedUtc": "2026-06-15 19:19:30.6935101",
+        "id": 1781900053,
+        "modifiedUtc": "2026-06-19 21:04:19.7228321",
         "schemaVersion": 1,
         "title": ""
     },
@@ -89,50 +102,21 @@
     "instructionWidthIsWordAligned": true,
     "instructions": [],
     "maxInstructionWordBytes": 4,
-    "maxOpcodeWidth": 8,
+    "maxOpcodeWidth": 10,
     "registerFiles": [
         [
-            1781471538,
+            1781900056,
             {
+                "allowRead": true,
+                "allowWrite": true,
+                "allowedReadContexts": [],
+                "allowedWriteContexts": [],
                 "defaultBitWidth": 8,
                 "description": "",
                 "friendlyName": "",
-                "id": 1781471538,
+                "id": 1781900056,
                 "name": "processor",
-                "registers": [
-                    [
-                        1781471551,
-                        {
-                            "aliases": [],
-                            "bitWidth": 8,
-                            "description": "",
-                            "fields": [],
-                            "friendlyName": "",
-                            "name": "reg0",
-                            "readable": true,
-                            "role": "General",
-                            "tags": [],
-                            "type": "Other",
-                            "writable": true
-                        }
-                    ],
-                    [
-                        1781471552,
-                        {
-                            "aliases": [],
-                            "bitWidth": 8,
-                            "description": "",
-                            "fields": [],
-                            "friendlyName": "",
-                            "name": "reg1",
-                            "readable": true,
-                            "role": "General",
-                            "tags": [],
-                            "type": "Other",
-                            "writable": true
-                        }
-                    ]
-                ],
+                "registers": [],
                 "type": "GeneralPurpose"
             }
         ]
