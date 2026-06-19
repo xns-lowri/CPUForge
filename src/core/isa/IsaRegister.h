@@ -6,13 +6,14 @@
 #include "../../project/Project.h"
 
 #include "enumIsaDef.h"
+#include "IsaContext.h"
 
 /* Defines individual fields within register 
-* - gp registers may have 1 field: r0(16) has data(16)
+* - gp registers may have 1 field: r0(16) has data(16) - or just access register direct
 * - special registers may have more: FLAGS has PRV(2), Z/N/C/V(1), etc
 */
 struct IsaRegisterField {
-	//UUID id = 0;			
+	UUID id = 0;			
 	std::string name;			
 	std::string friendlyName;		
 	std::string description;
@@ -20,8 +21,11 @@ struct IsaRegisterField {
 	uint16_t startOffset = 0;
 	uint16_t bitWidth = 8;
 
-	bool readable = true;
-	bool writable = true;
+	bool allowRead = true;
+	bool allowWrite = true;
+
+	std::vector<IsaContextRule> allowedReadContexts;
+	std::vector<IsaContextRule> allowedWriteContexts;
 
 	std::optional<uint64_t> resetValue;	//todo hardware??
 
@@ -39,8 +43,12 @@ inline void to_json(json& j, const IsaRegisterField& field) {
 
 		{ "startOffset", field.startOffset },
 		{ "bitWidth", field.bitWidth },
-		{ "readable", field.readable },
-		{ "writable", field.writable },
+
+		{ "allowRead", field.allowRead },
+		{ "allowWrite", field.allowWrite },
+		{ "allowedReadContexts", field.allowedReadContexts },
+		{ "allowedWriteContexts", field.allowedWriteContexts },
+
 		{ "resetValue", field.resetValue.value_or(-1) },
 		{ "enumValues", field.enumValues }
 	};
@@ -52,8 +60,11 @@ inline void from_json(const json& j, IsaRegisterField& field) {
 
 	j.at("startOffset").get_to(field.startOffset);
 	j.at("bitWidth").get_to(field.bitWidth);
-	j.at("readable").get_to(field.readable);
-	j.at("writable").get_to(field.writable);
+
+	j.at("allowRead").get_to(field.allowRead);
+	j.at("allowWrite").get_to(field.allowWrite);
+	j.at("allowedReadContexts").get_to(field.allowedReadContexts);
+	j.at("allowedWriteContexts").get_to(field.allowedWriteContexts);
 
 	if (j.at("resetValue") == -1) { field.resetValue = std::nullopt; }
 	else { j.at("resetValue").get_to(field.resetValue); }
@@ -73,12 +84,15 @@ struct IsaRegister
 	IsaRegisterType type = IsaRegisterType::Other;
 	//std::string customTypeString; //todo is this necessary?
 
-	bool readable = true;
-	bool writable = true;
+	bool allowRead = true;
+	bool allowWrite = true;
+
+	std::vector<IsaContextRule> allowedReadContexts;
+	std::vector<IsaContextRule> allowedWriteContexts;
 
 	IsaRegisterRole role = IsaRegisterRole::General;
 
-	std::vector<IsaRegisterField> fields;
+	std::map<UUID, IsaRegisterField> fields;
 
 	std::vector<std::string> aliases;	//alternate names (e.g. SP is also r7)
 	std::vector<std::string> tags;		//custom identifier tags
@@ -94,8 +108,12 @@ inline void to_json(json& j, const IsaRegister& reg) {
 
 		{ "bitWidth", reg.bitWidth },
 		{ "type", ToString(reg.type) },
-		{ "readable", reg.readable },
-		{ "writable", reg.writable },
+
+		{ "allowRead", reg.allowRead },
+		{ "allowWrite", reg.allowWrite },
+		{ "allowedReadContexts", reg.allowedReadContexts },
+		{ "allowedWriteContexts", reg.allowedWriteContexts },
+
 		{ "role", ToString(reg.role) },
 		{ "fields", reg.fields },
 		{ "aliases", reg.aliases },
@@ -109,8 +127,12 @@ inline void from_json(const json& j, IsaRegister& reg) {
 
 	j.at("bitWidth").get_to(reg.bitWidth);
 	j.at("type").get_to<IsaRegisterType>(reg.type);
-	j.at("readable").get_to(reg.readable);
-	j.at("writable").get_to(reg.writable);
+
+	j.at("allowRead").get_to(reg.allowRead);
+	j.at("allowWrite").get_to(reg.allowWrite);
+	j.at("allowedReadContexts").get_to(reg.allowedReadContexts);
+	j.at("allowedWriteContexts").get_to(reg.allowedWriteContexts);
+
 	j.at("role").get_to<IsaRegisterRole>(reg.role);
 	j.at("fields").get_to(reg.fields);
 	j.at("aliases").get_to(reg.aliases);
@@ -124,6 +146,12 @@ struct IsaRegisterFile
 	std::string name = "";
 	std::string friendlyName = "";
 	std::string description = "";
+
+	bool allowRead = true;
+	bool allowWrite = true;
+
+	std::vector<IsaContextRule> allowedReadContexts;
+	std::vector<IsaContextRule> allowedWriteContexts;
 
 	IsaRegisterFileType type = IsaRegisterFileType::GeneralPurpose;
 
@@ -140,6 +168,11 @@ inline void to_json(json& j, const IsaRegisterFile& regFile) {
 		{ "friendlyName", regFile.friendlyName },
 		{ "description", regFile.description },
 
+		{ "allowRead", regFile.allowRead },
+		{ "allowWrite", regFile.allowWrite },
+		{ "allowedReadContexts", regFile.allowedReadContexts },
+		{ "allowedWriteContexts", regFile.allowedWriteContexts },
+
 		{ "type", ToString(regFile.type) },
 		{ "defaultBitWidth", regFile.defaultBitWidth },
 		{ "registers", regFile.registers }
@@ -151,6 +184,11 @@ inline void from_json(const json& j, IsaRegisterFile& regFile) {
 	j.at("name").get_to(regFile.name);
 	j.at("friendlyName").get_to(regFile.friendlyName);
 	j.at("description").get_to(regFile.description);
+
+	j.at("allowRead").get_to(regFile.allowRead);
+	j.at("allowWrite").get_to(regFile.allowWrite);
+	j.at("allowedReadContexts").get_to(regFile.allowedReadContexts);
+	j.at("allowedWriteContexts").get_to(regFile.allowedWriteContexts);
 
 	j.at("type").get_to<IsaRegisterFileType>(regFile.type);
 	j.at("defaultBitWidth").get_to(regFile.defaultBitWidth);

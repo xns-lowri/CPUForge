@@ -167,18 +167,18 @@ struct IsaDefinition
 	std::vector<IsaFault> faults;
 	std::vector<IsaContextDimension> contextDimensions;
 
-	std::unordered_map<UUID, IsaDataType> dataTypes;
+	std::map<UUID, IsaDataType> dataTypes;
 	
 	//register model:
-	std::unordered_map<UUID, IsaRegisterFile> registerFiles;
+	std::map<UUID, IsaRegisterFile> registerFiles;
 
 	//todo address spaces/memory model
-	std::unordered_map<UUID, IsaAddressSpace> addressSpaces;
-	std::unordered_map<UUID, IsaAddressTranslationStage> addressTranslationStages;
+	std::map<UUID, IsaAddressSpace> addressSpaces;
+	std::map<UUID, IsaAddressTranslationStage> addressTranslationStages;
 	//todo ports 
 
-	std::unordered_map<UUID, IsaInstructionEncodingFormat> instructionFormats;
-	std::unordered_map<UUID, IsaInstruction> instructions;
+	std::map<UUID, IsaInstructionEncodingFormat> instructionFormats;
+	std::map<UUID, IsaInstruction> instructions;
 
 	//assembly syntax
 	//context links
