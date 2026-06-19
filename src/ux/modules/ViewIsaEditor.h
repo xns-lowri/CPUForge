@@ -287,52 +287,52 @@ public:
 			"Maximum Instruction word width (units)",
 			inMaxInstructionWordBytes,
 			curDoc.maxInstructionWordBytes,
-			curDoc.instructionWidthIsWordAligned ? curDoc.defaultInstructionWordBytes : 1,
-			UINT16_MAX, 
-			separator, 
-			true, 
-			curDoc.instructionWidthIsWordAligned ? curDoc.defaultInstructionWordBytes : 1);
+				curDoc.instructionWidthIsWordAligned ? curDoc.defaultInstructionWordBytes : 1,
+				UINT16_MAX,
+				separator,
+				true,
+				curDoc.instructionWidthIsWordAligned ? curDoc.defaultInstructionWordBytes : 1);
 
 
-		int instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
-		ImGui::SetCursorPosX(separator);
-		ImGui::Text(fmt::format("Default instruction width = {} bits [{}x{}]",
-			instructionWidth, curDoc.defaultInstructionWordBytes, curDoc.defaultInstructionByteWidth).c_str());
+				int instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
+				ImGui::SetCursorPosX(separator);
+				ImGui::Text(fmt::format("Default instruction width = {} bits [{}x{}]",
+					instructionWidth, curDoc.defaultInstructionWordBytes, curDoc.defaultInstructionByteWidth).c_str());
 
-		int maxInstructionWidth = curDoc.defaultInstructionByteWidth * curDoc.maxInstructionWordBytes;
-		ImGui::SetCursorPosX(separator);
-		ImGui::Text(fmt::format("Maximum instruction width = {} bits [{}x{}]",
-			maxInstructionWidth, curDoc.maxInstructionWordBytes, curDoc.defaultInstructionByteWidth).c_str());
+				int maxInstructionWidth = curDoc.defaultInstructionByteWidth * curDoc.maxInstructionWordBytes;
+				ImGui::SetCursorPosX(separator);
+				ImGui::Text(fmt::format("Maximum instruction width = {} bits [{}x{}]",
+					maxInstructionWidth, curDoc.maxInstructionWordBytes, curDoc.defaultInstructionByteWidth).c_str());
 
-		//opcode sizes
-		ImGui::SeparatorText("Opcode");
-		//todo checkbox for expanding opcodes
-		// 
-		//would this disable default opcode width - only use max?
-		//how does this tie in to opcode table view?
-		//16x16 grids - up to 2 byte opcode window - can be moved around longer
-		//instructions to allow a type of 'zoom' for instruction set?
+				//opcode sizes
+				ImGui::SeparatorText("Opcode");
+				//todo checkbox for expanding opcodes
+				// 
+				//would this disable default opcode width - only use max?
+				//how does this tie in to opcode table view?
+				//16x16 grids - up to 2 byte opcode window - can be moved around longer
+				//instructions to allow a type of 'zoom' for instruction set?
 
-		retDirty |= InputIntConstrained(
-			"Default Opcode width (bits)",
-			inOpcodeWidth, curDoc.defaultOpcodeWidth,
-			1, UINT16_MAX, separator, true);
+				retDirty |= InputIntConstrained(
+					"Default Opcode width (bits)",
+					inOpcodeWidth, curDoc.defaultOpcodeWidth,
+					1, UINT16_MAX, separator, true);
 
-		retDirty |= InputIntConstrained(
-			"Maximum Opcode width (bits)",
-			inMaxOpcodeWidth, curDoc.maxOpcodeWidth,
-			1, UINT16_MAX, separator, true);
+				retDirty |= InputIntConstrained(
+					"Maximum Opcode width (bits)",
+					inMaxOpcodeWidth, curDoc.maxOpcodeWidth,
+					1, UINT16_MAX, separator, true);
 
-		//memory alignment
-		ImGui::SeparatorText("Memory");
-		retDirty |= InputIntConstrained(
-			"Default Memory access alignment (bits)",
-			inAlignmentBits, curDoc.defaultAlignmentBits,
-			1, UINT16_MAX, separator, true);
+				//memory alignment
+				ImGui::SeparatorText("Memory");
+				retDirty |= InputIntConstrained(
+					"Default Memory access alignment (bits)",
+					inAlignmentBits, curDoc.defaultAlignmentBits,
+					1, UINT16_MAX, separator, true);
 
-		ImGui::EndChild();
+				ImGui::EndChild();
 
-		return retDirty;
+				return retDirty;
 	}
 
 	bool RenderDataModelView(AppContext& context, IsaDefinition& curDoc) {
@@ -365,7 +365,7 @@ public:
 		ImGui::Spacing();
 		ImGui::Spacing();
 
-		if(ImGui::Button("New", ImVec2(ImGui::GetContentRegionAvail().x, 0))) {
+		if (ImGui::Button("New", ImVec2(ImGui::GetContentRegionAvail().x, 0))) {
 			//todo add data type
 			IsaDataType newType = IsaDataType();
 			newType.name = fmt::format("type{}", curDoc.dataTypes.size());
@@ -380,17 +380,26 @@ public:
 		ImGui::Spacing();
 
 		//todo data types list and selection
-		auto x = 0;
+		//auto x = 0;
 		for (auto& type : curDoc.dataTypes) {
-			if (ImGui::RadioButton(
-				fmt::format("{:s}###{}", 
+			if(ImGui::Selectable(
+				fmt::format("{:s}###{}",
 					type.second.name,
-					type.second.id).c_str(), 
-				&state.DataModelSelectedType, x++)
+					type.second.id).c_str(),
+				state.DataModelSelectedTypeId == type.second.id)
 			) {
-				//select this
+				//select when pressed
 				state.DataModelSelectedTypeId = type.second.id;
 			}
+			//if (ImGui::RadioButton(
+			//	fmt::format("{:s}###{}", 
+			//		type.second.name,
+			//		type.second.id).c_str(), 
+			//	&state.DataModelSelectedType, x++)
+			//) {
+			//	//select this
+			//	state.DataModelSelectedTypeId = type.second.id;
+			//}
 		}
 
 		ImGui::EndChild(); //close left panel
@@ -504,6 +513,9 @@ public:
 		//text input + button to add new field
 		//list with options to remove? also reorder?
 
+		//todo buttons for ordering data type within list
+		//button for deleting data type
+
 		ImGui::EndChild();
 
 		ImGui::EndChild();
@@ -584,23 +596,23 @@ public:
 
 		//todo different separators for each horizontal panel
 		const float separatorLeft = 120.f;
-		const float separatorCentre = 200.f;
-		const float separatorRight = 150.f;
+		//const float separatorCentre = 200.f;
+		//const float separatorRight = 150.f;
 		//todo
 
 		//static split vars for 3-panel
 		static float hsplit1 = 300.f;
-		static float hsplit2 = 250.f;
+		//static float hsplit2 = 250.f;
 
-		if (hsplit1 > ImGui::GetContentRegionAvail().x * 0.35f) {
-			hsplit1 = ImGui::GetContentRegionAvail().x * 0.35f;
+		if (hsplit1 > ImGui::GetContentRegionAvail().x * 0.5f) {
+			hsplit1 = ImGui::GetContentRegionAvail().x * 0.5f;
 		}
 		if (hsplit1 < 100.f) { hsplit1 = 100.f; }
 
-		if (hsplit2 > ImGui::GetContentRegionAvail().x * 0.35f) {
-			hsplit2 = ImGui::GetContentRegionAvail().x * 0.35f;
-		}
-		if (hsplit2 < 100.f) { hsplit2 = 100.f; }
+		//if (hsplit2 > ImGui::GetContentRegionAvail().x * 0.35f) {
+		//	hsplit2 = ImGui::GetContentRegionAvail().x * 0.35f;
+		//}
+		//if (hsplit2 < 100.f) { hsplit2 = 100.f; }
 
 		//begin left hand panel
 		ImGui::BeginChild(
@@ -699,6 +711,13 @@ public:
 		//ImGui::SeparatorText("Registers");
 
 		ImGui::EndChild();
+
+		////can we put inspector below register file editor?
+		//ImGui::BeginChild(
+		//	"IsaRegisterInspectorPanel",
+		//	ImVec2(hsplit1, 0),
+		//	true);
+		//ImGui::EndChild();
 		//end left hand panel
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -708,10 +727,10 @@ public:
 			hsplit1 += ImGui::GetIO().MouseDelta.x;
 		ImGui::SameLine();
 
-		//begin central panel
+		//begin right hand panel
 		ImGui::BeginChild(
 			"IsaRegisterEditorPanel",
-			ImVec2(ImGui::GetContentRegionAvail().x - hsplit2, 0),
+			ImVec2(ImGui::GetContentRegionAvail().x, 0), //was .x - hsplit2
 			true);
 		ImGui::PopStyleVar();
 
@@ -721,31 +740,31 @@ public:
 			ImGui::Selectable(reg.second.name.c_str(), &selected);
 			
 		}
-		//todo central panel
+		//todo rh panel
 		//get selected register
 		//can't return early unless this gets moved to separate function
 		//if-wrapped?? :(
 
 		ImGui::EndChild();
-		//end central panel
-
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-		ImGui::SameLine();
-		ImGui::InvisibleButton("vsplitter2", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
-		if (ImGui::IsItemActive())
-			hsplit2 -= ImGui::GetIO().MouseDelta.x;
-		ImGui::SameLine();
-
-		//begin right hand panel
-		ImGui::BeginChild(
-			"IsaRegisterInspectorPanel",
-			ImVec2(0, 0),
-			true);
-		ImGui::PopStyleVar();
-		ImGui::SeparatorText("Inspector");
-		//todo right hand panel
-		ImGui::EndChild();
 		//end right hand panel
+
+		//ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		//ImGui::SameLine();
+		//ImGui::InvisibleButton("vsplitter2", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
+		//if (ImGui::IsItemActive())
+		//	hsplit2 -= ImGui::GetIO().MouseDelta.x;
+		//ImGui::SameLine();
+
+		////begin right hand panel
+		//ImGui::BeginChild(
+		//	"IsaRegisterInspectorPanel",
+		//	ImVec2(0, 0),
+		//	true);
+		//ImGui::PopStyleVar();
+		//ImGui::SeparatorText("Inspector");
+		////todo right hand panel
+		//ImGui::EndChild();
+		////end right hand panel
 
 		ImGui::EndChild();
 		return retDirty;
