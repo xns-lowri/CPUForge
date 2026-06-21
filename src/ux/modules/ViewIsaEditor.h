@@ -5,6 +5,8 @@
 #include "../../components/isa/IsaEditorState.h"
 //#include "../WindowManager.h"
 
+const float SPACING_Y = 10.f;
+
 class ViewIsaEditor : public WindowBase {
 public:
 	ViewIsaEditor(
@@ -361,9 +363,7 @@ public:
 
 		ImGui::Text("Data types:");
 
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
+		ImGui::Dummy(ImVec2(0, SPACING_Y));
 
 		if (ImGui::Button("New", ImVec2(ImGui::GetContentRegionAvail().x, 0))) {
 			//todo add data type
@@ -375,9 +375,7 @@ public:
 			retDirty |= true;
 		}
 
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
+		ImGui::Dummy(ImVec2(0, SPACING_Y));
 
 		//todo data types list and selection
 		//auto x = 0;
@@ -647,64 +645,111 @@ public:
 			ImVec2(0, 64));
 		ImGui::PopItemWidth();
 
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
+		ImGui::Dummy(ImVec2(0, SPACING_Y));
 
-		
-		if (ImGui::Button(
-			fmt::format("+ Register (Unit: {} bit)", curDoc.defaultByteWidth).c_str(),
-			ImVec2(ImGui::GetContentRegionAvail().x, 0))
-		) {
-			//todo add data type
-			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("reg{}", registerFile.registers.size());
-			newRegister.id = context.projectManager->GetNextUUID();
-			newRegister.bitWidth = curDoc.defaultByteWidth;
-			registerFile.registers.emplace(newRegister.id, newRegister);
-			retDirty |= true;
-		}
+		if (ImGui::BeginTable("AddRegisterButtons", 4)) {
+			float cursorPosX = 0.f;
+			float padding = 0.f;
 
-		uint16_t dataWidth = curDoc.defaultDataByteWidth * curDoc.defaultDataWordBytes;
-		if (ImGui::Button(
-			fmt::format("+ Register (Data: {} bit)", dataWidth).c_str(),
-			ImVec2(ImGui::GetContentRegionAvail().x, 0))
-			) {
-			//todo add data type
-			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("data{}", registerFile.registers.size());
-			newRegister.id = context.projectManager->GetNextUUID();
-			newRegister.bitWidth = dataWidth;
-			registerFile.registers.emplace(newRegister.id, newRegister);
-			retDirty |= true;
-		}
+			ImGui::TableNextRow();
 
-		uint16_t addressWidth = curDoc.defaultAddressByteWidth * curDoc.defaultAddressWordBytes;
-		if (ImGui::Button(
-			fmt::format("+ Register (Address: {} bit)", addressWidth).c_str(),
-			ImVec2(ImGui::GetContentRegionAvail().x, 0))
-			) {
-			//todo add data type
-			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("addr{}", registerFile.registers.size());
-			newRegister.id = context.projectManager->GetNextUUID();
-			newRegister.bitWidth = addressWidth;
-			registerFile.registers.emplace(newRegister.id, newRegister);
-			retDirty |= true;
-		}
+			ImGui::TableSetColumnIndex(0);
+			cursorPosX = ImGui::GetCursorPosX();
+			padding = ImGui::GetContentRegionAvail().x;
+			padding -= ImGui::CalcTextSize("Unit").x;
+			padding *= 0.5f;
+			cursorPosX += padding;
+			ImGui::SetCursorPosX(cursorPosX);
+			ImGui::Text("Unit");
 
-		uint16_t instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
-		if (ImGui::Button(
-			fmt::format("+ Register (Instruction: {} bit)", instructionWidth).c_str(),
-			ImVec2(ImGui::GetContentRegionAvail().x, 0))
-			) {
-			//todo add data type
-			IsaRegister newRegister = IsaRegister();
-			newRegister.name = fmt::format("inst{}", curDoc.dataTypes.size());
-			newRegister.id = context.projectManager->GetNextUUID();
-			newRegister.bitWidth = instructionWidth;
-			registerFile.registers.emplace(newRegister.id, newRegister);
-			retDirty |= true;
+			ImGui::TableSetColumnIndex(1);
+			cursorPosX = ImGui::GetCursorPosX();
+			padding = ImGui::GetContentRegionAvail().x;
+			padding -= ImGui::CalcTextSize("Data").x;
+			padding *= 0.5f;
+			cursorPosX += padding;
+			ImGui::SetCursorPosX(cursorPosX);
+			ImGui::Text("Data");
+
+			ImGui::TableSetColumnIndex(2);
+			cursorPosX = ImGui::GetCursorPosX();
+			padding = ImGui::GetContentRegionAvail().x;
+			padding -= ImGui::CalcTextSize("Addr").x;
+			padding *= 0.5f;
+			cursorPosX += padding;
+			ImGui::SetCursorPosX(cursorPosX);
+			ImGui::Text("Addr");
+
+			ImGui::TableSetColumnIndex(3);
+			cursorPosX = ImGui::GetCursorPosX();
+			padding = ImGui::GetContentRegionAvail().x;
+			padding -= ImGui::CalcTextSize("Inst").x;
+			padding *= 0.5f;
+			cursorPosX += padding;
+			ImGui::SetCursorPosX(cursorPosX);
+			ImGui::Text("Inst");
+
+			ImGui::TableNextRow();
+
+			ImGui::TableSetColumnIndex(0);
+			if (ImGui::Button(
+				fmt::format("+ {} b##unit", curDoc.defaultByteWidth).c_str(),
+				ImVec2(ImGui::GetContentRegionAvail().x, 0))
+				) {
+				//todo add data type
+				IsaRegister newRegister = IsaRegister();
+				newRegister.name = fmt::format("reg{}", registerFile.registers.size());
+				newRegister.id = context.projectManager->GetNextUUID();
+				newRegister.bitWidth = curDoc.defaultByteWidth;
+				registerFile.registers.emplace(newRegister.id, newRegister);
+				retDirty |= true;
+			}
+
+			ImGui::TableSetColumnIndex(1);
+			uint16_t dataWidth = curDoc.defaultDataByteWidth * curDoc.defaultDataWordBytes;
+			if (ImGui::Button(
+				fmt::format("+ {} b##data", dataWidth).c_str(),
+				ImVec2(ImGui::GetContentRegionAvail().x, 0))
+				) {
+				//todo add data type
+				IsaRegister newRegister = IsaRegister();
+				newRegister.name = fmt::format("data{}", registerFile.registers.size());
+				newRegister.id = context.projectManager->GetNextUUID();
+				newRegister.bitWidth = dataWidth;
+				registerFile.registers.emplace(newRegister.id, newRegister);
+				retDirty |= true;
+			}
+
+			ImGui::TableSetColumnIndex(2);
+			uint16_t addressWidth = curDoc.defaultAddressByteWidth * curDoc.defaultAddressWordBytes;
+			if (ImGui::Button(
+				fmt::format("+ {} b##addr", addressWidth).c_str(),
+				ImVec2(ImGui::GetContentRegionAvail().x, 0))
+				) {
+				//todo add data type
+				IsaRegister newRegister = IsaRegister();
+				newRegister.name = fmt::format("addr{}", registerFile.registers.size());
+				newRegister.id = context.projectManager->GetNextUUID();
+				newRegister.bitWidth = addressWidth;
+				registerFile.registers.emplace(newRegister.id, newRegister);
+				retDirty |= true;
+			}
+
+			ImGui::TableSetColumnIndex(3);
+			uint16_t instructionWidth = curDoc.defaultInstructionByteWidth * curDoc.defaultInstructionWordBytes;
+			if (ImGui::Button(
+				fmt::format("+ {} b##inst", instructionWidth).c_str(),
+				ImVec2(ImGui::GetContentRegionAvail().x, 0))
+				) {
+				//todo add data type
+				IsaRegister newRegister = IsaRegister();
+				newRegister.name = fmt::format("inst{}", registerFile.registers.size());
+				newRegister.id = context.projectManager->GetNextUUID();
+				newRegister.bitWidth = instructionWidth;
+				registerFile.registers.emplace(newRegister.id, newRegister);
+				retDirty |= true;
+			}
+			ImGui::EndTable();
 		}
 
 		//todo register list?
@@ -735,11 +780,27 @@ public:
 		ImGui::PopStyleVar();
 
 		ImGui::SeparatorText("Registers");
-		for(auto& reg : registerFile.registers) {
-			bool selected = false;
-			ImGui::Selectable(reg.second.name.c_str(), &selected);
-			
-		}
+
+		ImVec2 canvasPos = ImGui::GetCursorScreenPos();
+		ImVec2 canvasSize = ImGui::GetContentRegionAvail();
+
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+		
+		drawList->AddRectFilled(
+			canvasPos,
+			ImVec2(canvasPos.x + canvasSize.x, canvasPos.y + canvasSize.y),
+			IM_COL32(30, 30, 30, 0)
+		);
+
+		// Reserve space in the ImGui layout
+		ImGui::Dummy(canvasSize);
+
+		//for(auto& reg : registerFile.registers) {
+		//	bool selected = false;
+		//	ImGui::Selectable(reg.second.name.c_str(), &selected);
+		//	
+		//}
+
 		//todo rh panel
 		//get selected register
 		//can't return early unless this gets moved to separate function
@@ -747,24 +808,6 @@ public:
 
 		ImGui::EndChild();
 		//end right hand panel
-
-		//ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-		//ImGui::SameLine();
-		//ImGui::InvisibleButton("vsplitter2", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
-		//if (ImGui::IsItemActive())
-		//	hsplit2 -= ImGui::GetIO().MouseDelta.x;
-		//ImGui::SameLine();
-
-		////begin right hand panel
-		//ImGui::BeginChild(
-		//	"IsaRegisterInspectorPanel",
-		//	ImVec2(0, 0),
-		//	true);
-		//ImGui::PopStyleVar();
-		//ImGui::SeparatorText("Inspector");
-		////todo right hand panel
-		//ImGui::EndChild();
-		////end right hand panel
 
 		ImGui::EndChild();
 		return retDirty;
