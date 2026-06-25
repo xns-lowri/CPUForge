@@ -918,6 +918,11 @@ public:
 				state.tabState = IsaEditorTabState::DataModel;
 				ImGui::EndTabItem();
 			}
+			if (ImGui::BeginTabItem("Context")) {
+				//fmt::println("[DEBUG] Execution Context tab");
+				state.tabState = IsaEditorTabState::ExecutionContext;
+				ImGui::EndTabItem();
+			}
 			if (ImGui::BeginTabItem("Registers")) {
 				//fmt::println("[DEBUG] Registers tab");
 				state.tabState = IsaEditorTabState::Registers;
@@ -931,11 +936,6 @@ public:
 			if (ImGui::BeginTabItem("Instruction Set")) {
 				//fmt::println("[DEBUG] Instruction Set tab");
 				state.tabState = IsaEditorTabState::InstructionSet;
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Execution Context")) {
-				//fmt::println("[DEBUG] Execution Context tab");
-				state.tabState = IsaEditorTabState::ExecutionContext;
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Validation")) {
