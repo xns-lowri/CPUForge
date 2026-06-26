@@ -29,10 +29,16 @@ IsaDefinition& ComponentContext::GetIsaDocument(const UUID& id) {
 std::vector<TreeActionDescriptor> ComponentContext::GetTreeActionsFolder(
 	FolderKind folderKind) const 
 {
+	if (treeActionsByFolder.find(folderKind) == treeActionsByFolder.end()) {
+		return std::vector<TreeActionDescriptor>();
+	}
 	return treeActionsByFolder.at(folderKind);
 }
 std::vector<TreeActionDescriptor> ComponentContext::GetTreeActionsFile(
 	FileType fileType) const 
 {
+	if (treeActionsByFile.find(fileType) == treeActionsByFile.end()) {
+		return std::vector<TreeActionDescriptor>();
+	}
 	return treeActionsByFile.at(fileType);
 }
