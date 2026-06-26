@@ -55,6 +55,10 @@ public:
 				dirtied |= RenderDataModelView(context, curDoc);
 				break;
 
+			case IsaEditorTabState::ExecutionContext:
+				dirtied |= RenderExecutionContextView(context, curDoc);
+				break;
+
 			case IsaEditorTabState::Registers:
 				dirtied |= RenderRegistersView(context, curDoc);
 				break;
@@ -65,10 +69,6 @@ public:
 
 			case IsaEditorTabState::InstructionSet:
 				dirtied |= RenderInstructionSetView(context, curDoc);
-				break;
-
-			case IsaEditorTabState::ExecutionContext:
-				dirtied |= RenderExecutionContextView(context, curDoc);
 				break;
 
 			case IsaEditorTabState::Validation:
@@ -349,7 +349,7 @@ public:
 		ImGui::BeginChild(
 			"IsaDataModelPanel",
 			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
-			false);
+			true);
 		ImGui::PopStyleVar();
 
 		/* LHS panel - data types list and new button */
@@ -361,7 +361,7 @@ public:
 		//todo left inner
 		//ImGui::PopStyleVar();
 
-		ImGui::Text("Data types:");
+		ImGui::SeparatorText("Data types:");
 
 		ImGui::Dummy(ImVec2(0, SPACING_Y));
 
@@ -417,8 +417,12 @@ public:
 
 		ImGui::PopStyleVar();
 
+		if (curDoc.dataTypes.size() > 0 && state.DataModelSelectedTypeId <= 0) {
+			state.DataModelSelectedTypeId = curDoc.dataTypes.begin()->second.id;
+		}
+
 		//todo find selected?
-		if (curDoc.dataTypes.size() == 0 || state.DataModelSelectedTypeId <= 0) {
+		if (state.DataModelSelectedTypeId <= 0) {
 			ImGui::EndChild();
 			ImGui::EndChild();
 			return retDirty;
@@ -520,6 +524,129 @@ public:
 		return retDirty;
 	}
 
+	bool RenderExecutionContextView(AppContext& context, IsaDefinition& curDoc) {
+		bool retDirty = false;
+		float separator = 250.f;
+		static float hsplit = 300.f;
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+		ImGui::BeginChild(
+			"IsaExecutionContextPanel",
+			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
+			true);
+		ImGui::PopStyleVar();
+		//todo
+
+		/* LHS panel - data types list and new button */
+		//ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		ImGui::BeginChild(
+			"IsaContextModelPanelLeft",
+			ImVec2(hsplit, 0),
+			true);
+
+		//Lhs Panel inner
+		ImGui::SeparatorText("Context Dimensions");
+
+		ImGui::Dummy(ImVec2(0, SPACING_Y));
+
+		if (ImGui::Button("New", ImVec2(ImGui::GetContentRegionAvail().x, 0))) {
+			//todo add data type
+			IsaContextDimension newDimension = IsaContextDimension();
+			newDimension.name = fmt::format("dimension{}", curDoc.contextDimensions.size());
+
+			newDimension.id = context.projectManager->GetNextUUID();
+			curDoc.contextDimensions.emplace(newDimension.id, newDimension);
+			retDirty |= true;
+		}
+
+		ImGui::Dummy(ImVec2(0, SPACING_Y));
+
+		//todo data types list and selection
+		//auto x = 0;
+		for (auto& context : curDoc.contextDimensions) {
+			if (ImGui::Selectable(
+				fmt::format("{:s}###{}",
+					context.second.name,
+					context.second.id).c_str(),
+				state.ContextDimensionSelectedTypeId == context.second.id)
+				) {
+				//select when pressed
+				state.ContextDimensionSelectedTypeId = context.second.id;
+			}
+		}
+
+		ImGui::EndChild();
+		//End left hand side panel
+
+		//Vertical splitter
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		ImGui::SameLine();
+		ImGui::InvisibleButton("vsplitter", ImVec2(8.0f, ImGui::GetContentRegionAvail().y));
+		if (ImGui::IsItemActive())
+			hsplit += ImGui::GetIO().MouseDelta.x;
+		ImGui::SameLine();
+		//End vertical splitter
+
+		//Right hand side panel
+		ImGui::BeginChild(
+			"IsaContextModelPanelRight",
+			ImVec2(ImGui::GetContentRegionAvail().x, 0),
+			true);
+		ImGui::PopStyleVar();
+
+		//Rhs Panel inner
+
+		if (curDoc.contextDimensions.size() > 0
+			&& state.ContextDimensionSelectedTypeId <= 0)
+		{
+			state.ContextDimensionSelectedTypeId = curDoc.contextDimensions.begin()->second.id;
+		}
+		//todo find selected?
+		if (state.ContextDimensionSelectedTypeId <= 0) 
+		{
+			ImGui::EndChild();
+			ImGui::EndChild();
+			return retDirty;
+		} //end early (blank lhs panel) if no data type selected
+
+		auto& contextDimension = curDoc.contextDimensions.at(state.ContextDimensionSelectedTypeId);
+		//
+
+
+		ImGui::Text("Name:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputText(
+			"###IsaContextDimensionName",
+			&contextDimension.name);
+		ImGui::PopItemWidth();
+
+		ImGui::Text("Friendly name:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputText(
+			"###IsaContextDimensionFriendlyName",
+			&contextDimension.friendlyName);
+		ImGui::PopItemWidth();
+
+		ImGui::Text("Description:");
+		ImGui::SameLine(separator);
+		ImGui::PushItemWidth(-FLT_MIN);
+		retDirty |= ImGui::InputTextMultiline(
+			"###IsaContextDimensionDescription",
+			&contextDimension.description,
+			ImVec2(0, 64));
+		ImGui::PopItemWidth();
+
+
+
+
+		ImGui::EndChild(); //End right hand side panel
+
+		ImGui::EndChild(); //end main panel
+		return retDirty;
+	}
+
 	bool RenderRegistersView(AppContext& context, IsaDefinition& curDoc) {
 		bool retDirty = false;
 
@@ -582,8 +709,14 @@ public:
 		ImGui::PopStyleVar();
 		//todo main panel here
 		
+		if (curDoc.registerFiles.size() > 0 && state.RegisterSelectedRegisterFile <= 0) {
+			state.RegisterSelectedRegisterFile = 
+				curDoc.registerFiles.begin()->second.id;
+			state.RegisterFileComboSelection = 
+				curDoc.registerFiles.begin()->second.name.c_str();
+		}
 		//check selected register file exists
-		if (state.RegisterSelectedRegisterFile == 0) {
+		if (state.RegisterSelectedRegisterFile <= 0) {
 			ImGui::EndChild();
 			return retDirty;
 			//early return if nothing selected
@@ -828,17 +961,6 @@ public:
 		bool retDirty = false;
 		ImGui::BeginChild(
 			"IsaInstructionSetPanel",
-			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
-			true);
-		//todo
-		ImGui::EndChild();
-		return retDirty;
-	}
-
-	bool RenderExecutionContextView(AppContext& context, IsaDefinition& curDoc) {
-		bool retDirty = false;
-		ImGui::BeginChild(
-			"IsaExecutionContextPanel",
 			ImVec2(0, ImGui::GetContentRegionAvail().y - 36.f),
 			true);
 		//todo

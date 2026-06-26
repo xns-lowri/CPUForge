@@ -165,7 +165,7 @@ struct IsaDefinition
 	//isa components
 	std::vector<IsaFeature> features;
 	std::vector<IsaFault> faults;
-	std::vector<IsaContextDimension> contextDimensions;
+	std::map<UUID, IsaContextDimension> contextDimensions;
 
 	std::map<UUID, IsaDataType> dataTypes;
 	

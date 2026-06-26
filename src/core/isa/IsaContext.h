@@ -90,13 +90,15 @@ inline void from_json(const json& j, IsaContextRule& rule) {
 /* Context Dimensions - abstract context state handling */
 struct IsaContextDimension
 {
-    //UUID id = 0;
+    UUID id = 0;
     std::string name;           // "privilege", "mode", "extension"
     std::string friendlyName;   // "Privilege Level", "CPU Mode", "ISA Extension"
     std::string description;
 
 	//todo add enum 'context kind'?? adds specificity, useful context?
 	//or later add custom user-enum handler??
+
+	//todo add option for open states?
 
     std::vector<IsaContextState> possibleStates; //all possible states within dimension
 
@@ -105,6 +107,7 @@ struct IsaContextDimension
 
 inline void to_json(json& j, const IsaContextDimension& dimension) {
 	j = json{
+		{ "id", dimension.id },
 		{ "name", dimension.name },
 		{ "friendlyName", dimension.friendlyName },
 		{ "description", dimension.description },
@@ -113,6 +116,7 @@ inline void to_json(json& j, const IsaContextDimension& dimension) {
 	};
 }
 inline void from_json(const json& j, IsaContextDimension& dimension) {
+	j.at("id").get_to(dimension.id);
 	j.at("name").get_to(dimension.name);
 	j.at("friendlyName").get_to(dimension.friendlyName);
 	j.at("description").get_to(dimension.description);
@@ -122,6 +126,7 @@ inline void from_json(const json& j, IsaContextDimension& dimension) {
 	if (j.at("registerFieldPath") == "null") { dimension.registerFieldPath = std::nullopt; }
 	else { j.at("registerFieldPath").get_to(dimension.registerFieldPath); }
 }
+
 
 /* Defines state accesses (read/write/modify) for instruction effects */
 struct IsaStateAccess

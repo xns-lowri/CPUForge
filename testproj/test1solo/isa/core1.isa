@@ -4,7 +4,41 @@
     "addressUsesDefaultByte": true,
     "addressUsesDefaultWord": false,
     "architectureName": "core1.isa",
-    "contextDimensions": [],
+    "contextDimensions": [
+        [
+            1781900083,
+            {
+                "description": "",
+                "friendlyName": "Privilege Level",
+                "id": 1781900083,
+                "name": "privilegeLevel",
+                "possibleStates": [],
+                "registerFieldPath": "null"
+            }
+        ],
+        [
+            1781900085,
+            {
+                "description": "",
+                "friendlyName": "Virtual Memory Enabled",
+                "id": 1781900085,
+                "name": "virtualMemoryEnabled",
+                "possibleStates": [],
+                "registerFieldPath": "null"
+            }
+        ],
+        [
+            1781900086,
+            {
+                "description": "",
+                "friendlyName": "Interrupts Enabled",
+                "id": 1781900086,
+                "name": "interruptsEnabled",
+                "possibleStates": [],
+                "registerFieldPath": "null"
+            }
+        ]
+    ],
     "dataTypes": [
         [
             1781900054,
@@ -92,7 +126,7 @@
         "createdUtc": "2026-06-19 20:14:10.3429162",
         "description": "",
         "id": 1781900053,
-        "modifiedUtc": "2026-06-19 21:04:19.7228321",
+        "modifiedUtc": "2026-06-26 22:22:09.6306684",
         "schemaVersion": 1,
         "title": ""
     },
@@ -116,6 +150,22 @@
                 "friendlyName": "",
                 "id": 1781900056,
                 "name": "processor",
+                "registers": [],
+                "type": "GeneralPurpose"
+            }
+        ],
+        [
+            1781900087,
+            {
+                "allowRead": true,
+                "allowWrite": true,
+                "allowedReadContexts": [],
+                "allowedWriteContexts": [],
+                "defaultBitWidth": 8,
+                "description": "",
+                "friendlyName": "",
+                "id": 1781900087,
+                "name": "graphics",
                 "registers": [],
                 "type": "GeneralPurpose"
             }
