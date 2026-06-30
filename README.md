@@ -8,6 +8,10 @@ Despite the name, CPUForge is intended to provide an abstract, intent-agnostic e
 
 > CPUForge is currently in early development. The core application framework, project system, command dispatch layer, UI shell, and initial ISA modelling groundwork are being built before the simulator itself is fully implemented.
 
+![Image of CPUForge Editor showing two ISA editor windows. The left-hand window shows an example of adding data types to an ISA design, whilst the right hand window shows an example of setting up the default bus widths for data/address/instructions](_img/Screenshot-1.png "Early development screenshow - ISA design")
+
+
+
 ## Project goals
 
 CPUForge aims to become a desktop application where users can experiment with CPU and systems design ideas in a visual IDE-style environment:
